@@ -258,39 +258,62 @@ function closeRetroModal() {
 }
 
 async function saveRetroSession() {
+  if (!pKey) return;
+  
   const s = SD[pKey];
-  const notes = document.getElementById('retro-notes').value;
-  
-  const detailed = {};
-  s.exos.forEach((e, idx) => {
-    const kg = document.getElementById(`retro-kg-${idx}`)?.value || '';
-    const reps = document.getElementById(`retro-reps-${idx}`)?.value || '';
-    if (kg || reps) detailed[e.n] = { kg, reps };
-  });
+  if (!s) return;
 
-  const sessionData = {
-    user_id: USER_ID, session_key: pKey, session_title: s.title,
-    track_id: s.trackId, duration_min: 35, rpe: selRpeVal || null,
-    feel: selFeelVal || null, notes: notes || null,
-    detailed_exos: JSON.stringify(detailed)
+  // L'identifiant de la case à cocher (ex: 's1a' ou à défaut 'A-S1')
+  const trackId = s.trackId || pKey;
+  
+  const detailedExos = {};
+  const notes = document.getElementById('retro-notes')?.value || '';
+
+  // 1. Récupération des charges et répétitions saisies
+  if (s.exos) {
+    s.exos.forEach((e, idx) => {
+      const kgEl = document.getElementById(`retro-kg-${idx}`);
+      const repsEl = document.getElementById(`retro-reps-${idx}`);
+      const kg = kgEl ? kgEl.value.trim() : '';
+      const reps = repsEl ? repsEl.value.trim() : '';
+      if (kg || reps) {
+        detailedExos[e.n] = { kg: kg, reps: reps };
+      }
+    });
+  }
+
+  // 2. Payload aligné avec la table sessions de Supabase
+  const payload = {
+    user_id: USER_ID,
+    session_key: pKey,
+    detailed_exos: JSON.stringify(detailedExos),
+    notes: notes,
+    rpe: typeof selRpeVal !== 'undefined' ? selRpeVal : null,
+    feel: typeof selFeelVal !== 'undefined' ? selFeelVal : '',
+    created_at: new Date().toISOString()
   };
-  
-  await supa.post('sessions', sessionData).catch(()=>{});
 
-  done.add(s.trackId);
-  await supa.upsert('tracking', {user_id: USER_ID, track_id: s.trackId, done: true}).catch(()=>{});
+  // 3. Sauvegarde dans Supabase
+  await supa.upsert('sessions', payload, 'user_id,session_key').catch(()=>{});
+  await supa.upsert('tracking', { user_id: USER_ID, track_id: trackId, done: true }, 'user_id,track_id').catch(()=>{});
 
+  // 4. Sauvegarde locale immédiate (Anti-Lag)
+  done.add(trackId);
   if (!window._sessMap) window._sessMap = {};
-  window._sessMap[s.trackId] = {...sessionData, completed_at: new Date().toISOString()};
+  window._sessMap[trackId] = { ...payload, completed_at: payload.created_at };
 
-  // 🛡️ NOUVEAU : Sauvegarde locale absolue (Anti-Bug)
   localStorage.setItem('mw3-done', JSON.stringify([...done]));
   localStorage.setItem('mw3-sessions', JSON.stringify(window._sessMap));
 
-  updateStats(); buildTracking();
+  // 5. Fermeture, message de succès et rafraîchissement
   closeRetroModal();
-  showToast('Séance enregistrée avec succès !', '#639922');
-  goPage('tracking');
+  if (typeof showToast === 'function') showToast('Séance enregistrée avec succès !', '#639922');
+
+  updateStats();
+  buildTracking();
+
+  // Re-synchronisation globale silencieuse en arrière-plan
+  if (typeof loadFromSupabase === 'function') loadFromSupabase();
 }
 
 async function saveSession(){
