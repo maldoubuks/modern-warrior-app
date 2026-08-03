@@ -1,4 +1,4 @@
-// app.js - Logique Modern Warrior & Supabase
+// app.js - Logique Modern Warrior, Supabase, Saisie a posteriori & Gamification
 
 const SUPA_URL = 'https://shhxsxfwfskwdmaqkhqq.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoaHhzeGZ3ZnNrd2RtYXFraHFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU3MzI4OTQsImV4cCI6MjEwMTMwODg5NH0.1Z0495ck0MIX9Th3Z6iieppGIQ22fcf3F61luAcE-XU';
@@ -57,6 +57,32 @@ function getUserId() {
 }
 const USER_ID = getUserId();
 
+// ── GAMIFICATION (Niveaux & Points) ───────────────────────────────────────
+const LEVELS = [
+  { level: 1, pts: 0, title: "Niveau 1 - Débutant" },
+  { level: 2, pts: 5, title: "Niveau 2 - Initié" },
+  { level: 3, pts: 20, title: "Niveau 3 - Guerrier" },
+  { level: 4, pts: 65, title: "Niveau 4 - Vétéran" },
+  { level: 5, pts: 155, title: "Niveau 5 - Maître KB" },
+  { level: 6, pts: 515, title: "Niveau 6 - Légende" },
+  { level: 7, pts: 2015, title: "Niveau 7 - Seigneur Guerre" },
+  { level: 8, pts: 8015, title: "Niveau 8 - Demi-Dieu" },
+  { level: 9, pts: 33015, title: "Niveau 9 - Modern Warrior Supreme" }
+];
+
+function calculateLevel(points) {
+  let current = LEVELS[0];
+  let next = LEVELS[1];
+  for (let i = 0; i < LEVELS.length; i++) {
+    if (points >= LEVELS[i].pts) {
+      current = LEVELS[i];
+      next = LEVELS[i + 1] || LEVELS[i];
+    }
+  }
+  return { current, next };
+}
+
+// ── FICHE HTML & EXERCICES ───────────────────────────────────────────────
 function ficheHTML(key){
   const s = SD[key]; if(!s) return '';
   const blocs={}, order=[];
@@ -74,26 +100,18 @@ function ficheHTML(key){
         return `<span class="pi">${p}</span>`;
       }).join('')}</div>${e.tip ? `<div class="tip">${e.tip}</div>` : ''}</div>`;
     });
-    h += '</div>';
+    h += 'd</div>';
   });
   return h;
 }
 
-document.querySelectorAll('.cb[id^="fiche-"]').forEach(cb => {
-  const prev = cb.previousElementSibling;
-  if(prev && prev.classList.contains('ch')){
-    prev.addEventListener('click', function(){
-      if(!cb.dataset.loaded){ cb.innerHTML = ficheHTML(cb.id.replace('fiche-','')); cb.dataset.loaded = '1'; }
-    });
-  }
-});
-
+// ── PLAYER EN DIRECT ───────────────────────────────────────────────────────
 let pKey='', pIdx=0, tInterval=null, tSec=0, tRunning=false, rInterval=null, rSec=0, pStart=null;
-let selRpeVal=0, selFeelVal='';
+let selRpeVal=0, selFeelVal='', detailedExos={};
 
 function startPlayer(key){
   const s = SD[key]; if(!s) return;
-  pKey = key; pIdx = 0; pStart = new Date();
+  pKey = key; pIdx = 0; pStart = new Date(); detailedExos = {};
   document.getElementById('player').style.display = 'block';
   document.body.style.overflow = 'hidden';
   resetTimer(); stopRest();
@@ -192,6 +210,74 @@ function showFinish(){
 function selRpe(btn, v){ document.querySelectorAll('.rpe-btn').forEach(b => b.classList.remove('sel')); btn.classList.add('sel'); selRpeVal = v; }
 function selFeel(btn, v){ document.querySelectorAll('.feel-btn').forEach(b => b.classList.remove('sel')); btn.classList.add('sel'); selFeelVal = v; }
 
+// ── SAISIE A POSTERIORI (MANUELLE) ─────────────────────────────────────────
+function openRetroModal(key) {
+  const s = SD[key]; if (!s) return;
+  pKey = key;
+  document.getElementById('retro-title').textContent = s.title;
+  
+  // Générer les champs de saisie pour chaque exercice
+  let h = '';
+  s.exos.forEach((e, idx) => {
+    h += `<div style="background:#1E1E1E;border:1px solid #333;border-radius:8px;padding:10px;margin-bottom:8px">
+      <div style="font-size:12px;font-weight:700;color:#fff;margin-bottom:4px">${e.n}</div>
+      <div style="font-size:10px;color:#888;margin-bottom:6px">${e.p.join(' · ')}</div>
+      <div style="display:flex;gap:8px">
+        <input type="text" id="retro-kg-${idx}" placeholder="Poids (ex: 12 kg)" style="flex:1;background:#2A2A2A;border:1px solid #444;border-radius:6px;padding:6px;color:#fff;font-size:12px">
+        <input type="text" id="retro-reps-${idx}" placeholder="Reps / Notes" style="flex:1;background:#2A2A2A;border:1px solid #444;border-radius:6px;padding:6px;color:#fff;font-size:12px">
+      </div>
+    </div>`;
+  });
+  document.getElementById('retro-exos-list').innerHTML = h;
+  document.getElementById('retro-notes').value = '';
+  selRpeVal = 0; selFeelVal = '';
+  document.querySelectorAll('.retro-rpe-btn').forEach(b => b.classList.remove('sel'));
+  document.querySelectorAll('.retro-feel-btn').forEach(b => b.classList.remove('sel'));
+  document.getElementById('retro-modal').style.display = 'block';
+}
+
+function closeRetroModal() {
+  document.getElementById('retro-modal').style.display = 'none';
+}
+
+async function saveRetroSession() {
+  const s = SD[pKey];
+  const notes = document.getElementById('retro-notes').value;
+  
+  // Récupérer les perfs exercice par exercice
+  const detailed = {};
+  s.exos.forEach((e, idx) => {
+    const kg = document.getElementById(`retro-kg-${idx}`)?.value || '';
+    const reps = document.getElementById(`retro-reps-${idx}`)?.value || '';
+    if (kg || reps) {
+      detailed[e.n] = { kg, reps };
+    }
+  });
+
+  const sessionData = {
+    user_id: USER_ID, session_key: pKey, session_title: s.title,
+    track_id: s.trackId, duration_min: 35, rpe: selRpeVal || null,
+    feel: selFeelVal || null, notes: notes || null,
+    detailed_exos: JSON.stringify(detailed)
+  };
+  
+  await supa.post('sessions', sessionData).catch(()=>{});
+
+  done.add(s.trackId);
+  await supa.upsert('tracking', {user_id: USER_ID, track_id: s.trackId, done: true}).catch(()=>{});
+
+  if (!window._sessMap) window._sessMap = {};
+  window._sessMap[s.trackId] = {...sessionData, completed_at: new Date().toISOString()};
+
+  localStorage.setItem('mw3-done', JSON.stringify([...done]));
+
+  updateStats(); buildTracking();
+  closeRetroModal();
+  showToast('Séance enregistrée avec succès !', '#639922');
+  goPage('tracking');
+}
+
+// Enregistrer la séance depuis le player live
 async function saveSession(){
   const s = SD[pKey];
   const elapsed = Math.round((new Date() - pStart)/60000);
@@ -216,10 +302,11 @@ async function saveSession(){
   document.getElementById('finish').style.display = 'none';
   document.getElementById('player').style.display = 'none';
   document.body.style.overflow = '';
-  showToast('Seance enregistree dans Supabase', '#639922');
+  showToast('Séance enregistrée avec succès !', '#639922');
   goPage('tracking');
 }
 
+// ── TRACKING & STATS ───────────────────────────────────────────────────────
 const done = new Set();
 async function loadFromSupabase() {
   const online = await supa.ping();
@@ -256,15 +343,27 @@ function buildTracking(){
     TRACK_IDS.slice((w-1)*3, w*3).forEach(item => {
       const ok = done.has(item.id);
       const se = sessMap[item.id] || null;
-      h += `<div class="tr-row" onclick="tgl('${item.id}')">
-        <div class="tr-chk${ok ? ' done' : ''}" id="chk-${item.id}">${ok ? '&#10003;' : ''}</div>
-        <div style="flex:1">
+      let detailedTxt = '';
+      if (se && se.detailed_exos) {
+        try {
+          const dt = JSON.parse(se.detailed_exos);
+          const keys = Object.keys(dt);
+          if (keys.length > 0) {
+            detailedTxt = '<div style="font-size:10px;color:var(--or);margin-top:2px">' + 
+              keys.map(k => `• ${k}: ${dt[k].kg} ${dt[k].reps}`).join(' ') + '</div>';
+          }
+        } catch(e){}
+      }
+
+      h += `<div class="tr-row">
+        <div class="tr-chk${ok ? ' done' : ''}" onclick="tgl('${item.id}')" id="chk-${item.id}">${ok ? '&#10003;' : ''}</div>
+        <div style="flex:1" onclick="tgl('${item.id}')">
           <div style="font-size:13px;font-weight:600">${item.n}</div>
           <div style="font-size:11px;color:var(--i3);margin-top:1px">${item.d}${se&&se.rpe?' - RPE '+se.rpe:''}${se&&se.feel?' - '+se.feel:''}</div>
+          ${detailedTxt}
           ${se&&se.notes ? `<div style='font-size:11px;color:var(--i3);margin-top:2px;font-style:italic'>${se.notes}</div>` : ''}
-          ${se ? `<div style='font-size:10px;color:var(--i3);margin-top:1px'>${se.completed_at?se.completed_at.slice(0,10):''}${se.duration_min?' - '+se.duration_min+' min':''}</div>` : ''}
         </div>
-        <span class="badge ${item.b}" style="flex-shrink:0">${item.d.split('&middot;')[0].trim()}</span>
+        <button style="background:none;border:1px solid var(--bd);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--i2);cursor:pointer" onclick="openRetroModal('${item.id.toUpperCase()}')">📝 Saisir</button>
       </div>`;
     });
   }
@@ -286,6 +385,9 @@ function tgl(id){
 
 function updateStats(){
   const n = done.size, pct = Math.round(n/18*100);
+  const points = n * 5; // 5 points par séance validée (système de gamification)
+  const { current, next } = calculateLevel(points);
+
   ['h-done','h-week','h-bar','h-pct','tb','td-txt','tp-txt'].forEach(id => {
     const el = document.getElementById(id); if(!el) return;
     if(id==='h-done') el.textContent = n;
@@ -295,6 +397,12 @@ function updateStats(){
     else if(id==='td-txt') el.textContent = n + ' séance' + (n>1?'s':'') + ' validée' + (n>1?'s':'');
     else if(id==='tp-txt') el.textContent = pct + '%';
   });
+
+  // Affichage du niveau & XP sur l'accueil
+  const lvlEl = document.getElementById('user-level-badge');
+  if (lvlEl) {
+    lvlEl.innerHTML = `<span style="color:var(--or);font-weight:700">${current.title}</span> (${points} pts)`;
+  }
 }
 
 const TC = {fullbody:'background:var(--orl);color:var(--ord)',complex:'background:var(--bll);color:var(--bld)',emom:'background:var(--grl);color:var(--grd)',amrap:'background:var(--pul);color:var(--pud)',cible:'background:var(--aml);color:#854F0B'};
