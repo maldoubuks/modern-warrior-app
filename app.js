@@ -354,15 +354,20 @@ function buildTracking(){
         } catch(e){}
       }
 
+let letter = item.id.charAt(2).toUpperCase();
+      let week = parseInt(item.id.charAt(1));
+      let block = week <= 2 ? 1 : (week <= 4 ? 3 : 5);
+      let sessionKey = letter + '-S' + block;
+
       h += `<div class="tr-row">
         <div class="tr-chk${ok ? ' done' : ''}" onclick="tgl('${item.id}')" id="chk-${item.id}">${ok ? '&#10003;' : ''}</div>
-        <div style="flex:1" onclick="tgl('${item.id}')">
+        <div style="flex:1">
           <div style="font-size:13px;font-weight:600">${item.n}</div>
           <div style="font-size:11px;color:var(--i3);margin-top:1px">${item.d}${se&&se.rpe?' - RPE '+se.rpe:''}${se&&se.feel?' - '+se.feel:''}</div>
           ${detailedTxt}
           ${se&&se.notes ? `<div style='font-size:11px;color:var(--i3);margin-top:2px;font-style:italic'>${se.notes}</div>` : ''}
         </div>
-        <button style="background:none;border:1px solid var(--bd);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--i2);cursor:pointer" onclick="openRetroModal('${item.id.toUpperCase()}')">📝 Saisir</button>
+        <button style="background:none;border:1px solid var(--bd);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--i2);cursor:pointer" onclick="event.stopPropagation(); openRetroModal('${sessionKey}')">📝 Saisir</button>
       </div>`;
     });
   }
