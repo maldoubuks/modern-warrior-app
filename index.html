@@ -10,6 +10,17 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚔️</text></svg>">
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    #retro-modal, #player, #finish, .modal-overlay {
+      display: none;
+      pointer-events: none;
+    }
+
+    #retro-modal.active, #player.active, #finish.active, .modal-overlay.active {
+      display: flex !important;
+      pointer-events: auto !important;
+    }
+  </style>
 </head>
 <body>
 
