@@ -29,7 +29,6 @@ const supa = {
       return r.ok;
     } catch(e) { return false; }
   },
-  // 🛡️ FIX DEFINITIF : on_conflict est désormais forcé dans l'URL !
   async upsert(table, body, onConflict='user_id,track_id') {
     try {
       const url = `${SUPA_URL}/rest/v1/${table}?on_conflict=${onConflict}`;
@@ -219,7 +218,6 @@ function openRetroModal(key) {
   pKey = key;
   document.getElementById('retro-title').textContent = s.title;
   
-  // 1. Génération des exercices
   let h = '';
   s.exos.forEach((e, idx) => {
     h += `<div style="background:#1E1E1E;border:1px solid #333;border-radius:8px;padding:10px;margin-bottom:8px">
@@ -233,7 +231,6 @@ function openRetroModal(key) {
   });
   document.getElementById('retro-exos-list').innerHTML = h;
 
-  // 2. Ajout dynamique de la Durée et de la Grille RPE
   let metaHTML = `
     <div style="margin:12px 0">
       <div style="font-size:11px;color:#888;font-weight:700;margin-bottom:6px">Durée de la séance (minutes)</div>
@@ -247,7 +244,6 @@ function openRetroModal(key) {
     </div>
   `;
   
-  // Injecte les métadonnées avant le champ notes
   const notesEl = document.getElementById('retro-notes');
   let metaContainer = document.getElementById('retro-meta-container');
   if (!metaContainer) {
@@ -272,7 +268,6 @@ async function saveRetroSession() {
   if (!pKey) return;
   const s = SD[pKey]; if (!s) return;
 
-  // 1. 🛡️ FIX : On ferme la modale D'ABORD pour ne jamais bloquer l'écran !
   closeRetroModal();
 
   const trackId = s.trackId || pKey;
@@ -280,7 +275,6 @@ async function saveRetroSession() {
   const notes = document.getElementById('retro-notes')?.value || '';
   const duration = parseInt(document.getElementById('retro-duration')?.value) || 35;
 
-  // 2. Récupération des exercices
   if (s.exos) {
     s.exos.forEach((e, idx) => {
       const kgEl = document.getElementById(`retro-kg-${idx}`);
@@ -291,7 +285,6 @@ async function saveRetroSession() {
     });
   }
 
-  // 3. Préparation des données
   const payload = {
     user_id: USER_ID,
     session_key: pKey,
@@ -305,7 +298,6 @@ async function saveRetroSession() {
     created_at: new Date().toISOString()
   };
 
-  // 4. Mise à jour locale immédiate (Affichage instantané)
   done.add(trackId);
   if (!window._sessMap) window._sessMap = {};
   window._sessMap[trackId] = { ...payload, completed_at: payload.created_at };
@@ -318,7 +310,6 @@ async function saveRetroSession() {
   updateStats();
   buildTracking();
 
-  // 5. Envoi silencieux vers Supabase en arrière-plan
   try {
     await supa.upsert('sessions', payload, 'user_id,session_key');
     await supa.upsert('tracking', { user_id: USER_ID, track_id: trackId, done: true }, 'user_id,track_id');
@@ -345,7 +336,6 @@ async function saveSession(){
   if (!window._sessMap) window._sessMap = {};
   window._sessMap[s.trackId] = {...sessionData, completed_at: new Date().toISOString()};
 
-  // 🛡️ NOUVEAU : Sauvegarde locale absolue (Anti-Bug)
   localStorage.setItem('mw3-done', JSON.stringify([...done]));
   localStorage.setItem('mw3-sessions', JSON.stringify(window._sessMap));
 
@@ -359,7 +349,6 @@ async function saveSession(){
 
 const done = new Set();
 async function loadFromSupabase() {
-  // 🛡️ NOUVEAU : On force d'abord le chargement depuis le téléphone !
   const localDone = JSON.parse(localStorage.getItem('mw3-done') || '[]');
   localDone.forEach(id => done.add(id));
   window._sessMap = JSON.parse(localStorage.getItem('mw3-sessions') || '{}');
@@ -371,13 +360,12 @@ async function loadFromSupabase() {
 
     const sessions = await supa.get('sessions', '?user_id=eq.'+USER_ID);
     sessions.forEach(s => {
-      // On fusionne les données intelligemment
-      if (!window._sessMap[s.track_id] || new Date(s.completed_at) > new Date(window._sessMap[s.track_id].completed_at)) {
-         window._sessMap[s.track_id] = s;
+      const key = s.track_id || s.session_key;
+      if (key) {
+        window._sessMap[key] = s;
       }
     });
     
-    // Met à jour la mémoire du téléphone avec les vraies datas
     localStorage.setItem('mw3-done', JSON.stringify([...done]));
     localStorage.setItem('mw3-sessions', JSON.stringify(window._sessMap));
   } else {
@@ -404,10 +392,9 @@ function buildTracking(){
       const ok = done.has(item.id);
       const se = sessMap[item.id] || null;
 
-      // 🎯 CONVERSION DE LA CLÉ (Fix pour ouvrir la modale SD)
-      let letter = item.id.slice(-1).toUpperCase(); // 'a' -> 'A'
+      let letter = item.id.slice(-1).toUpperCase();
       let block = w <= 2 ? 1 : (w <= 4 ? 3 : 5);
-      let sessionKey = `${letter}-S${block}`; // Génère 'A-S1', 'B-S1', etc.
+      let sessionKey = `${letter}-S${block}`;
 
       let detailedTxt = '';
       if (se && se.detailed_exos) {
@@ -441,52 +428,39 @@ function buildTracking(){
 
 async function tgl(id, sessionKey){
   if (done.has(id)){
-    // Sécurité avant de décocher une séance
     if (!confirm("Voulez-vous décocher cette séance ?")) return;
-    
     done.delete(id); 
-    // Envoi en arrière-plan sans bloquer l'écran
     supa.upsert('tracking', { user_id: USER_ID, track_id: id, done: false }).catch(() => {});
   } else {
-    // Sécurité avant de cocher à vide
     const msg = "⚠️ Attention : Vous validez sans saisir vos ressentis ou charges.\n\n• Cliquez sur 'OK' pour valider quand même (Ignorer).\n• Cliquez sur 'Annuler' pour ouvrir le menu de saisie.";
-    
     if (confirm(msg)) {
       done.add(id); 
       supa.upsert('tracking', { user_id: USER_ID, track_id: id, done: true }).catch(() => {});
     } else {
-      // Si l'utilisateur clique sur "Annuler", on ouvre la modale de saisie !
       openRetroModal(sessionKey || id);
       return; 
     }
   }
   
-  // 1. Sauvegarde locale immédiate
   localStorage.setItem('mw3-done', JSON.stringify([...done]));
-  
-  // 2. Déblocage de la page au cas où
   document.body.style.overflow = '';
   document.body.style.pointerEvents = 'auto';
 
-  // 3. Mise à jour fluide de l'affichage
   updateStats(); 
   buildTracking();
 }
 
 function updateStats(){
-  // 1. Infos de la phase active
   const totalSessions = PHASES_DATA[currentPhase].total;
   const currentData = PHASES_DATA[currentPhase].data;
 
-  // 2. Calculs des barres de progression
   let n = 0;
   currentData.forEach(item => { if (done.has(item.id)) n++; });
 
   const pct = Math.round(n / totalSessions * 100);
-  const points = done.size * 5; // XP globale
+  const points = done.size * 5;
   const { current, next } = calculateLevel(points);
 
-  // 3. Mise à jour de l'affichage Tracking
   ['h-done','h-week','h-bar','h-pct','tb','td-txt','tp-txt'].forEach(id => {
     const el = document.getElementById(id); if(!el) return;
     if(id==='h-done') el.textContent = n;
@@ -497,13 +471,11 @@ function updateStats(){
     else if(id==='tp-txt') el.textContent = pct + '%';
   });
 
-  // 4. Badge XP (Page d'accueil)
   const lvlEl = document.getElementById('user-level-badge');
   if (lvlEl) {
     lvlEl.innerHTML = `<span style="color:var(--or);font-weight:700">${current.title}</span> (${points} pts)`;
   }
 
-  // 5. Encart "Prochaine Séance" dynamique
   const nextContainer = document.getElementById('next-session-container');
   if (nextContainer) {
     let nextItem = null;
@@ -520,7 +492,6 @@ function updateStats(){
       let block = week <= 2 ? 1 : (week <= 4 ? 3 : 5);
       let sessionKey = letter + '-S' + block;
 
-      let day = nextItem.d ? nextItem.d.split('-')[0].trim() : '';
       let desc = nextItem.d ? (nextItem.d.split('-')[1]?.trim() || nextItem.d) : '';
 
       let c_bg, c_icn, c_txt;
@@ -549,7 +520,6 @@ function updateStats(){
     }
   }
 
-  // 6. Rendu des stats et courbes
   if (typeof renderStats === 'function') {
     renderStats();
   }
@@ -584,7 +554,6 @@ function goPage(id){
   window.scrollTo(0,0);
 }
 
-// Fonction de bascule (toggle) réparée
 function tog(h){
   const b = h.nextElementSibling, c = h.querySelector('.chv');
   if (b && b.id && b.id.startsWith('fiche-') && !b.dataset.loaded) {
@@ -597,7 +566,6 @@ function tog(h){
 
 window._sessMap = {};
 window.onload = () => {
-  // 🛡️ DÉBLOCAGE D'URGENCE : ferme toutes les fenêtres invisibles qui bloquent les clics
   document.body.style.overflow = '';
   ['retro-modal', 'finish', 'player', 'modal-overlay'].forEach(id => {
     const el = document.getElementById(id);
@@ -615,7 +583,6 @@ window.onload = () => {
 // ── DASHBOARD & STATS (CHART.JS + CALENDRIER) ──────────────────────────────
 let weightChart = null;
 
-// 💡 Fonction de pop-up propre pour le calendrier (évite les erreurs de guillemets/retours à la ligne)
 function getKeyMovements(detailedExos) {
   if (!detailedExos) return [];
   try {
@@ -665,7 +632,6 @@ function renderStats() {
   const countdownEl = document.getElementById('stat-countdown');
   if(countdownEl) countdownEl.textContent = Math.max(0, totalPhase - n);
 
-  // 1. Liste des exercices + Option RPE
   const allExosSet = new Set();
   sessions.forEach(s => {
     if (s.detailed_exos) {
@@ -690,7 +656,6 @@ function renderStats() {
 
   const selectedOption = exoSelect ? (exoSelect.value || 'RPE_MODE') : 'RPE_MODE';
 
-  // 2. Données pour le Graphique
   const labels = [];
   const chartData = [];
 
@@ -712,7 +677,6 @@ function renderStats() {
     }
   });
 
-  // 3. Rendu Chart.js
   const ctx = document.getElementById('weightChart');
   if (ctx) {
     if (weightChart) weightChart.destroy();
@@ -742,7 +706,6 @@ function renderStats() {
     });
   }
 
-  // 4. Calendrier interactif et coloré des 28 derniers jours
   const calGrid = document.getElementById('calendar-grid');
   if (calGrid) {
     calGrid.innerHTML = '';
