@@ -615,9 +615,13 @@
     <div style="font-size:12px; color:var(--i3)">Séances restantes avant le boss final</div>
   </div>
 
-  <div class="st">Évolution des charges (kg)</div>
-  <div class="card" style="padding:14px; height:250px">
-    <canvas id="weightChart"></canvas>
+<div class="st">Évolution des charges (kg)</div>
+  <div class="card" style="padding:14px">
+    <select id="chart-exo-select" onchange="renderStats()" style="width:100%; padding:10px; background:#2A2A2A; color:#fff; border:1px solid #444; border-radius:8px; font-size:13px; font-weight:600; margin-bottom:12px; outline:none;">
+      </select>
+    <div style="height:220px">
+      <canvas id="weightChart"></canvas>
+    </div>
   </div>
 
   <div class="st">Calendrier des 30 derniers jours</div>
