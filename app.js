@@ -272,11 +272,15 @@ async function saveRetroSession() {
   if (!pKey) return;
   const s = SD[pKey]; if (!s) return;
 
+  // 1. 🛡️ FIX : On ferme la modale D'ABORD pour ne jamais bloquer l'écran !
+  closeRetroModal();
+
   const trackId = s.trackId || pKey;
   const detailedExos = {};
   const notes = document.getElementById('retro-notes')?.value || '';
   const duration = parseInt(document.getElementById('retro-duration')?.value) || 35;
 
+  // 2. Récupération des exercices
   if (s.exos) {
     s.exos.forEach((e, idx) => {
       const kgEl = document.getElementById(`retro-kg-${idx}`);
@@ -287,6 +291,7 @@ async function saveRetroSession() {
     });
   }
 
+  // 3. Préparation des données
   const payload = {
     user_id: USER_ID,
     session_key: pKey,
@@ -300,9 +305,7 @@ async function saveRetroSession() {
     created_at: new Date().toISOString()
   };
 
-  await supa.upsert('sessions', payload, 'user_id,session_key').catch(()=>{});
-  await supa.upsert('tracking', { user_id: USER_ID, track_id: trackId, done: true }, 'user_id,track_id').catch(()=>{});
-
+  // 4. Mise à jour locale immédiate (Affichage instantané)
   done.add(trackId);
   if (!window._sessMap) window._sessMap = {};
   window._sessMap[trackId] = { ...payload, completed_at: payload.created_at };
@@ -310,12 +313,18 @@ async function saveRetroSession() {
   localStorage.setItem('mw3-done', JSON.stringify([...done]));
   localStorage.setItem('mw3-sessions', JSON.stringify(window._sessMap));
 
-  closeRetroModal();
   if (typeof showToast === 'function') showToast('Séance enregistrée avec succès !', '#639922');
 
   updateStats();
   buildTracking();
-  if (typeof loadFromSupabase === 'function') loadFromSupabase();
+
+  // 5. Envoi silencieux vers Supabase en arrière-plan
+  try {
+    await supa.upsert('sessions', payload, 'user_id,session_key');
+    await supa.upsert('tracking', { user_id: USER_ID, track_id: trackId, done: true }, 'user_id,track_id');
+  } catch (err) {
+    console.warn("Mise à jour Supabase en arrière-plan :", err);
+  }
 }
 
 async function saveSession(){
@@ -720,7 +729,7 @@ function renderStats() {
   }
 
   // 4. Calendrier interactif avec clic sur les cases
-  const calGrid = document.getElementById('calendar-grid');
+const calGrid = document.getElementById('calendar-grid');
   if (calGrid) {
     calGrid.innerHTML = '';
     const today = new Date();
@@ -737,8 +746,15 @@ function renderStats() {
       });
 
       let hasSession = !!sessionForDay;
-      let color = hasSession ? 'var(--or)' : '#2A2A2A';
-      let label = hasSession ? '<span style="font-size:12px;color:#fff">&#10003;</span>' : (i === 0 ? '<span style="font-size:9px;color:#888">Auj.</span>' : '');
+      let isToday = (i === 0);
+
+      // Styles visuels du carré
+      let bgColor = hasSession ? 'var(--or)' : '#FFFFFF';
+      let borderColor = hasSession ? 'var(--or)' : (isToday ? 'var(--or)' : '#333333');
+      let borderWidth = isToday && !hasSession ? '2px' : '1px';
+      let textColor = hasSession ? '#FFFFFF' : (isToday ? 'var(--or)' : '#666666');
+      
+      let label = hasSession ? '<span style="font-size:14px;font-weight:bold;color:#fff">&#10003;</span>' : (isToday ? '<span style="font-size:9px;font-weight:800;color:var(--or)">Auj.</span>' : '');
       
       let clickAttr = '';
       if (hasSession) {
@@ -747,10 +763,12 @@ function renderStats() {
         const rpeTxt = sessionForDay.rpe ? `RPE ${sessionForDay.rpe}/10` : 'RPE non défini';
         const summary = `📅 ${sessionForDay.session_title || sessionForDay.session_key}\n⏱️ Durée : ${dur} | 🔥 ${rpeTxt}\n⚡ Mouvements clés : ${keyExos || 'Général'}\n📝 Notes : ${sessionForDay.notes || 'Aucune'}`;
         clickAttr = `onclick="alert('${summary.replace(/'/g, "\\'")}')" style="cursor:pointer;"`;
+      } else {
+        clickAttr = `style="cursor:default;"`;
       }
 
       calGrid.innerHTML += `
-        <div ${clickAttr} style="aspect-ratio:1; background:${color}; border-radius:6px; display:flex; align-items:center; justify-content:center; border:1px solid #333;">
+        <div ${clickAttr} style="aspect-ratio:1; background:${bgColor}; border:${borderWidth} solid ${borderColor}; border-radius:8px; display:flex; align-items:center; justify-content:center; color:${textColor}; transition:transform 0.2s, box-shadow 0.2s;">
           ${label}
         </div>`;
     }
