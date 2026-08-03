@@ -367,7 +367,7 @@ function buildTracking(){
 
       h += `<div class="tr-row" style="${rowStyle}">
         <div class="tr-chk${ok ? ' done' : ''}" onclick="tgl('${item.id}', '${sessionKey}')" id="chk-${item.id}">${ok ? '&#10003;' : ''}</div>
-        <div style="flex:1" onclick="tgl('${item.id}', '${sessionKey}')">
+        <div style="flex:1">
           <div style="font-size:13px;font-weight:600">${item.n}</div>
           <div style="font-size:11px;color:var(--i3);margin-top:1px">${item.d}${se&&se.rpe?' - RPE '+se.rpe:''}${se&&se.feel?' - '+se.feel:''}</div>
           ${detailedTxt}
