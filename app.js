@@ -29,12 +29,12 @@ const supa = {
       return r.ok;
     } catch(e) { return false; }
   },
-  async upsert(table, body, onConflict='') {
+async upsert(table, body, onConflict = 'user_id,track_id') {
     try {
-      const query = onConflict ? `?on_conflict=${onConflict}` : '';
-      const r = await fetch(SUPA_URL+'/rest/v1/'+table+query, {
+      const query = `?on_conflict=${onConflict}`;
+      const r = await fetch(SUPA_URL + '/rest/v1/' + table + query, {
         method: 'POST',
-        headers: this.headers({'Prefer':'resolution=merge-duplicates,return=minimal'}),
+        headers: this.headers({'Prefer': 'resolution=merge-duplicates,return=minimal'}),
         body: JSON.stringify(body)
       });
       return r.ok;
