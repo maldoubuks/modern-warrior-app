@@ -613,32 +613,47 @@
   <textarea class="note-in" id="f-notes" placeholder="Ex: TGU 12 kg propre &middot; Swing 16 kg ok &middot; Press difficile c&ocirc;t&eacute; gauche..."></textarea>
   <button class="save-btn" onclick="saveSession()">&#10003; Enregistrer la s&eacute;ance</button>
   <button class="cancel-btn" onclick="document.getElementById('finish').style.display='none'">Annuler</button>
-</div> <div id="page-stats" class="page">
+<div id="page-stats" class="page">
   <div class="hero">
-    <div class="hl">Dashboard</div>
+    <div class="hl">Dashboard Guerrier</div>
     <div class="ht">Progression<br>&amp; Data.</div>
-    <div class="hs">Tes performances brutes et ta constance.</div>
+    <div class="hs">Analyse tes performances, ta constance et ton volume d'entraînement.</div>
   </div>
 
-  <div class="st">En route vers la Forge (Phase 1)</div>
-  <div class="card" style="padding:16px; text-align:center">
-    <div style="font-size:36px; font-weight:700; color:var(--or)" id="stat-countdown">18</div>
-    <div style="font-size:12px; color:var(--i3)">Séances restantes avant le boss final</div>
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="sc" style="text-align:center;">
+      <div class="sc-l">Temps d'Entraînement</div>
+      <div class="sc-v" id="kpi-total-time" style="font-size:22px; color:var(--or);">0h 00m</div>
+      <div class="sc-s">cumulées au total</div>
+    </div>
+    <div class="sc" style="text-align:center;">
+      <div class="sc-l">Intensité Moyenne</div>
+      <div class="sc-v" id="kpi-avg-rpe" style="font-size:22px; color:#E74C3C;">0 / 10</div>
+      <div class="sc-s">RPE Moyen ressenti</div>
+    </div>
   </div>
 
-<div class="st">Évolution des charges (kg)</div>
-  <div class="card" style="padding:14px">
+  <div class="card" style="padding:16px; text-align:center; margin-bottom:16px;">
+    <div style="font-size:32px; font-weight:800; color:var(--or);" id="stat-countdown">18</div>
+    <div style="font-size:12px; color:var(--i3); font-weight:600;">Séances restantes avant le Boss de la Phase</div>
+  </div>
+
+  <div class="st">Évolution des Charges &amp; RPE</div>
+  <div class="card" style="padding:14px; margin-bottom:16px;">
     <select id="chart-exo-select" onchange="renderStats()" style="width:100%; padding:10px; background:#2A2A2A; color:#fff; border:1px solid #444; border-radius:8px; font-size:13px; font-weight:600; margin-bottom:12px; outline:none;">
-      </select>
+    </select>
     <div style="height:220px">
       <canvas id="weightChart"></canvas>
     </div>
   </div>
 
-  <div class="st">Calendrier des 30 derniers jours</div>
-  <div class="card" style="padding:14px">
-    <div id="calendar-grid" style="display:grid; grid-template-columns:repeat(7, 1fr); gap:6px;"></div>
+  <div class="st">Calendrier des 30 Derniers Jours</div>
+  <div class="card" style="padding:14px; margin-bottom:16px;">
+    <div id="calendar-grid" style="display:grid; grid-template-columns:repeat(7, 1fr); gap:8px;"></div>
   </div>
+
+  <div class="st">Dernières Séances Enregistrées</div>
+  <div id="stats-recent-list"></div>
 </div>
 
 <script src="data.js"></script>
