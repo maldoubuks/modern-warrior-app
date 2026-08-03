@@ -361,32 +361,55 @@ function buildTracking(){
       let block = week <= 2 ? 1 : (week <= 4 ? 3 : 5);
       let sessionKey = letter + '-S' + block;
 
-      h += `<div class="tr-row">
-        <div class="tr-chk${ok ? ' done' : ''}" onclick="tgl('${item.id}')" id="chk-${item.id}">${ok ? '&#10003;' : ''}</div>
-        <div style="flex:1" onclick="tgl('${item.id}')">
+      // Style quand la séance est validée (Grisé + Opacité réduite)
+      let rowStyle = ok ? "opacity:0.6; filter:grayscale(100%); transition:all 0.3s;" : "transition:all 0.3s;";
+      let btnText = ok ? "✏️ Modifier" : "📝 Saisir";
+
+      h += `<div class="tr-row" style="${rowStyle}">
+        <div class="tr-chk${ok ? ' done' : ''}" onclick="tgl('${item.id}', '${sessionKey}')" id="chk-${item.id}">${ok ? '&#10003;' : ''}</div>
+        <div style="flex:1" onclick="tgl('${item.id}', '${sessionKey}')">
           <div style="font-size:13px;font-weight:600">${item.n}</div>
           <div style="font-size:11px;color:var(--i3);margin-top:1px">${item.d}${se&&se.rpe?' - RPE '+se.rpe:''}${se&&se.feel?' - '+se.feel:''}</div>
           ${detailedTxt}
           ${se&&se.notes ? `<div style='font-size:11px;color:var(--i3);margin-top:2px;font-style:italic'>${se.notes}</div>` : ''}
         </div>
-        <button style="background:none;border:1px solid var(--bd);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--i2);cursor:pointer;flex-shrink:0" onclick="event.stopPropagation(); openRetroModal('${sessionKey}')">📝 Saisir</button>
+        <button style="background:none;border:1px solid var(--bd);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--i2);cursor:pointer;flex-shrink:0" onclick="event.stopPropagation(); openRetroModal('${sessionKey}')">${btnText}</button>
       </div>`;
     });
   }
   document.getElementById('track-content').innerHTML = h;
 }
 
-function tgl(id){
+function tgl(id, sessionKey){
   const c = document.getElementById('chk-'+id);
+  
   if(done.has(id)){
-    done.delete(id); c.classList.remove('done'); c.innerHTML = '';
+    // Sécurité avant de décocher une séance
+    if(!confirm("Voulez-vous décocher cette séance ?")) return;
+    
+    done.delete(id); 
+    c.classList.remove('done'); 
+    c.innerHTML = '';
     supa.upsert('tracking', {user_id: USER_ID, track_id: id, done: false}).catch(()=>{});
   } else {
-    done.add(id); c.classList.add('done'); c.innerHTML = '&#10003;';
-    supa.upsert('tracking', {user_id: USER_ID, track_id: id, done: true}).catch(()=>{});
+    // Sécurité avant de cocher à vide
+    const msg = "⚠️ Attention : Vous validez sans saisir vos ressentis ou charges.\n\n• Cliquez sur 'OK' pour valider quand même (Ignorer).\n• Cliquez sur 'Annuler' pour ouvrir le menu de saisie.";
+    
+    if(confirm(msg)) {
+      done.add(id); 
+      c.classList.add('done'); 
+      c.innerHTML = '&#10003;';
+      supa.upsert('tracking', {user_id: USER_ID, track_id: id, done: true}).catch(()=>{});
+    } else {
+      // Si l'utilisateur clique sur "Annuler", on ouvre la modale de saisie !
+      openRetroModal(sessionKey);
+      return; // On arrête là, la validation se fera via le bouton "Enregistrer" de la modale.
+    }
   }
+  
   localStorage.setItem('mw3-done', JSON.stringify([...done]));
-  updateStats(); buildTracking();
+  updateStats(); 
+  buildTracking();
 }
 
 function updateStats(){
