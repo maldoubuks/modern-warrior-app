@@ -540,39 +540,45 @@ let weightChart = null;
 
 function renderStats() {
   const sessMap = window._sessMap || {};
-  // Trier les sessions validées par date
-  const sessions = Object.values(sessMap).sort((a, b) => new Date(a.completed_at) - new Date(b.completed_at));
+  
+  // 1. Trier les sessions par date (gère created_at natif Supabase OU completed_at local)
+  const sessions = Object.values(sessMap).sort((a, b) => {
+    let d1 = new Date(a.created_at || a.completed_at || 0);
+    let d2 = new Date(b.created_at || b.completed_at || 0);
+    return d1 - d2;
+  });
 
-  // 1. Compte à rebours avant Phase 1
+  // 2. Compte à rebours
   const restantes = Math.max(0, 18 - done.size);
   const countdownEl = document.getElementById('stat-countdown');
   if(countdownEl) countdownEl.textContent = restantes;
 
-  // 2. Extraire les données pour le Graphique
+  // 3. Extraire les données pour la courbe
   const labels = [];
   const tguData = [];
   const swingData = [];
 
   sessions.forEach((s, idx) => {
-    labels.push('Séance ' + (idx+1));
-    let tguW = null; let swingW = null;
+    labels.push('S' + (idx+1));
+    let tguW = NaN; let swingW = NaN;
     
     if(s.detailed_exos) {
       try {
-        const dt = JSON.parse(s.detailed_exos);
-        // Chercher les poids du TGU et du Swing dans le JSON
+        // Sécurité vitale : Gère le format Objet (Supabase) ou String (Local)
+        const dt = typeof s.detailed_exos === 'string' ? JSON.parse(s.detailed_exos) : s.detailed_exos;
+        
         let tguKey = Object.keys(dt).find(k => k.includes('Get-Up') || k.includes('TGU'));
-        if(tguKey) tguW = parseFloat(dt[tguKey].kg);
+        if(tguKey && dt[tguKey].kg) tguW = parseFloat(dt[tguKey].kg);
         
         let swingKey = Object.keys(dt).find(k => k.includes('Swing'));
-        if(swingKey) swingW = parseFloat(dt[swingKey].kg);
-      } catch(e){}
+        if(swingKey && dt[swingKey].kg) swingW = parseFloat(dt[swingKey].kg);
+      } catch(e) { console.log("Erreur parsing", e); }
     }
-    tguData.push(tguW || NaN);
-    swingData.push(swingW || NaN);
+    tguData.push(tguW);
+    swingData.push(swingW);
   });
 
-  // 3. Dessiner le graphique
+  // 4. Dessiner le graphique
   const ctx = document.getElementById('weightChart');
   if (ctx) {
     if (weightChart) weightChart.destroy();
@@ -581,30 +587,31 @@ function renderStats() {
       data: {
         labels: labels,
         datasets: [
-          { label: 'TGU (kg)', data: tguData, borderColor: '#D85A30', backgroundColor: '#D85A30', spanGaps: true, tension: 0.3, pointRadius: 4 },
-          { label: 'Swing (kg)', data: swingData, borderColor: '#378ADD', backgroundColor: '#378ADD', spanGaps: true, tension: 0.3, pointRadius: 4 }
+          { label: 'TGU (kg)', data: tguData, borderColor: '#D85A30', backgroundColor: '#D85A30', spanGaps: true, tension: 0.3, pointRadius: 5 },
+          { label: 'Swing (kg)', data: swingData, borderColor: '#378ADD', backgroundColor: '#378ADD', spanGaps: true, tension: 0.3, pointRadius: 5 }
         ]
       },
       options: { 
         responsive: true, maintainAspectRatio: false,
-        scales: { y: { beginAtZero: true } }
+        scales: { y: { beginAtZero: true, suggestedMax: 24 } }
       }
     });
   }
 
-  // 4. Dessiner le calendrier (30 derniers jours)
+  // 5. Dessiner le calendrier (28 jours = 4 semaines pile)
   const calGrid = document.getElementById('calendar-grid');
   if (calGrid) {
     calGrid.innerHTML = '';
     const today = new Date();
-    // On génère 28 jours (4 semaines) pour faire un beau carré 7x4
     for(let i = 27; i >= 0; i--) {
       let d = new Date(today);
       d.setDate(d.getDate() - i);
       let dateStr = d.toISOString().split('T')[0];
       
-      // Vérifie si une séance a été faite ce jour-là
-      let hasSession = sessions.some(s => s.completed_at && s.completed_at.startsWith(dateStr));
+      let hasSession = sessions.some(s => {
+         let sDate = s.created_at || s.completed_at;
+         return sDate && sDate.startsWith(dateStr);
+      });
       let color = hasSession ? 'var(--or)' : '#E2DFD9';
       
       calGrid.innerHTML += `<div style="aspect-ratio:1; background:${color}; border-radius:4px;" title="${dateStr}"></div>`;
