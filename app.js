@@ -1,4 +1,4 @@
-// app.js - Logique Modern Warrior, Supabase, Saisie a posteriori & Gamification
+// app.js - Logique Modern Warrior, Supabase, Multi-Phases & Gamification
 
 const SUPA_URL = 'https://shhxsxfwfskwdmaqkhqq.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoaHhzeGZ3ZnNrd2RtYXFraHFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU3MzI4OTQsImV4cCI6MjEwMTMwODg5NH0.1Z0495ck0MIX9Th3Z6iieppGIQ22fcf3F61luAcE-XU';
@@ -48,14 +48,6 @@ const supa = {
   }
 };
 
-function getUserId() {
-  let uid = localStorage.getItem('mw3-uid');
-  if (!uid) {
-    uid = 'mw-' + Math.random().toString(36).substr(2,9) + '-' + Date.now().toString(36);
-    localStorage.setItem('mw3-uid', uid);
-  }
-  return uid;
-}
 const USER_ID = 'mw-qetx4mmg4-mscyji27';
 let currentPhase = '0';
 
@@ -84,7 +76,7 @@ function calculateLevel(points) {
   return { current, next };
 }
 
-// ── FICHE HTML & EXERCICES ───────────────────────────────────────────────
+// ── FICHE HTML & EXERCICES AVEC VISUELS ──────────────────────────────────
 function ficheHTML(key){
   const s = SD[key]; if(!s) return '';
   const blocs={}, order=[];
@@ -96,18 +88,27 @@ function ficheHTML(key){
   order.forEach(b => {
     h += `<div style="margin-bottom:10px"><div style="font-size:10px;font-weight:700;color:var(--i3);text-transform:uppercase;letter-spacing:.06em;padding:8px 0 5px">${b}</div>`;
     blocs[b].forEach(e => {
-      h += `<div class="exo"><div class="en">${e.n}</div><div class="pills">${e.p.map(p => {
-        if(p.includes('KB')||p.includes('kg')) return `<span class="pi pk">${p}</span>`;
-        if(p.includes('Repos')||p.includes('min')||p.includes('&times;')) return `<span class="pi pr">${p}</span>`;
-        return `<span class="pi">${p}</span>`;
-      }).join('')}</div>${e.tip ? `<div class="tip">${e.tip}</div>` : ''}</div>`;
+      h += `<div class="exo">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+          <div style="flex:1;">
+            <div class="en">${e.n}</div>
+            <div class="pills">${e.p.map(p => {
+              if(p.includes('KB')||p.includes('kg')) return `<span class="pi pk">${p}</span>`;
+              if(p.includes('Repos')||p.includes('min')||p.includes('&times;')) return `<span class="pi pr">${p}</span>`;
+              return `<span class="pi">${p}</span>`;
+            }).join('')}</div>
+            ${e.tip ? `<div class="tip">${e.tip}</div>` : ''}
+          </div>
+          ${e.img ? `<img src="${e.img}" style="width:70px; height:70px; object-fit:contain; border-radius:8px; background:#1e1e1e; border:1px solid #333; flex-shrink:0;">` : ''}
+        </div>
+      </div>`;
     });
     h += '</div>';
   });
   return h;
 }
 
-// ── PLAYER EN DIRECT ───────────────────────────────────────────────────────
+// ── PLAYER EN DIRECT AVEC RENDU VISUEL ─────────────────────────────────────
 let pKey='', pIdx=0, tInterval=null, tSec=0, tRunning=false, rInterval=null, rSec=0, pStart=null;
 let selRpeVal=0, selFeelVal='', detailedExos={};
 
@@ -135,7 +136,10 @@ function renderPlayer(){
   document.getElementById('p-topbar').style.width = (pIdx/total*100) + '%';
   document.getElementById('p-bloc-name').innerHTML = e.b;
   document.getElementById('p-exo-num').textContent = 'Exercice ' + (pIdx+1) + ' sur ' + total;
-  document.getElementById('p-exo-name').innerHTML = e.n;
+  
+  let imgHTML = e.img ? `<div style="text-align:center; margin:12px 0;"><img src="${e.img}" style="max-height:180px; max-width:100%; object-fit:contain; border-radius:10px; background:#181818; border:1px solid #333; padding:6px;"></div>` : '';
+  document.getElementById('p-exo-name').innerHTML = e.n + imgHTML;
+
   const pp = document.getElementById('p-pills');
   pp.innerHTML = e.p.map(p => {
     let c = 'pp-reps';
@@ -212,7 +216,7 @@ function showFinish(){
 function selRpe(btn, v){ document.querySelectorAll('.rpe-btn').forEach(b => b.classList.remove('sel')); btn.classList.add('sel'); selRpeVal = v; }
 function selFeel(btn, v){ document.querySelectorAll('.feel-btn').forEach(b => b.classList.remove('sel')); btn.classList.add('sel'); selFeelVal = v; }
 
-// ── SAISIE A POSTERIORI (MANUELLE) ─────────────────────────────────────────
+// ── SAISIE A POSTERIORI ────────────────────────────────────────────────────
 function openRetroModal(key) {
   const s = SD[key]; if (!s) return;
   pKey = key;
@@ -404,7 +408,15 @@ function buildTracking(){
 
       let letter = item.id.slice(-1).toUpperCase();
       let block = w <= 2 ? 1 : (w <= 4 ? 3 : 5);
-      let sessionKey = `${letter}-S${block}`;
+      
+      let sessionKey;
+      if (currentPhase === '0') {
+        sessionKey = `${letter}-S${block}`;
+      } else if (currentPhase === '1') {
+        sessionKey = `${letter}-F${block}`;
+      } else {
+        sessionKey = `${letter}-BK${Math.min(w, 2)}`;
+      }
 
       let detailedTxt = '';
       if (se && se.detailed_exos) {
@@ -497,10 +509,14 @@ function updateStats(){
     }
 
     if (nextItem) {
-      let letter = nextItem.id.charAt(2).toUpperCase();
-      let week = parseInt(nextItem.id.charAt(1));
+      let letter = nextItem.id.charAt(2) ? nextItem.id.charAt(2).toUpperCase() : 'A';
+      let week = parseInt(nextItem.id.charAt(1)) || 1;
       let block = week <= 2 ? 1 : (week <= 4 ? 3 : 5);
-      let sessionKey = letter + '-S' + block;
+      
+      let sessionKey;
+      if (currentPhase === '0') sessionKey = `${letter}-S${block}`;
+      else if (currentPhase === '1') sessionKey = `${letter}-F${block}`;
+      else sessionKey = `${letter}-BK${Math.min(week, 2)}`;
 
       let desc = nextItem.d ? (nextItem.d.split('-')[1]?.trim() || nextItem.d) : '';
 
@@ -515,7 +531,7 @@ function updateStats(){
           <div class="slc-h" style="background:${c_bg}">
             <div class="slc-icon" style="background:${c_icn};color:#fff">${letter}</div>
             <div class="slc-info">
-              <div class="slc-title" style="color:${c_txt}">Séance ${letter}</div>
+              <div class="slc-title" style="color:${c_txt}">${PHASES_DATA[currentPhase].title} &middot; Séance ${letter}</div>
               <div class="slc-sub">${desc}</div>
             </div>
             <button class="slc-play" style="background:${c_icn}" onclick="startPlayer('${sessionKey}')">▶ Lancer</button>
