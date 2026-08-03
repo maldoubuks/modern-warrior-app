@@ -55,7 +55,7 @@ function getUserId() {
   }
   return uid;
 }
-const USER_ID = getUserId();
+const USER_ID = 'mw-qetx4mmg4-mscyji27';
 let currentPhase = '0';
 
 // ── GAMIFICATION (Niveaux & Points) ───────────────────────────────────────
