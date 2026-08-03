@@ -263,9 +263,7 @@ async function saveRetroSession() {
   const s = SD[pKey];
   if (!s) return;
 
-  // L'identifiant de la case à cocher (ex: 's1a' ou à défaut 'A-S1')
   const trackId = s.trackId || pKey;
-  
   const detailedExos = {};
   const notes = document.getElementById('retro-notes')?.value || '';
 
@@ -282,10 +280,12 @@ async function saveRetroSession() {
     });
   }
 
-  // 2. Payload aligné avec la table sessions de Supabase
+  // 2. Payload complet avec session_title (Fix du code 23502 !)
   const payload = {
     user_id: USER_ID,
     session_key: pKey,
+    session_title: s.title || pKey, // <-- LA LIGNE QUI RÈGLE L'ERREUR !
+    track_id: trackId,
     detailed_exos: JSON.stringify(detailedExos),
     notes: notes,
     rpe: typeof selRpeVal !== 'undefined' ? selRpeVal : null,
@@ -312,7 +312,6 @@ async function saveRetroSession() {
   updateStats();
   buildTracking();
 
-  // Re-synchronisation globale silencieuse en arrière-plan
   if (typeof loadFromSupabase === 'function') loadFromSupabase();
 }
 
