@@ -170,3 +170,26 @@ const TRACK_IDS = [
   {"id": "s6b", "n": "Semaine 6 - Seance B", "d": "Mercredi - Clean &amp; Press strict", "b": "bb"},
   {"id": "s6c", "n": "Semaine 6 - Seance C", "d": "Vendredi - Complexe Atlas", "b": "bg"}
 ];
+
+// --- PHASE 1 : LA FORGE (18 Séances - Force & Puissance) ---
+const TRACK_IDS_P1 = [];
+for(let w=1; w<=6; w++) {
+  TRACK_IDS_P1.push({ id: 'f'+w+'a', n: 'Séance A - Semaine '+w, d: 'Double Clean & Press + Squat' });
+  TRACK_IDS_P1.push({ id: 'f'+w+'b', n: 'Séance B - Semaine '+w, d: 'Apprentissage Snatch + Core' });
+  TRACK_IDS_P1.push({ id: 'f'+w+'c', n: 'Séance C - Semaine '+w, d: 'Complexe Lourd (Double KB)' });
+}
+
+// --- PHASE 2 : BANKAI (24 Séances - Hypertrophie / 8 semaines) ---
+const TRACK_IDS_BK = [];
+for(let w=1; w<=8; w++) {
+  TRACK_IDS_BK.push({ id: 'b'+w+'a', n: 'Séance A - Semaine '+w, d: 'Push (Press, Pompes lestées, Triceps)' });
+  TRACK_IDS_BK.push({ id: 'b'+w+'b', n: 'Séance B - Semaine '+w, d: 'Pull (Rowing lourd, Pull-over, Biceps)' });
+  TRACK_IDS_BK.push({ id: 'b'+w+'c', n: 'Séance C - Semaine '+w, d: 'Legs (Double Front Squat, Fentes bulgares)' });
+}
+
+// Dictionnaire central pour gérer les phases
+const PHASES_DATA = {
+  '0': { title: "Phase 0 : L'Éveil", data: TRACK_IDS, total: 18 },
+  '1': { title: "Phase 1 : La Forge", data: TRACK_IDS_P1, total: 18 },
+  '2': { title: "Bankai : Hypertrophie", data: TRACK_IDS_BK, total: 24 }
+};
