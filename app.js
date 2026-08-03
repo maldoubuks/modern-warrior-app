@@ -244,14 +244,11 @@ async function saveRetroSession() {
   const s = SD[pKey];
   const notes = document.getElementById('retro-notes').value;
   
-  // Récupérer les perfs exercice par exercice
   const detailed = {};
   s.exos.forEach((e, idx) => {
     const kg = document.getElementById(`retro-kg-${idx}`)?.value || '';
     const reps = document.getElementById(`retro-reps-${idx}`)?.value || '';
-    if (kg || reps) {
-      detailed[e.n] = { kg, reps };
-    }
+    if (kg || reps) detailed[e.n] = { kg, reps };
   });
 
   const sessionData = {
@@ -269,7 +266,9 @@ async function saveRetroSession() {
   if (!window._sessMap) window._sessMap = {};
   window._sessMap[s.trackId] = {...sessionData, completed_at: new Date().toISOString()};
 
+  // 🛡️ NOUVEAU : Sauvegarde locale absolue (Anti-Bug)
   localStorage.setItem('mw3-done', JSON.stringify([...done]));
+  localStorage.setItem('mw3-sessions', JSON.stringify(window._sessMap));
 
   updateStats(); buildTracking();
   closeRetroModal();
@@ -277,7 +276,6 @@ async function saveRetroSession() {
   goPage('tracking');
 }
 
-// Enregistrer la séance depuis le player live
 async function saveSession(){
   const s = SD[pKey];
   const elapsed = Math.round((new Date() - pStart)/60000);
@@ -296,7 +294,9 @@ async function saveSession(){
   if (!window._sessMap) window._sessMap = {};
   window._sessMap[s.trackId] = {...sessionData, completed_at: new Date().toISOString()};
 
+  // 🛡️ NOUVEAU : Sauvegarde locale absolue (Anti-Bug)
   localStorage.setItem('mw3-done', JSON.stringify([...done]));
+  localStorage.setItem('mw3-sessions', JSON.stringify(window._sessMap));
 
   updateStats(); buildTracking();
   document.getElementById('finish').style.display = 'none';
@@ -306,30 +306,30 @@ async function saveSession(){
   goPage('tracking');
 }
 
-// ── TRACKING & STATS ───────────────────────────────────────────────────────
 const done = new Set();
 async function loadFromSupabase() {
+  // 🛡️ NOUVEAU : On force d'abord le chargement depuis le téléphone !
+  const localDone = JSON.parse(localStorage.getItem('mw3-done') || '[]');
+  localDone.forEach(id => done.add(id));
+  window._sessMap = JSON.parse(localStorage.getItem('mw3-sessions') || '{}');
+
   const online = await supa.ping();
   if (online) {
     const rows = await supa.get('tracking', '?user_id=eq.'+USER_ID+'&done=eq.true&select=track_id');
     rows.forEach(r => done.add(r.track_id));
 
     const sessions = await supa.get('sessions', '?user_id=eq.'+USER_ID);
-    const sessMap = {};
-    sessions.forEach(s => { if (!sessMap[s.track_id]) sessMap[s.track_id] = s; });
-    window._sessMap = sessMap;
-
-    const localDone = JSON.parse(localStorage.getItem('mw3-done') || '[]');
-    for (const id of localDone) {
-      if (!done.has(id)) {
-        done.add(id);
-        supa.upsert('tracking', {user_id: USER_ID, track_id: id, done: true});
+    sessions.forEach(s => {
+      // On fusionne les données intelligemment
+      if (!window._sessMap[s.track_id] || new Date(s.completed_at) > new Date(window._sessMap[s.track_id].completed_at)) {
+         window._sessMap[s.track_id] = s;
       }
-    }
-    localStorage.removeItem('mw3-done');
+    });
+    
+    // Met à jour la mémoire du téléphone avec les vraies datas
+    localStorage.setItem('mw3-done', JSON.stringify([...done]));
+    localStorage.setItem('mw3-sessions', JSON.stringify(window._sessMap));
   } else {
-    const local = JSON.parse(localStorage.getItem('mw3-done') || '[]');
-    local.forEach(id => done.add(id));
     showToast('Mode hors-ligne — données locales');
   }
   updateStats(); buildTracking();
