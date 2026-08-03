@@ -544,7 +544,7 @@
       <div class="p-next-name" id="p-next-name">&mdash;</div>
     </div>
     <div style="font-size:18px;color:var(--i3)">&rsaquo;</div>
-  </div>
+ </div>
   <div class="p-actions">
     <button class="pa-prev" onclick="prevExo()">&#8249; Pr&eacute;c.</button>
     <button class="pa-next" id="p-action-btn" onclick="nextExo()">Exercice suivant &rarr;</button>
@@ -581,6 +581,28 @@
   <textarea class="note-in" id="f-notes" placeholder="Ex: TGU 12 kg propre &middot; Swing 16 kg ok &middot; Press difficile c&ocirc;t&eacute; gauche..."></textarea>
   <button class="save-btn" onclick="saveSession()">&#10003; Enregistrer la s&eacute;ance</button>
   <button class="cancel-btn" onclick="document.getElementById('finish').style.display='none'">Annuler</button>
+</div> <div id="page-stats" class="page">
+  <div class="hero">
+    <div class="hl">Dashboard</div>
+    <div class="ht">Progression<br>&amp; Data.</div>
+    <div class="hs">Tes performances brutes et ta constance.</div>
+  </div>
+
+  <div class="st">En route vers la Forge (Phase 1)</div>
+  <div class="card" style="padding:16px; text-align:center">
+    <div style="font-size:36px; font-weight:700; color:var(--or)" id="stat-countdown">18</div>
+    <div style="font-size:12px; color:var(--i3)">Séances restantes avant le boss final</div>
+  </div>
+
+  <div class="st">Évolution des charges (kg)</div>
+  <div class="card" style="padding:14px; height:250px">
+    <canvas id="weightChart"></canvas>
+  </div>
+
+  <div class="st">Calendrier des 30 derniers jours</div>
+  <div class="card" style="padding:14px">
+    <div id="calendar-grid" style="display:grid; grid-template-columns:repeat(7, 1fr); gap:6px;"></div>
+  </div>
 </div>
 
 <script src="data.js"></script>
