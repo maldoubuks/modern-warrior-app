@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Modern Warrior</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nl">&#9876; MW</div>
+  <button class="nb active" onclick="goPage('home')">Accueil</button>
+  <button class="nb" onclick="goPage('guide')">Guide</button>
+  <button class="nb" onclick="goPage('seances')">S&#233;ances</button>
+  <button class="nb" onclick="goPage('wod')">WOD</button>
+  <button class="nb" onclick="goPage('snacks')">Snacks</button>
+  <button class="nb" onclick="goPage('technique')">Technique</button>
+  <button class="nb" onclick="goPage('mobilite')">Mobilit&#233;</button>
+  <button class="nb" onclick="goPage('alim')">Alim</button>
+  <button class="nb" onclick="goPage('tracking')">Tracking</button>
+</nav>
+
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hl">Modern Warrior &middot; Phase 0</div>
+    <div class="ht">L'&Eacute;veil<br>6 semaines.</div>
+    <div class="hs">Homme &lt;75 kg &middot; Basic Fit &middot; L/M/V matin &middot; 30-45 min</div>
+  </div>
+  <div class="g2">
+    <div class="sc"><div class="sc-l">S&eacute;ances valid&eacute;es</div><div class="sc-v" id="h-done">0</div><div class="sc-s">sur 18</div></div>
+    <div class="sc"><div class="sc-l">Semaine actuelle</div><div class="sc-v" id="h-week">1</div><div class="sc-s">sur 6</div></div>
+  </div>
+  <div class="pb"><div class="pf" id="h-bar" style="width:0%"></div></div>
+  <div class="pl" id="h-pct">0% compl&eacute;t&eacute;</div>
+  <div class="st">Prochaine s&eacute;ance &mdash; Lundi</div>
+  <div class="slc">
+    <div class="slc-h" style="background:var(--orl)">
+      <div class="slc-icon" style="background:var(--or);color:#fff">A</div>
+      <div class="slc-info"><div class="slc-title" style="color:var(--ord)">S&eacute;ance A &middot; Lundi</div><div class="slc-sub">Deadstop Swing 2H + TGU &middot; ~35 min</div></div>
+      <button class="slc-play" style="background:var(--or)" onclick="startPlayer('A-S1')">&#9654; Lancer</button>
+    </div>
+  </div>
+</div>
+
+<div id="player">
+  <div class="p-nav">
+    <button class="p-close" onclick="closePlayer()">&#10005;</button>
+    <div class="p-nav-title" id="p-nav-title">S&eacute;ance</div>
+    <div style="font-size:11px;color:#666;flex-shrink:0" id="p-nav-prog">0/0</div>
+  </div>
+  <div class="p-topbar-wrap"><div class="p-topbar" id="p-topbar" style="width:0%"></div></div>
+  <div class="p-bloc-hdr">
+    <div class="p-bloc-name" id="p-bloc-name">MOBILIT&Eacute;</div>
+    <div class="p-bloc-idx" id="p-bloc-idx"></div>
+  </div>
+  <div class="p-exo-card">
+    <div class="p-exo-hdr">
+      <div class="p-exo-num" id="p-exo-num">Exercice 1 sur 9</div>
+      <div class="p-exo-name" id="p-exo-name">Turkish Get-Up</div>
+    </div>
+    <div class="p-exo-body">
+      <div class="p-pills" id="p-pills"></div>
+      <div class="p-tip" id="p-tip"></div>
+    </div>
+  </div>
+  <div class="t-zone">
+    <div class="t-label" id="t-label">CHRONO S&Eacute;ANCE</div>
+    <div class="t-display" id="t-display">00:00</div>
+    <div class="t-bar"><div class="t-fill" id="t-fill" style="width:0%"></div></div>
+    <div class="t-btns">
+      <button class="t-btn t-start" id="t-start-btn" onclick="toggleTimer()">&#9654; D&eacute;marrer</button>
+      <button class="t-btn t-reset" onclick="resetTimer()">&#8635; Reset</button>
+    </div>
+  </div>
+  <div class="r-zone" id="r-zone" style="display:none">
+    <div class="r-label">REPOS</div>
+    <div class="r-display" id="r-display">01:00</div>
+    <div class="r-presets">
+      <button class="r-preset" onclick="setRest(30)">30s</button>
+      <button class="r-preset" onclick="setRest(60)">1 min</button>
+      <button class="r-preset" onclick="setRest(90)">1:30</button>
+      <button class="r-preset" onclick="setRest(120)">2 min</button>
+    </div>
+    <div style="margin-top:8px"><button class="r-cancel" onclick="stopRest()">&#10005; Annuler le repos</button></div>
+  </div>
+  <div class="p-next" id="p-next">
+    <div style="flex:1">
+      <div class="p-next-label">Suivant</div>
+      <div class="p-next-name" id="p-next-name">&mdash;</div>
+    </div>
+    <div style="font-size:18px;color:var(--i3)">&rsaquo;</div>
+  </div>
+  <div class="p-actions">
+    <button class="pa-prev" onclick="prevExo()">&#8249; Pr&eacute;c.</button>
+    <button class="pa-next" id="p-action-btn" onclick="nextExo()">Exercice suivant &rarr;</button>
+  </div>
+</div>
+
+<div id="finish">
+  <div class="f-icon">&#127942;</div>
+  <div class="f-title">S&eacute;ance termin&eacute;e !</div>
+  <div class="f-sub" id="f-sub">Super boulot</div>
+  <div class="f-label">Comment tu te sens ? (RPE 1-10)</div>
+  <div class="rpe-grid">
+    <div class="rpe-btn" onclick="selRpe(this,1)">1<span class="rpe-sub">Facile</span></div>
+    <div class="rpe-btn" onclick="selRpe(this,2)">2<span class="rpe-sub">L&eacute;ger</span></div>
+    <div class="rpe-btn" onclick="selRpe(this,3)">3<span class="rpe-sub">Mod&eacute;r&eacute;</span></div>
+    <div class="rpe-btn" onclick="selRpe(this,4)">4<span class="rpe-sub">Soutenu</span></div>
+    <div class="rpe-btn" onclick="selRpe(this,5)">5<span class="rpe-sub">Difficile</span></div>
+    <div class="rpe-btn" onclick="selRpe(this,6)">6<span class="rpe-sub">Dur</span></div>
+    <div class="rpe-btn" onclick="selRpe(this,7)">7<span class="rpe-sub">Tr&egrave;s dur</span></div>
+    <div class="rpe-btn" onclick="selRpe(this,8)">8<span class="rpe-sub">Intense</span></div>
+    <div class="rpe-btn" onclick="selRpe(this,9)">9<span class="rpe-sub">Max-</span></div>
+    <div class="rpe-btn" onclick="selRpe(this,10)">10<span class="rpe-sub">Limite</span></div>
+  </div>
+  <div class="f-label">Ressenti global</div>
+  <div class="feel-grid">
+    <div class="feel-btn" onclick="selFeel(this,'&#128170; En forme')">&#128170; En forme</div>
+    <div class="feel-btn" onclick="selFeel(this,'&#128548; Bien pouss&eacute;')">&#128548; Bien pouss&eacute;</div>
+    <div class="feel-btn" onclick="selFeel(this,'&#128293; Dans la zone')">&#128293; Dans la zone</div>
+    <div class="feel-btn" onclick="selFeel(this,'&#128549; Difficile')">&#128549; Difficile</div>
+    <div class="feel-btn" onclick="selFeel(this,'&#127919; Technique ok')">&#127919; Technique ok</div>
+    <div class="feel-btn" onclick="selFeel(this,'&#128200; Progression')">&#128200; Progression</div>
+  </div>
+  <div class="f-label">Notes (charges, sensations, difficult&eacute;s...)</div>
+  <textarea class="note-in" id="f-notes" placeholder="Ex: TGU 12 kg propre &middot; Swing 16 kg ok &middot; Press difficile c&ocirc;t&eacute; gauche..."></textarea>
+  <button class="save-btn" onclick="saveSession()">&#10003; Enregistrer la s&eacute;ance</button>
+  <button class="cancel-btn" onclick="document.getElementById('finish').style.display='none'">Annuler</button>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
