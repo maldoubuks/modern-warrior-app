@@ -56,6 +56,7 @@ function getUserId() {
   return uid;
 }
 const USER_ID = getUserId();
+let currentPhase = '0';
 
 // ── GAMIFICATION (Niveaux & Points) ───────────────────────────────────────
 const LEVELS = [
@@ -335,18 +336,27 @@ async function loadFromSupabase() {
   updateStats(); buildTracking();
 }
 
+function changePhase(phaseId) {
+  currentPhase = phaseId;
+  updateStats();
+  buildTracking();
+}
+
 function buildTracking(){
   const sessMap = window._sessMap || {};
+  const currentData = PHASES_DATA[currentPhase].data;
+  const numWeeks = PHASES_DATA[currentPhase].total / 3;
+  
   let h = '';
-  for(let w=1; w<=6; w++){
+  for(let w=1; w<=numWeeks; w++){
     h += `<div class="st">Semaine ${w}</div>`;
-    TRACK_IDS.slice((w-1)*3, w*3).forEach(item => {
+    currentData.slice((w-1)*3, w*3).forEach(item => {
       const ok = done.has(item.id);
       const se = sessMap[item.id] || null;
       let detailedTxt = '';
       if (se && se.detailed_exos) {
         try {
-          const dt = JSON.parse(se.detailed_exos);
+          const dt = typeof se.detailed_exos === 'string' ? JSON.parse(se.detailed_exos) : se.detailed_exos;
           const keys = Object.keys(dt);
           if (keys.length > 0) {
             detailedTxt = '<div style="font-size:10px;color:var(--or);margin-top:2px">' + 
@@ -355,25 +365,18 @@ function buildTracking(){
         } catch(e){}
       }
 
-      // Conversion item.id ('s1a') -> 'A-S1' pour ouvrir la modale Saisir
-      let letter = item.id.charAt(2).toUpperCase();
-      let week = parseInt(item.id.charAt(1));
-      let block = week <= 2 ? 1 : (week <= 4 ? 3 : 5);
-      let sessionKey = letter + '-S' + block;
-
-      // Style quand la séance est validée (Grisé + Opacité réduite)
       let rowStyle = ok ? "opacity:0.6; filter:grayscale(100%); transition:all 0.3s;" : "transition:all 0.3s;";
       let btnText = ok ? "✏️ Modifier" : "📝 Saisir";
 
       h += `<div class="tr-row" style="${rowStyle}">
-        <div class="tr-chk${ok ? ' done' : ''}" onclick="tgl('${item.id}', '${sessionKey}')" id="chk-${item.id}">${ok ? '&#10003;' : ''}</div>
-        <div style="flex:1">
+        <div class="tr-chk${ok ? ' done' : ''}" onclick="tgl('${item.id}', '${item.id}')" id="chk-${item.id}">${ok ? '&#10003;' : ''}</div>
+        <div style="flex:1" onclick="tgl('${item.id}', '${item.id}')">
           <div style="font-size:13px;font-weight:600">${item.n}</div>
           <div style="font-size:11px;color:var(--i3);margin-top:1px">${item.d}${se&&se.rpe?' - RPE '+se.rpe:''}${se&&se.feel?' - '+se.feel:''}</div>
           ${detailedTxt}
           ${se&&se.notes ? `<div style='font-size:11px;color:var(--i3);margin-top:2px;font-style:italic'>${se.notes}</div>` : ''}
         </div>
-        <button style="background:none;border:1px solid var(--bd);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--i2);cursor:pointer;flex-shrink:0" onclick="event.stopPropagation(); openRetroModal('${sessionKey}')">${btnText}</button>
+        <button style="background:none;border:1px solid var(--bd);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--i2);cursor:pointer;flex-shrink:0" onclick="event.stopPropagation(); openRetroModal('${item.id}')">${btnText}</button>
       </div>`;
     });
   }
@@ -413,14 +416,24 @@ function tgl(id, sessionKey){
 }
 
 function updateStats(){
-  const n = done.size, pct = Math.round(n/18*100);
-  const points = n * 5; // 5 points par séance validée (système de gamification)
+  // 1. On récupère les infos de la phase sélectionnée dans le menu
+  const totalSessions = PHASES_DATA[currentPhase].total;
+  const currentData = PHASES_DATA[currentPhase].data;
+
+  // 2. On compte uniquement les séances validées pour CETTE phase
+  let n = 0;
+  currentData.forEach(item => { if (done.has(item.id)) n++; });
+
+  const pct = Math.round(n / totalSessions * 100);
+  const points = done.size * 5; // Tes points XP (Niveau) comptent TOUTES les phases confondues !
   const { current, next } = calculateLevel(points);
 
+  // 3. On met à jour l'affichage
   ['h-done','h-week','h-bar','h-pct','tb','td-txt','tp-txt'].forEach(id => {
     const el = document.getElementById(id); if(!el) return;
     if(id==='h-done') el.textContent = n;
-    else if(id==='h-week') el.textContent = Math.min(6, Math.ceil(n/3)||1);
+    // On adapte le nombre max de semaines (Bankai = 8, Phase 0 = 6)
+    else if(id==='h-week') el.textContent = Math.min(totalSessions/3, Math.ceil(n/3)||1);
     else if(id==='h-bar'||id==='tb') el.style.width = pct + '%';
     else if(id==='h-pct') el.textContent = pct + '% complété';
     else if(id==='td-txt') el.textContent = n + ' séance' + (n>1?'s':'') + ' validée' + (n>1?'s':'');
