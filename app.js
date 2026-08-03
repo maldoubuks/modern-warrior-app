@@ -628,7 +628,6 @@ function renderStats() {
   }
 }
 
-// ── RAPPELS CONTEXTUELS (HABITUDES) ──────────────────────────────
 function updateContextualReminder() {
   const el = document.getElementById('dynamic-reminder');
   if (!el) return;
@@ -637,22 +636,23 @@ function updateContextualReminder() {
   let msg = ""; let color = "";
 
   if (h >= 5 && h < 10) {
-    msg = "🌅 <b>Matin :</b> As-tu bu tes 500ml d'eau ? N'oublie pas ton Warm-Up Flow (10 min) avant de partir !";
-    color = "var(--or)"; // Orange
+    msg = "🌅 <b style='color:#FF9F43'>Matin :</b> As-tu bu tes 500ml d'eau ? N'oublie pas ton Warm-Up Flow (10 min) avant de partir !";
+    color = "#FF9F43";
   } else if (h >= 10 && h < 14) {
-    msg = "⚡ <b>Midi :</b> Hydratation (1 verre avant le repas) et protéines obligatoires au menu !";
-    color = "var(--bl)"; // Bleu
+    msg = "⚡ <b style='color:#54A0FF'>Midi :</b> Hydratation (1 verre avant le repas) et protéines obligatoires au menu !";
+    color = "#54A0FF";
   } else if (h >= 14 && h < 18) {
-    msg = "🚶‍♂️ <b>Aprèm :</b> Où en sont tes 8 000 pas ? Marche sur tes appels ou prends les escaliers !";
-    color = "var(--gr)"; // Vert
+    msg = "🚶‍♂️ <b style='color:#1DD1A1'>Aprèm :</b> Où en sont tes 8 000 pas ? Marche sur tes appels ou prends les escaliers !";
+    color = "#1DD1A1";
   } else if (h >= 18 && h < 21) {
-    msg = "🧘‍♂️ <b>Soir :</b> Bientôt l'heure de ta routine d'étirements et de tes 10 pages de lecture.";
-    color = "#A855F7"; // Violet
+    msg = "🧘‍♂️ <b style='color:#A855F7'>Soir :</b> Bientôt l'heure de ta routine d'étirements et de tes 10 pages de lecture.";
+    color = "#A855F7";
   } else {
-    msg = "🌙 <b>Nuit :</b> Objectif coucher 22h30 max. Coupe le scrolling et prends ton livre !";
-    color = "var(--i3)"; // Gris
+    msg = "🌙 <b style='color:#C8D6E5'>Nuit :</b> Objectif coucher 22h30 max. Coupe le scrolling et prends ton livre !";
+    color = "#C8D6E5";
   }
   
   el.innerHTML = msg;
+  el.style.color = '#ffffff';
   el.style.borderLeft = `4px solid ${color}`;
 }
