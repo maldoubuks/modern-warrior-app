@@ -219,7 +219,7 @@ function openRetroModal(key) {
   pKey = key;
   document.getElementById('retro-title').textContent = s.title;
   
-  // Générer les champs de saisie pour chaque exercice
+  // Générer les champs de saisie pour chaque exercice (TON CODE D'ORIGINE)
   let h = '';
   s.exos.forEach((e, idx) => {
     h += `<div style="background:#1E1E1E;border:1px solid #333;border-radius:8px;padding:10px;margin-bottom:8px">
@@ -236,12 +236,21 @@ function openRetroModal(key) {
   selRpeVal = 0; selFeelVal = '';
   document.querySelectorAll('.retro-rpe-btn').forEach(b => b.classList.remove('sel'));
   document.querySelectorAll('.retro-feel-btn').forEach(b => b.classList.remove('sel'));
-  document.getElementById('retro-modal').style.display = 'block';
+  
+  // Afficher la fenêtre et autoriser les clics
+  const m = document.getElementById('retro-modal');
+  if (m) {
+    m.style.display = 'block';
+    m.style.pointerEvents = 'auto';
+  }
 }
 
 function closeRetroModal() {
   const m = document.getElementById('retro-modal');
-  if (m) m.style.display = 'none';
+  if (m) {
+    m.style.display = 'none';
+    m.style.pointerEvents = 'none';
+  }
   
   // Rend la main au défilement et aux clics de la page
   document.body.style.overflow = '';
@@ -360,6 +369,12 @@ function buildTracking(){
     currentData.slice((w-1)*3, w*3).forEach(item => {
       const ok = done.has(item.id);
       const se = sessMap[item.id] || null;
+
+      // 🎯 CONVERSION DE LA CLÉ (Fix pour ouvrir la modale SD)
+      let letter = item.id.slice(-1).toUpperCase(); // 'a' -> 'A'
+      let block = w <= 2 ? 1 : (w <= 4 ? 3 : 5);
+      let sessionKey = `${letter}-S${block}`; // Génère 'A-S1', 'B-S1', etc.
+
       let detailedTxt = '';
       if (se && se.detailed_exos) {
         try {
@@ -367,7 +382,7 @@ function buildTracking(){
           const keys = Object.keys(dt);
           if (keys.length > 0) {
             detailedTxt = '<div style="font-size:10px;color:var(--or);margin-top:2px">' + 
-              keys.map(k => `• ${k}: ${dt[k].kg} ${dt[k].reps}`).join(' ') + '</div>';
+              keys.map(k => `• ${k}: ${dt[k].kg || ''} ${dt[k].reps || ''}`).join(' ') + '</div>';
           }
         } catch(e){}
       }
@@ -376,14 +391,14 @@ function buildTracking(){
       let btnText = ok ? "✏️ Modifier" : "📝 Saisir";
 
       h += `<div class="tr-row" style="${rowStyle}">
-        <div class="tr-chk${ok ? ' done' : ''}" onclick="tgl('${item.id}', '${item.id}')" id="chk-${item.id}">${ok ? '&#10003;' : ''}</div>
-        <div style="flex:1" onclick="tgl('${item.id}', '${item.id}')">
+        <div class="tr-chk${ok ? ' done' : ''}" onclick="tgl('${item.id}', '${sessionKey}')" id="chk-${item.id}">${ok ? '&#10003;' : ''}</div>
+        <div style="flex:1" onclick="tgl('${item.id}', '${sessionKey}')">
           <div style="font-size:13px;font-weight:600">${item.n}</div>
           <div style="font-size:11px;color:var(--i3);margin-top:1px">${item.d}${se&&se.rpe?' - RPE '+se.rpe:''}${se&&se.feel?' - '+se.feel:''}</div>
           ${detailedTxt}
           ${se&&se.notes ? `<div style='font-size:11px;color:var(--i3);margin-top:2px;font-style:italic'>${se.notes}</div>` : ''}
         </div>
-        <button style="background:none;border:1px solid var(--bd);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--i2);cursor:pointer;flex-shrink:0" onclick="event.stopPropagation(); openRetroModal('${item.id}')">${btnText}</button>
+        <button style="background:none;border:1px solid var(--bd);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--i2);cursor:pointer;flex-shrink:0" onclick="event.stopPropagation(); openRetroModal('${sessionKey}')">${btnText}</button>
       </div>`;
     });
   }
