@@ -219,7 +219,7 @@ function openRetroModal(key) {
   pKey = key;
   document.getElementById('retro-title').textContent = s.title;
   
-  // Générer les champs de saisie pour chaque exercice (TON CODE D'ORIGINE)
+  // 1. Génération des exercices
   let h = '';
   s.exos.forEach((e, idx) => {
     h += `<div style="background:#1E1E1E;border:1px solid #333;border-radius:8px;padding:10px;margin-bottom:8px">
@@ -232,12 +232,35 @@ function openRetroModal(key) {
     </div>`;
   });
   document.getElementById('retro-exos-list').innerHTML = h;
-  document.getElementById('retro-notes').value = '';
-  selRpeVal = 0; selFeelVal = '';
-  document.querySelectorAll('.retro-rpe-btn').forEach(b => b.classList.remove('sel'));
-  document.querySelectorAll('.retro-feel-btn').forEach(b => b.classList.remove('sel'));
+
+  // 2. Ajout dynamique de la Durée et de la Grille RPE
+  let metaHTML = `
+    <div style="margin:12px 0">
+      <div style="font-size:11px;color:#888;font-weight:700;margin-bottom:6px">Durée de la séance (minutes)</div>
+      <input type="number" id="retro-duration" placeholder="ex: 35" value="35" style="width:100%;background:#2A2A2A;border:1px solid #444;border-radius:6px;padding:8px;color:#fff;font-size:13px;outline:none;">
+    </div>
+    <div style="margin:12px 0">
+      <div style="font-size:11px;color:#888;font-weight:700;margin-bottom:6px">Difficulté ressentie (RPE 1 à 10)</div>
+      <div style="display:grid;grid-template-columns:repeat(5, 1fr);gap:6px" id="retro-rpe-grid">
+        ${[1,2,3,4,5,6,7,8,9,10].map(v => `<button type="button" class="rpe-btn retro-rpe-btn" onclick="selRpe(this,${v})">${v}</button>`).join('')}
+      </div>
+    </div>
+  `;
   
-  // Afficher la fenêtre et autoriser les clics
+  // Injecte les métadonnées avant le champ notes
+  const notesEl = document.getElementById('retro-notes');
+  let metaContainer = document.getElementById('retro-meta-container');
+  if (!metaContainer) {
+    metaContainer = document.createElement('div');
+    metaContainer.id = 'retro-meta-container';
+    notesEl.parentNode.insertBefore(metaContainer, notesEl);
+  }
+  metaContainer.innerHTML = metaHTML;
+
+  notesEl.value = '';
+  selRpeVal = null;
+  selFeelVal = '';
+
   const m = document.getElementById('retro-modal');
   if (m) {
     m.style.display = 'block';
@@ -245,59 +268,41 @@ function openRetroModal(key) {
   }
 }
 
-function closeRetroModal() {
-  const m = document.getElementById('retro-modal');
-  if (m) {
-    m.style.display = 'none';
-    m.style.pointerEvents = 'none';
-  }
-  
-  // Rend la main au défilement et aux clics de la page
-  document.body.style.overflow = '';
-  document.body.style.pointerEvents = 'auto';
-}
-
 async function saveRetroSession() {
   if (!pKey) return;
-  
-  const s = SD[pKey];
-  if (!s) return;
+  const s = SD[pKey]; if (!s) return;
 
   const trackId = s.trackId || pKey;
   const detailedExos = {};
   const notes = document.getElementById('retro-notes')?.value || '';
+  const duration = parseInt(document.getElementById('retro-duration')?.value) || 35;
 
-  // 1. Récupération des charges et répétitions saisies
   if (s.exos) {
     s.exos.forEach((e, idx) => {
       const kgEl = document.getElementById(`retro-kg-${idx}`);
       const repsEl = document.getElementById(`retro-reps-${idx}`);
       const kg = kgEl ? kgEl.value.trim() : '';
       const reps = repsEl ? repsEl.value.trim() : '';
-      if (kg || reps) {
-        detailedExos[e.n] = { kg: kg, reps: reps };
-      }
+      if (kg || reps) detailedExos[e.n] = { kg, reps };
     });
   }
 
-// 2. Payload complet avec gestion du RPE (Fix de l'erreur 23514)
   const payload = {
     user_id: USER_ID,
     session_key: pKey,
     session_title: s.title || pKey,
     track_id: trackId,
+    duration_min: duration,
     detailed_exos: JSON.stringify(detailedExos),
     notes: notes,
-    rpe: (typeof selRpeVal !== 'undefined' && selRpeVal > 0) ? selRpeVal : null, // Send null si RPE = 0
-    feel: typeof selFeelVal !== 'undefined' ? selFeelVal : '',
+    rpe: (typeof selRpeVal !== 'undefined' && selRpeVal > 0) ? selRpeVal : null,
+    feel: selFeelVal || '',
     created_at: new Date().toISOString()
   };
 
-  // 3. Sauvegarde dans Supabase
   await supa.upsert('sessions', payload, 'user_id,session_key').catch(()=>{});
   await supa.upsert('tracking', { user_id: USER_ID, track_id: trackId, done: true }, 'user_id,track_id').catch(()=>{});
 
-  // 4. Sauvegarde locale immédiate (Anti-Lag)
   done.add(trackId);
   if (!window._sessMap) window._sessMap = {};
   window._sessMap[trackId] = { ...payload, completed_at: payload.created_at };
@@ -305,13 +310,11 @@ async function saveRetroSession() {
   localStorage.setItem('mw3-done', JSON.stringify([...done]));
   localStorage.setItem('mw3-sessions', JSON.stringify(window._sessMap));
 
-  // 5. Fermeture, message de succès et rafraîchissement
   closeRetroModal();
   if (typeof showToast === 'function') showToast('Séance enregistrée avec succès !', '#639922');
 
   updateStats();
   buildTracking();
-
   if (typeof loadFromSupabase === 'function') loadFromSupabase();
 }
 
@@ -603,22 +606,35 @@ window.onload = () => {
 // ── DASHBOARD & STATS (CHART.JS + CALENDRIER) ──────────────────────────────
 let weightChart = null;
 
+// Fonction utilitaire pour extraire SEULEMENT les mouvements clés (exclut échauffement)
+function getKeyMovements(detailedExos) {
+  if (!detailedExos) return [];
+  try {
+    const dt = typeof detailedExos === 'string' ? JSON.parse(detailedExos) : detailedExos;
+    const ignoreList = ['cars', 'cat-cow', 'spiderman', 'prying', 'row', 'push-up', 'carry', 'stretch'];
+    
+    return Object.keys(dt)
+      .filter(exoName => !ignoreList.some(bad => exoName.toLowerCase().includes(bad)))
+      .map(exoName => {
+        const info = dt[exoName];
+        return `${exoName}${info.kg ? ' (' + info.kg + 'kg)' : ''}`;
+      });
+  } catch(e) { return []; }
+}
+
 function renderStats() {
   const sessMap = window._sessMap || {};
   
   const parseSafely = (dateStr) => {
     if (!dateStr) return new Date(0);
-    let cleanStr = dateStr.toString().replace(' ', 'T');
-    let d = new Date(cleanStr);
+    let d = new Date(dateStr.toString().replace(' ', 'T'));
     return isNaN(d.getTime()) ? new Date(0) : d;
   };
 
-  // 1. Trier les sessions
   const sessions = Object.values(sessMap).sort((a, b) => {
     return parseSafely(a.created_at || a.completed_at) - parseSafely(b.created_at || b.completed_at);
   });
 
-  // 2. Décompte des séances restantes
   const totalPhase = PHASES_DATA[currentPhase] ? PHASES_DATA[currentPhase].total : 18;
   const currentData = PHASES_DATA[currentPhase] ? PHASES_DATA[currentPhase].data : [];
   let n = 0;
@@ -627,7 +643,7 @@ function renderStats() {
   const countdownEl = document.getElementById('stat-countdown');
   if(countdownEl) countdownEl.textContent = Math.max(0, totalPhase - n);
 
-  // 3. Détecter automatiquement TOUS les exercices enregistrés
+  // 1. Liste des exercices + Option RPE pour le menu déroulant
   const allExosSet = new Set();
   sessions.forEach(s => {
     if (s.detailed_exos) {
@@ -638,97 +654,103 @@ function renderStats() {
     }
   });
 
-  // Remplir le menu déroulant
   const exoSelect = document.getElementById('chart-exo-select');
-  let selectedExo = null;
-
   if (exoSelect) {
     const currentVal = exoSelect.value;
-    let optionsHTML = '';
+    let optionsHTML = '<option value="RPE_MODE">🔥 Evolution de la Difficulté (RPE)</option>';
     
-    if (allExosSet.size === 0) {
-      optionsHTML = '<option value="">Aucun exercice enregistré</option>';
-    } else {
-      allExosSet.forEach(exo => {
-        optionsHTML += `<option value="${exo}" ${currentVal === exo ? 'selected' : ''}>${exo}</option>`;
-      });
-    }
+    allExosSet.forEach(exo => {
+      optionsHTML += `<option value="${exo}" ${currentVal === exo ? 'selected' : ''}>Poids : ${exo}</option>`;
+    });
     exoSelect.innerHTML = optionsHTML;
-    selectedExo = exoSelect.value || Array.from(allExosSet)[0];
   }
 
-  // 4. Préparer les données pour l'exercice sélectionné
+  const selectedOption = exoSelect ? (exoSelect.value || 'RPE_MODE') : 'RPE_MODE';
+
+  // 2. Données pour le Graphique
   const labels = [];
-  const exoData = [];
+  const chartData = [];
 
   sessions.forEach((s, idx) => {
-    labels.push('S' + (idx+1));
-    let weight = NaN;
-    
-    if (s.detailed_exos && selectedExo) {
-      try {
-        const dt = typeof s.detailed_exos === 'string' ? JSON.parse(s.detailed_exos) : s.detailed_exos;
-        if (dt[selectedExo] && dt[selectedExo].kg !== undefined && dt[selectedExo].kg !== '') {
-          weight = parseFloat(dt[selectedExo].kg);
-        }
-      } catch(e) {}
+    labels.push(s.session_key || ('S' + (idx+1)));
+    if (selectedOption === 'RPE_MODE') {
+      chartData.push(s.rpe || NaN);
+    } else {
+      let weight = NaN;
+      if (s.detailed_exos) {
+        try {
+          const dt = typeof s.detailed_exos === 'string' ? JSON.parse(s.detailed_exos) : s.detailed_exos;
+          if (dt[selectedOption] && dt[selectedOption].kg) {
+            weight = parseFloat(dt[selectedOption].kg);
+          }
+        } catch(e) {}
+      }
+      chartData.push(weight);
     }
-    exoData.push(weight);
   });
 
-  // 5. Dessiner le graphique Chart.js
+  // 3. Rendu Chart.js
   const ctx = document.getElementById('weightChart');
   if (ctx) {
     if (weightChart) weightChart.destroy();
     
-    const datasets = selectedExo ? [{
-      label: `${selectedExo} (kg)`,
-      data: exoData,
-      borderColor: '#D85A30',
-      backgroundColor: '#D85A30',
-      spanGaps: true,
-      tension: 0.3,
-      pointRadius: 5
-    }] : [];
-
+    const isRPE = selectedOption === 'RPE_MODE';
     weightChart = new Chart(ctx, {
       type: 'line',
       data: {
         labels: labels,
-        datasets: datasets
+        datasets: [{
+          label: isRPE ? 'Difficulté RPE (1-10)' : `${selectedOption} (kg)`,
+          data: chartData,
+          borderColor: isRPE ? '#E74C3C' : '#D85A30',
+          backgroundColor: isRPE ? '#E74C3C' : '#D85A30',
+          spanGaps: true,
+          tension: 0.3,
+          pointRadius: 6
+        }]
       },
       options: { 
         responsive: true, 
         maintainAspectRatio: false,
         scales: { 
-          y: { beginAtZero: true, suggestedMax: 24 } 
+          y: { beginAtZero: true, suggestedMax: isRPE ? 10 : 24 } 
         }
       }
     });
   }
 
-  // 6. Calendrier des 28 derniers jours
+  // 4. Calendrier interactif avec clic sur les cases
   const calGrid = document.getElementById('calendar-grid');
   if (calGrid) {
     calGrid.innerHTML = '';
     const today = new Date();
     
-    const sessionDates = sessions.map(s => {
-      let d = parseSafely(s.created_at || s.completed_at);
-      return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-    });
-
     for(let i = 27; i >= 0; i--) {
       let d = new Date();
       d.setDate(today.getDate() - i);
       let dateStr = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
       
-      let hasSession = sessionDates.includes(dateStr);
-      let color = hasSession ? 'var(--or)' : '#E2DFD9';
-      let label = hasSession ? '<span style="font-size:12px;color:#fff">&#10003;</span>' : (i === 0 ? '<span style="font-size:9px;color:#999;font-weight:700">Auj.</span>' : '');
+      // Trouver la séance correspondant à cette date
+      const sessionForDay = sessions.find(s => {
+        let sd = parseSafely(s.created_at || s.completed_at);
+        return (sd.getFullYear() + '-' + String(sd.getMonth()+1).padStart(2,'0') + '-' + String(sd.getDate()).padStart(2,'0')) === dateStr;
+      });
+
+      let hasSession = !!sessionForDay;
+      let color = hasSession ? 'var(--or)' : '#2A2A2A';
+      let label = hasSession ? '<span style="font-size:12px;color:#fff">&#10003;</span>' : (i === 0 ? '<span style="font-size:9px;color:#888">Auj.</span>' : '');
       
+      let clickAttr = '';
+      if (hasSession) {
+        const keyExos = getKeyMovements(sessionForDay.detailed_exos).join(' · ');
+        const dur = sessionForDay.duration_min ? `${sessionForDay.duration_min} min` : '35 min';
+        const rpeTxt = sessionForDay.rpe ? `RPE ${sessionForDay.rpe}/10` : 'RPE non défini';
+        const summary = `📅 ${sessionForDay.session_title || sessionForDay.session_key}\n⏱️ Durée : ${dur} | 🔥 ${rpeTxt}\n⚡ Mouvements clés : ${keyExos || 'Général'}\n📝 Notes : ${sessionForDay.notes || 'Aucune'}`;
+        clickAttr = `onclick="alert('${summary.replace(/'/g, "\\'")}')" style="cursor:pointer;"`;
+      }
+
       calGrid.innerHTML += `
-        <div style="aspect-ratio:1; background:${color}; border-radius:4px; display:flex; align-items:center; justify-content:center; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);">
+        <div ${clickAttr} style="aspect-ratio:1; background:${color}; border-radius:6px; display:flex; align-items:center; justify-content:center; border:1px solid #333;">
           ${label}
         </div>`;
     }
