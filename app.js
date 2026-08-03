@@ -100,6 +100,7 @@ function ficheHTML(key){
         return `<span class="pi">${p}</span>`;
       }).join('')}</div>${e.tip ? `<div class="tip">${e.tip}</div>` : ''}</div>`;
     });
+    h += '</div>';
   });
   return h;
 }
@@ -354,20 +355,21 @@ function buildTracking(){
         } catch(e){}
       }
 
-let letter = item.id.charAt(2).toUpperCase();
+      // Conversion item.id ('s1a') -> 'A-S1' pour ouvrir la modale Saisir
+      let letter = item.id.charAt(2).toUpperCase();
       let week = parseInt(item.id.charAt(1));
       let block = week <= 2 ? 1 : (week <= 4 ? 3 : 5);
       let sessionKey = letter + '-S' + block;
 
       h += `<div class="tr-row">
         <div class="tr-chk${ok ? ' done' : ''}" onclick="tgl('${item.id}')" id="chk-${item.id}">${ok ? '&#10003;' : ''}</div>
-        <div style="flex:1">
+        <div style="flex:1" onclick="tgl('${item.id}')">
           <div style="font-size:13px;font-weight:600">${item.n}</div>
           <div style="font-size:11px;color:var(--i3);margin-top:1px">${item.d}${se&&se.rpe?' - RPE '+se.rpe:''}${se&&se.feel?' - '+se.feel:''}</div>
           ${detailedTxt}
           ${se&&se.notes ? `<div style='font-size:11px;color:var(--i3);margin-top:2px;font-style:italic'>${se.notes}</div>` : ''}
         </div>
-        <button style="background:none;border:1px solid var(--bd);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--i2);cursor:pointer" onclick="event.stopPropagation(); openRetroModal('${sessionKey}')">📝 Saisir</button>
+        <button style="background:none;border:1px solid var(--bd);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--i2);cursor:pointer;flex-shrink:0" onclick="event.stopPropagation(); openRetroModal('${sessionKey}')">📝 Saisir</button>
       </div>`;
     });
   }
@@ -436,15 +438,16 @@ function goPage(id){
   document.querySelectorAll('.nb')[idx]?.classList.add('active');
   window.scrollTo(0,0);
 }
+
+// Fonction de bascule (toggle) réparée
 function tog(h){
   const b = h.nextElementSibling, c = h.querySelector('.chv');
-  // Charge le HTML de la fiche si ce n'est pas encore fait
-  if (b.id && b.id.startsWith('fiche-') && !b.dataset.loaded) {
+  if (b && b.id && b.id.startsWith('fiche-') && !b.dataset.loaded) {
      b.innerHTML = ficheHTML(b.id.replace('fiche-',''));
      b.dataset.loaded = '1';
   }
-  b.classList.toggle('open');
-  if(c) c.style.transform = b.classList.contains('open') ? 'rotate(90deg)' : '';
+  if (b) b.classList.toggle('open');
+  if (c) c.style.transform = b.classList.contains('open') ? 'rotate(90deg)' : '';
 }
 
 window._sessMap = {};
