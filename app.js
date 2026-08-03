@@ -434,6 +434,11 @@ function goPage(id){
 }
 function tog(h){
   const b = h.nextElementSibling, c = h.querySelector('.chv');
+  // Charge le HTML de la fiche si ce n'est pas encore fait
+  if (b.id && b.id.startsWith('fiche-') && !b.dataset.loaded) {
+     b.innerHTML = ficheHTML(b.id.replace('fiche-',''));
+     b.dataset.loaded = '1';
+  }
   b.classList.toggle('open');
   if(c) c.style.transform = b.classList.contains('open') ? 'rotate(90deg)' : '';
 }
