@@ -432,6 +432,54 @@ function updateStats(){
   if (lvlEl) {
     lvlEl.innerHTML = `<span style="color:var(--or);font-weight:700">${current.title}</span> (${points} pts)`;
   }
+  // --- MISE À JOUR "PROCHAINE SÉANCE" ---
+  const nextContainer = document.getElementById('next-session-container');
+  if (nextContainer) {
+    let nextItem = null;
+    // Cherche la première séance qui n'est pas dans "done"
+    for (let i = 0; i < TRACK_IDS.length; i++) {
+      if (!done.has(TRACK_IDS[i].id)) {
+        nextItem = TRACK_IDS[i];
+        break;
+      }
+    }
+
+    if (nextItem) {
+      let letter = nextItem.id.charAt(2).toUpperCase();
+      let week = parseInt(nextItem.id.charAt(1));
+      let block = week <= 2 ? 1 : (week <= 4 ? 3 : 5);
+      let sessionKey = letter + '-S' + block;
+
+      let day = nextItem.d.split('-')[0].trim();
+      let desc = nextItem.d.split('-')[1].trim();
+
+      // Choix des couleurs selon la séance (A = orange, B = bleu, C = vert)
+      let c_bg, c_icn, c_txt;
+      if (letter === 'A') { c_bg = 'var(--orl)'; c_icn = 'var(--or)'; c_txt = 'var(--ord)'; }
+      else if (letter === 'B') { c_bg = 'var(--bll)'; c_icn = 'var(--bl)'; c_txt = 'var(--bld)'; }
+      else { c_bg = 'var(--grl)'; c_icn = 'var(--gr)'; c_txt = 'var(--grd)'; }
+
+      nextContainer.innerHTML = `
+        <div class="st">Prochaine séance — ${day}</div>
+        <div class="slc">
+          <div class="slc-h" style="background:${c_bg}">
+            <div class="slc-icon" style="background:${c_icn};color:#fff">${letter}</div>
+            <div class="slc-info">
+              <div class="slc-title" style="color:${c_txt}">Séance ${letter} · Semaine ${week}</div>
+              <div class="slc-sub">${desc} · ~35 min</div>
+            </div>
+            <button class="slc-play" style="background:${c_icn}" onclick="startPlayer('${sessionKey}')">▶ Lancer</button>
+          </div>
+        </div>
+      `;
+    } else {
+      // Si toutes les séances sont validées !
+      nextContainer.innerHTML = `
+        <div class="st">Phase 0 Terminée !</div>
+        <div class="slc"><div class="slc-h" style="background:var(--grl);color:var(--grd);font-weight:bold;padding:15px;text-align:center;border-radius:12px">🏆 Félicitations, tu as validé toutes les séances !</div></div>
+      `;
+    }
+  }
 }
 
 const TC = {fullbody:'background:var(--orl);color:var(--ord)',complex:'background:var(--bll);color:var(--bld)',emom:'background:var(--grl);color:var(--grd)',amrap:'background:var(--pul);color:var(--pud)',cible:'background:var(--aml);color:#854F0B'};
