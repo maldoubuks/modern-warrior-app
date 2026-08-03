@@ -240,7 +240,12 @@ function openRetroModal(key) {
 }
 
 function closeRetroModal() {
-  document.getElementById('retro-modal').style.display = 'none';
+  const m = document.getElementById('retro-modal');
+  if (m) m.style.display = 'none';
+  
+  // Rend la main au défilement et aux clics de la page
+  document.body.style.overflow = '';
+  document.body.style.pointerEvents = 'auto';
 }
 
 async function saveRetroSession() {
@@ -385,34 +390,36 @@ function buildTracking(){
   document.getElementById('track-content').innerHTML = h;
 }
 
-function tgl(id, sessionKey){
-  const c = document.getElementById('chk-'+id);
-  
-  if(done.has(id)){
+async function tgl(id, sessionKey){
+  if (done.has(id)){
     // Sécurité avant de décocher une séance
-    if(!confirm("Voulez-vous décocher cette séance ?")) return;
+    if (!confirm("Voulez-vous décocher cette séance ?")) return;
     
     done.delete(id); 
-    c.classList.remove('done'); 
-    c.innerHTML = '';
-    supa.upsert('tracking', {user_id: USER_ID, track_id: id, done: false}).catch(()=>{});
+    // Envoi en arrière-plan sans bloquer l'écran
+    supa.upsert('tracking', { user_id: USER_ID, track_id: id, done: false }).catch(() => {});
   } else {
     // Sécurité avant de cocher à vide
     const msg = "⚠️ Attention : Vous validez sans saisir vos ressentis ou charges.\n\n• Cliquez sur 'OK' pour valider quand même (Ignorer).\n• Cliquez sur 'Annuler' pour ouvrir le menu de saisie.";
     
-    if(confirm(msg)) {
+    if (confirm(msg)) {
       done.add(id); 
-      c.classList.add('done'); 
-      c.innerHTML = '&#10003;';
-      supa.upsert('tracking', {user_id: USER_ID, track_id: id, done: true}).catch(()=>{});
+      supa.upsert('tracking', { user_id: USER_ID, track_id: id, done: true }).catch(() => {});
     } else {
       // Si l'utilisateur clique sur "Annuler", on ouvre la modale de saisie !
-      openRetroModal(sessionKey);
-      return; // On arrête là, la validation se fera via le bouton "Enregistrer" de la modale.
+      openRetroModal(sessionKey || id);
+      return; 
     }
   }
   
+  // 1. Sauvegarde locale immédiate
   localStorage.setItem('mw3-done', JSON.stringify([...done]));
+  
+  // 2. Déblocage de la page au cas où
+  document.body.style.overflow = '';
+  document.body.style.pointerEvents = 'auto';
+
+  // 3. Mise à jour fluide de l'affichage
   updateStats(); 
   buildTracking();
 }
@@ -541,9 +548,19 @@ function tog(h){
 
 window._sessMap = {};
 window.onload = () => {
-  filterWod('all', document.querySelector('.wod-fb'));
+  // 🛡️ DÉBLOCAGE D'URGENCE : ferme toutes les fenêtres invisibles qui bloquent les clics
+  document.body.style.overflow = '';
+  ['retro-modal', 'finish', 'player', 'modal-overlay'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+
+  if (typeof filterWod === 'function') filterWod('all', document.querySelector('.wod-fb'));
+  if (typeof updateContextualReminder === 'function') updateContextualReminder();
+  
+  updateStats();
+  buildTracking();
   loadFromSupabase();
-  updateContextualReminder(); // <-- AJOUTE CETTE LIGNE ICI !
 };
 
 // ── DASHBOARD & STATS (CHART.JS + CALENDRIER) ──────────────────────────────
