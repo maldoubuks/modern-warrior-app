@@ -264,6 +264,16 @@ function openRetroModal(key) {
   }
 }
 
+function closeRetroModal() {
+  const m = document.getElementById('retro-modal');
+  if (m) {
+    m.style.display = 'none';
+    m.style.pointerEvents = 'none';
+  }
+  document.body.style.overflow = '';
+  document.body.style.pointerEvents = 'auto';
+}
+
 async function saveRetroSession() {
   if (!pKey) return;
   const s = SD[pKey]; if (!s) return;
@@ -583,7 +593,6 @@ window.onload = () => {
 // ── DASHBOARD & STATS (CHART.JS + CALENDRIER + KPIS) ───────────────────────
 let weightChart = null;
 
-// Extrait uniquement les mouvements clés (TGU, Swing, Clean, Press, Snatch, etc.)
 function getKeyMovements(detailedExos) {
   if (!detailedExos) return [];
   try {
@@ -625,14 +634,13 @@ function renderStats() {
     return parseSafely(a.created_at || a.completed_at) - parseSafely(b.created_at || b.completed_at);
   });
 
-  // 1. Calculs KPIs (Temps total & RPE Moyen)
   let totalMinutes = 0;
   let totalRpeSum = 0;
   let rpeCount = 0;
 
   sessions.forEach(s => {
     if (s.duration_min) totalMinutes += parseInt(s.duration_min);
-    else totalMinutes += 35; // Durée par défaut
+    else totalMinutes += 35;
 
     if (s.rpe && parseInt(s.rpe) > 0) {
       totalRpeSum += parseInt(s.rpe);
@@ -649,7 +657,6 @@ function renderStats() {
   const kpiRpeEl = document.getElementById('kpi-avg-rpe');
   if (kpiRpeEl) kpiRpeEl.textContent = `${avgRpe} / 10`;
 
-  // 2. Décompte des séances restantes
   const totalPhase = PHASES_DATA[currentPhase] ? PHASES_DATA[currentPhase].total : 18;
   const currentData = PHASES_DATA[currentPhase] ? PHASES_DATA[currentPhase].data : [];
   let n = 0;
@@ -657,7 +664,6 @@ function renderStats() {
   const countdownEl = document.getElementById('stat-countdown');
   if (countdownEl) countdownEl.textContent = Math.max(0, totalPhase - n);
 
-  // 3. Détection des exercices enregistrés pour le graphique
   const allExosSet = new Set();
   sessions.forEach(s => {
     if (s.detailed_exos) {
@@ -682,7 +688,6 @@ function renderStats() {
 
   const selectedOption = exoSelect ? (exoSelect.value || 'RPE_MODE') : 'RPE_MODE';
 
-  // 4. Rendu Chart.js
   const labels = [];
   const chartData = [];
 
@@ -730,7 +735,6 @@ function renderStats() {
     });
   }
 
-  // 5. Calendrier FIXÉ (Un seul attribut style pour éviter le bug de rendu !)
   const calGrid = document.getElementById('calendar-grid');
   if (calGrid) {
     calGrid.innerHTML = '';
@@ -771,7 +775,6 @@ function renderStats() {
     }
   }
 
-  // 6. Historique récent des séances
   const recentList = document.getElementById('stats-recent-list');
   if (recentList) {
     if (sessions.length === 0) {
