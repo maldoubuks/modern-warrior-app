@@ -314,7 +314,7 @@ async function loadFromSupabase() {
     const rows = await supa.get('tracking', '?user_id=eq.'+USER_ID+'&done=eq.true&select=track_id');
     rows.forEach(r => done.add(r.track_id));
 
-    const sessions = await supa.get('sessions', '?user_id=eq.'+USER_ID+'&order=completed_at.desc&limit=50');
+    const sessions = await supa.get('sessions', '?user_id=eq.'+USER_ID);
     const sessMap = {};
     sessions.forEach(s => { if (!sessMap[s.track_id]) sessMap[s.track_id] = s; });
     window._sessMap = sessMap;
