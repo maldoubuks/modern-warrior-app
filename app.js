@@ -280,15 +280,15 @@ async function saveRetroSession() {
     });
   }
 
-  // 2. Payload complet avec session_title (Fix du code 23502 !)
+// 2. Payload complet avec gestion du RPE (Fix de l'erreur 23514)
   const payload = {
     user_id: USER_ID,
     session_key: pKey,
-    session_title: s.title || pKey, // <-- LA LIGNE QUI RÈGLE L'ERREUR !
+    session_title: s.title || pKey,
     track_id: trackId,
     detailed_exos: JSON.stringify(detailedExos),
     notes: notes,
-    rpe: typeof selRpeVal !== 'undefined' ? selRpeVal : null,
+    rpe: (typeof selRpeVal !== 'undefined' && selRpeVal > 0) ? selRpeVal : null, // Send null si RPE = 0
     feel: typeof selFeelVal !== 'undefined' ? selFeelVal : '',
     created_at: new Date().toISOString()
   };
