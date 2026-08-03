@@ -100,7 +100,6 @@ function ficheHTML(key){
         return `<span class="pi">${p}</span>`;
       }).join('')}</div>${e.tip ? `<div class="tip">${e.tip}</div>` : ''}</div>`;
     });
-    h += 'd</div>';
   });
   return h;
 }
