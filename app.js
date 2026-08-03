@@ -615,20 +615,33 @@ window.onload = () => {
 // ── DASHBOARD & STATS (CHART.JS + CALENDRIER) ──────────────────────────────
 let weightChart = null;
 
-// Fonction utilitaire pour extraire SEULEMENT les mouvements clés (exclut échauffement)
+// 💡 Fonction de pop-up propre pour le calendrier (évite les erreurs de guillemets/retours à la ligne)
 function getKeyMovements(detailedExos) {
   if (!detailedExos) return [];
   try {
     const dt = typeof detailedExos === 'string' ? JSON.parse(detailedExos) : detailedExos;
+    if (!dt || typeof dt !== 'object') return [];
     const ignoreList = ['cars', 'cat-cow', 'spiderman', 'prying', 'row', 'push-up', 'carry', 'stretch'];
-    
     return Object.keys(dt)
       .filter(exoName => !ignoreList.some(bad => exoName.toLowerCase().includes(bad)))
       .map(exoName => {
         const info = dt[exoName];
-        return `${exoName}${info.kg ? ' (' + info.kg + 'kg)' : ''}`;
+        const kg = (info && info.kg) ? info.kg : '';
+        return `${exoName}${kg ? ' (' + kg + 'kg)' : ''}`;
       });
   } catch(e) { return []; }
+}
+
+function showCalDetail(key) {
+  const sessMap = window._sessMap || {};
+  const s = sessMap[key];
+  if (!s) return;
+  const keyExos = getKeyMovements(s.detailed_exos).join(' · ');
+  const dur = s.duration_min ? `${s.duration_min} min` : '35 min';
+  const rpeTxt = s.rpe ? `RPE ${s.rpe}/10` : 'RPE non défini';
+  const notesTxt = s.notes || 'Aucune';
+  const title = s.session_title || s.session_key || key;
+  alert(`📅 ${title}\n⏱️ Durée : ${dur} | 🔥 ${rpeTxt}\n⚡ Mouvements clés : ${keyExos || 'Général'}\n📝 Notes : ${notesTxt}`);
 }
 
 function renderStats() {
@@ -652,13 +665,15 @@ function renderStats() {
   const countdownEl = document.getElementById('stat-countdown');
   if(countdownEl) countdownEl.textContent = Math.max(0, totalPhase - n);
 
-  // 1. Liste des exercices + Option RPE pour le menu déroulant
+  // 1. Liste des exercices + Option RPE
   const allExosSet = new Set();
   sessions.forEach(s => {
     if (s.detailed_exos) {
       try {
         const dt = typeof s.detailed_exos === 'string' ? JSON.parse(s.detailed_exos) : s.detailed_exos;
-        Object.keys(dt).forEach(exoName => allExosSet.add(exoName));
+        if (dt && typeof dt === 'object') {
+          Object.keys(dt).forEach(exoName => allExosSet.add(exoName));
+        }
       } catch(e){}
     }
   });
@@ -666,8 +681,7 @@ function renderStats() {
   const exoSelect = document.getElementById('chart-exo-select');
   if (exoSelect) {
     const currentVal = exoSelect.value;
-    let optionsHTML = '<option value="RPE_MODE">🔥 Evolution de la Difficulté (RPE)</option>';
-    
+    let optionsHTML = '<option value="RPE_MODE">🔥 Évolution de la Difficulté (RPE)</option>';
     allExosSet.forEach(exo => {
       optionsHTML += `<option value="${exo}" ${currentVal === exo ? 'selected' : ''}>Poids : ${exo}</option>`;
     });
@@ -728,8 +742,8 @@ function renderStats() {
     });
   }
 
-  // 4. Calendrier interactif avec clic sur les cases
-const calGrid = document.getElementById('calendar-grid');
+  // 4. Calendrier interactif et coloré des 28 derniers jours
+  const calGrid = document.getElementById('calendar-grid');
   if (calGrid) {
     calGrid.innerHTML = '';
     const today = new Date();
@@ -739,16 +753,15 @@ const calGrid = document.getElementById('calendar-grid');
       d.setDate(today.getDate() - i);
       let dateStr = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
       
-      // Trouver la séance correspondant à cette date
       const sessionForDay = sessions.find(s => {
         let sd = parseSafely(s.created_at || s.completed_at);
-        return (sd.getFullYear() + '-' + String(sd.getMonth()+1).padStart(2,'0') + '-' + String(sd.getDate()).padStart(2,'0')) === dateStr;
+        let sDateStr = sd.getFullYear() + '-' + String(sd.getMonth()+1).padStart(2,'0') + '-' + String(sd.getDate()).padStart(2,'0');
+        return sDateStr === dateStr;
       });
 
       let hasSession = !!sessionForDay;
       let isToday = (i === 0);
 
-      // Styles visuels du carré
       let bgColor = hasSession ? 'var(--or)' : '#FFFFFF';
       let borderColor = hasSession ? 'var(--or)' : (isToday ? 'var(--or)' : '#333333');
       let borderWidth = isToday && !hasSession ? '2px' : '1px';
@@ -758,11 +771,8 @@ const calGrid = document.getElementById('calendar-grid');
       
       let clickAttr = '';
       if (hasSession) {
-        const keyExos = getKeyMovements(sessionForDay.detailed_exos).join(' · ');
-        const dur = sessionForDay.duration_min ? `${sessionForDay.duration_min} min` : '35 min';
-        const rpeTxt = sessionForDay.rpe ? `RPE ${sessionForDay.rpe}/10` : 'RPE non défini';
-        const summary = `📅 ${sessionForDay.session_title || sessionForDay.session_key}\n⏱️ Durée : ${dur} | 🔥 ${rpeTxt}\n⚡ Mouvements clés : ${keyExos || 'Général'}\n📝 Notes : ${sessionForDay.notes || 'Aucune'}`;
-        clickAttr = `onclick="alert('${summary.replace(/'/g, "\\'")}')" style="cursor:pointer;"`;
+        let sKey = sessionForDay.track_id || sessionForDay.session_key || '';
+        clickAttr = `onclick="showCalDetail('${sKey}')" style="cursor:pointer;"`;
       } else {
         clickAttr = `style="cursor:default;"`;
       }
