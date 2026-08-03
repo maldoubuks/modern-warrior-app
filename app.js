@@ -416,23 +416,22 @@ function tgl(id, sessionKey){
 }
 
 function updateStats(){
-  // 1. On récupère les infos de la phase sélectionnée dans le menu
+  // 1. Infos de la phase active
   const totalSessions = PHASES_DATA[currentPhase].total;
   const currentData = PHASES_DATA[currentPhase].data;
 
-  // 2. On compte uniquement les séances validées pour CETTE phase
+  // 2. Calculs des barres de progression
   let n = 0;
   currentData.forEach(item => { if (done.has(item.id)) n++; });
 
   const pct = Math.round(n / totalSessions * 100);
-  const points = done.size * 5; // Tes points XP (Niveau) comptent TOUTES les phases confondues !
+  const points = done.size * 5; // XP globale
   const { current, next } = calculateLevel(points);
 
-  // 3. On met à jour l'affichage
+  // 3. Mise à jour de l'affichage Tracking
   ['h-done','h-week','h-bar','h-pct','tb','td-txt','tp-txt'].forEach(id => {
     const el = document.getElementById(id); if(!el) return;
     if(id==='h-done') el.textContent = n;
-    // On adapte le nombre max de semaines (Bankai = 8, Phase 0 = 6)
     else if(id==='h-week') el.textContent = Math.min(totalSessions/3, Math.ceil(n/3)||1);
     else if(id==='h-bar'||id==='tb') el.style.width = pct + '%';
     else if(id==='h-pct') el.textContent = pct + '% complété';
@@ -440,20 +439,19 @@ function updateStats(){
     else if(id==='tp-txt') el.textContent = pct + '%';
   });
 
-  // Affichage du niveau & XP sur l'accueil
+  // 4. Badge XP (Page d'accueil)
   const lvlEl = document.getElementById('user-level-badge');
   if (lvlEl) {
     lvlEl.innerHTML = `<span style="color:var(--or);font-weight:700">${current.title}</span> (${points} pts)`;
   }
 
-  // --- MISE À JOUR "PROCHAINE SÉANCE" ---
+  // 5. Encart "Prochaine Séance" dynamique
   const nextContainer = document.getElementById('next-session-container');
   if (nextContainer) {
     let nextItem = null;
-    // Cherche la première séance qui n'est pas dans "done"
-    for (let i = 0; i < TRACK_IDS.length; i++) {
-      if (!done.has(TRACK_IDS[i].id)) {
-        nextItem = TRACK_IDS[i];
+    for (let i = 0; i < currentData.length; i++) {
+      if (!done.has(currentData[i].id)) {
+        nextItem = currentData[i];
         break;
       }
     }
@@ -464,39 +462,36 @@ function updateStats(){
       let block = week <= 2 ? 1 : (week <= 4 ? 3 : 5);
       let sessionKey = letter + '-S' + block;
 
-      let day = nextItem.d.split('-')[0].trim();
-      let desc = nextItem.d.split('-')[1].trim();
+      let day = nextItem.d ? nextItem.d.split('-')[0].trim() : '';
+      let desc = nextItem.d ? (nextItem.d.split('-')[1]?.trim() || nextItem.d) : '';
 
-      // Choix des couleurs selon la séance (A = orange, B = bleu, C = vert)
       let c_bg, c_icn, c_txt;
       if (letter === 'A') { c_bg = 'var(--orl)'; c_icn = 'var(--or)'; c_txt = 'var(--ord)'; }
       else if (letter === 'B') { c_bg = 'var(--bll)'; c_icn = 'var(--bl)'; c_txt = 'var(--bld)'; }
       else { c_bg = 'var(--grl)'; c_icn = 'var(--gr)'; c_txt = 'var(--grd)'; }
 
       nextContainer.innerHTML = `
-        <div class="st">Prochaine séance — ${day}</div>
+        <div class="st">Prochaine séance — Semaine ${week}</div>
         <div class="slc">
           <div class="slc-h" style="background:${c_bg}">
             <div class="slc-icon" style="background:${c_icn};color:#fff">${letter}</div>
             <div class="slc-info">
-              <div class="slc-title" style="color:${c_txt}">Séance ${letter} · Semaine ${week}</div>
-              <div class="slc-sub">${desc} · ~35 min</div>
+              <div class="slc-title" style="color:${c_txt}">Séance ${letter}</div>
+              <div class="slc-sub">${desc}</div>
             </div>
             <button class="slc-play" style="background:${c_icn}" onclick="startPlayer('${sessionKey}')">▶ Lancer</button>
           </div>
         </div>
       `;
     } else {
-      // Si toutes les séances sont validées !
       nextContainer.innerHTML = `
-        <div class="st">Phase 0 Terminée !</div>
-        <div class="slc"><div class="slc-h" style="background:var(--grl);color:var(--grd);font-weight:bold;padding:15px;text-align:center;border-radius:12px">🏆 Félicitations, tu as validé toutes les séances !</div></div>
+        <div class="st">Phase Terminée !</div>
+        <div class="slc"><div class="slc-h" style="background:var(--grl);color:var(--grd);font-weight:bold;padding:15px;text-align:center;border-radius:12px">🏆 Félicitations, tu as validé toutes les séances de cette phase !</div></div>
       `;
     }
   }
 
-  // --- RENDU DU DASHBOARD STATS ---
-  // On appelle le rendu Chart.js seulement si la fonction existe déjà en bas du fichier
+  // 6. Rendu des stats et courbes
   if (typeof renderStats === 'function') {
     renderStats();
   }
