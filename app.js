@@ -29,12 +29,13 @@ const supa = {
       return r.ok;
     } catch(e) { return false; }
   },
-async upsert(table, body, onConflict = 'user_id,track_id') {
+  // 🛡️ FIX DEFINITIF : on_conflict est désormais forcé dans l'URL !
+  async upsert(table, body, onConflict='user_id,track_id') {
     try {
-      const query = `?on_conflict=${onConflict}`;
-      const r = await fetch(SUPA_URL + '/rest/v1/' + table + query, {
+      const url = `${SUPA_URL}/rest/v1/${table}?on_conflict=${onConflict}`;
+      const r = await fetch(url, {
         method: 'POST',
-        headers: this.headers({'Prefer': 'resolution=merge-duplicates,return=minimal'}),
+        headers: this.headers({'Prefer':'resolution=merge-duplicates,return=minimal'}),
         body: JSON.stringify(body)
       });
       return r.ok;
