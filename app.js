@@ -432,6 +432,7 @@ function updateStats(){
   if (lvlEl) {
     lvlEl.innerHTML = `<span style="color:var(--or);font-weight:700">${current.title}</span> (${points} pts)`;
   }
+
   // --- MISE À JOUR "PROCHAINE SÉANCE" ---
   const nextContainer = document.getElementById('next-session-container');
   if (nextContainer) {
@@ -480,16 +481,12 @@ function updateStats(){
       `;
     }
   }
-} else {
-        // Si toutes les séances sont validées !
-        nextContainer.innerHTML = `
-          <div class="st">Phase 0 Terminée !</div>
-          <div class="slc"><div class="slc-h" style="background:var(--grl);color:var(--grd);font-weight:bold;padding:15px;text-align:center;border-radius:12px">🏆 Félicitations, tu as validé toutes les séances !</div></div>
-        `;
-      }
-    }
 
+  // --- RENDU DU DASHBOARD STATS ---
+  // On appelle le rendu Chart.js seulement si la fonction existe déjà en bas du fichier
+  if (typeof renderStats === 'function') {
     renderStats();
+  }
 }
 
 const TC = {fullbody:'background:var(--orl);color:var(--ord)',complex:'background:var(--bll);color:var(--bld)',emom:'background:var(--grl);color:var(--grd)',amrap:'background:var(--pul);color:var(--pud)',cible:'background:var(--aml);color:#854F0B'};
