@@ -580,9 +580,10 @@ window.onload = () => {
   loadFromSupabase();
 };
 
-// ── DASHBOARD & STATS (CHART.JS + CALENDRIER) ──────────────────────────────
+// ── DASHBOARD & STATS (CHART.JS + CALENDRIER + KPIS) ───────────────────────
 let weightChart = null;
 
+// Extrait uniquement les mouvements clés (TGU, Swing, Clean, Press, Snatch, etc.)
 function getKeyMovements(detailedExos) {
   if (!detailedExos) return [];
   try {
@@ -606,7 +607,7 @@ function showCalDetail(key) {
   const keyExos = getKeyMovements(s.detailed_exos).join(' · ');
   const dur = s.duration_min ? `${s.duration_min} min` : '35 min';
   const rpeTxt = s.rpe ? `RPE ${s.rpe}/10` : 'RPE non défini';
-  const notesTxt = s.notes || 'Aucune';
+  const notesTxt = s.notes || 'Aucune note';
   const title = s.session_title || s.session_key || key;
   alert(`📅 ${title}\n⏱️ Durée : ${dur} | 🔥 ${rpeTxt}\n⚡ Mouvements clés : ${keyExos || 'Général'}\n📝 Notes : ${notesTxt}`);
 }
@@ -624,14 +625,39 @@ function renderStats() {
     return parseSafely(a.created_at || a.completed_at) - parseSafely(b.created_at || b.completed_at);
   });
 
+  // 1. Calculs KPIs (Temps total & RPE Moyen)
+  let totalMinutes = 0;
+  let totalRpeSum = 0;
+  let rpeCount = 0;
+
+  sessions.forEach(s => {
+    if (s.duration_min) totalMinutes += parseInt(s.duration_min);
+    else totalMinutes += 35; // Durée par défaut
+
+    if (s.rpe && parseInt(s.rpe) > 0) {
+      totalRpeSum += parseInt(s.rpe);
+      rpeCount++;
+    }
+  });
+
+  const hours = Math.floor(totalMinutes / 60);
+  const mins = totalMinutes % 60;
+  const kpiTimeEl = document.getElementById('kpi-total-time');
+  if (kpiTimeEl) kpiTimeEl.textContent = `${hours}h ${String(mins).padStart(2,'0')}m`;
+
+  const avgRpe = rpeCount > 0 ? (totalRpeSum / rpeCount).toFixed(1) : '0';
+  const kpiRpeEl = document.getElementById('kpi-avg-rpe');
+  if (kpiRpeEl) kpiRpeEl.textContent = `${avgRpe} / 10`;
+
+  // 2. Décompte des séances restantes
   const totalPhase = PHASES_DATA[currentPhase] ? PHASES_DATA[currentPhase].total : 18;
   const currentData = PHASES_DATA[currentPhase] ? PHASES_DATA[currentPhase].data : [];
   let n = 0;
   currentData.forEach(item => { if (done.has(item.id)) n++; });
-  
   const countdownEl = document.getElementById('stat-countdown');
-  if(countdownEl) countdownEl.textContent = Math.max(0, totalPhase - n);
+  if (countdownEl) countdownEl.textContent = Math.max(0, totalPhase - n);
 
+  // 3. Détection des exercices enregistrés pour le graphique
   const allExosSet = new Set();
   sessions.forEach(s => {
     if (s.detailed_exos) {
@@ -656,6 +682,7 @@ function renderStats() {
 
   const selectedOption = exoSelect ? (exoSelect.value || 'RPE_MODE') : 'RPE_MODE';
 
+  // 4. Rendu Chart.js
   const labels = [];
   const chartData = [];
 
@@ -680,7 +707,6 @@ function renderStats() {
   const ctx = document.getElementById('weightChart');
   if (ctx) {
     if (weightChart) weightChart.destroy();
-    
     const isRPE = selectedOption === 'RPE_MODE';
     weightChart = new Chart(ctx, {
       type: 'line',
@@ -699,13 +725,12 @@ function renderStats() {
       options: { 
         responsive: true, 
         maintainAspectRatio: false,
-        scales: { 
-          y: { beginAtZero: true, suggestedMax: isRPE ? 10 : 24 } 
-        }
+        scales: { y: { beginAtZero: true, suggestedMax: isRPE ? 10 : 24 } }
       }
     });
   }
 
+  // 5. Calendrier FIXÉ (Un seul attribut style pour éviter le bug de rendu !)
   const calGrid = document.getElementById('calendar-grid');
   if (calGrid) {
     calGrid.innerHTML = '';
@@ -726,24 +751,50 @@ function renderStats() {
       let isToday = (i === 0);
 
       let bgColor = hasSession ? 'var(--or)' : '#FFFFFF';
-      let borderColor = hasSession ? 'var(--or)' : (isToday ? 'var(--or)' : '#333333');
+      let borderColor = hasSession ? 'var(--or)' : (isToday ? 'var(--or)' : '#444444');
       let borderWidth = isToday && !hasSession ? '2px' : '1px';
-      let textColor = hasSession ? '#FFFFFF' : (isToday ? 'var(--or)' : '#666666');
+      let textColor = hasSession ? '#FFFFFF' : (isToday ? 'var(--or)' : '#888888');
+      let cursor = hasSession ? 'pointer' : 'default';
       
       let label = hasSession ? '<span style="font-size:14px;font-weight:bold;color:#fff">&#10003;</span>' : (isToday ? '<span style="font-size:9px;font-weight:800;color:var(--or)">Auj.</span>' : '');
       
-      let clickAttr = '';
+      let onClickAction = '';
       if (hasSession) {
         let sKey = sessionForDay.track_id || sessionForDay.session_key || '';
-        clickAttr = `onclick="showCalDetail('${sKey}')" style="cursor:pointer;"`;
-      } else {
-        clickAttr = `style="cursor:default;"`;
+        onClickAction = `onclick="showCalDetail('${sKey}')"`;
       }
 
       calGrid.innerHTML += `
-        <div ${clickAttr} style="aspect-ratio:1; background:${bgColor}; border:${borderWidth} solid ${borderColor}; border-radius:8px; display:flex; align-items:center; justify-content:center; color:${textColor}; transition:transform 0.2s, box-shadow 0.2s;">
+        <div ${onClickAction} style="aspect-ratio:1; background:${bgColor}; border:${borderWidth} solid ${borderColor}; border-radius:8px; display:flex; align-items:center; justify-content:center; color:${textColor}; cursor:${cursor}; transition:all 0.2s;">
           ${label}
         </div>`;
+    }
+  }
+
+  // 6. Historique récent des séances
+  const recentList = document.getElementById('stats-recent-list');
+  if (recentList) {
+    if (sessions.length === 0) {
+      recentList.innerHTML = '<div style="font-size:12px;color:var(--i3);text-align:center;padding:20px;">Aucune séance enregistrée pour le moment.</div>';
+    } else {
+      let html = '';
+      sessions.slice(-5).reverse().forEach(s => {
+        const keyExos = getKeyMovements(s.detailed_exos).join(' · ');
+        const dur = s.duration_min ? `${s.duration_min} min` : '35 min';
+        const rpeBadge = s.rpe ? `<span style="background:#E74C3C;color:#fff;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;">RPE ${s.rpe}</span>` : '';
+        
+        html += `
+          <div class="sc" style="margin-bottom:10px; padding:12px 16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <div style="font-size:14px; font-weight:700; color:#fff;">${s.session_title || s.session_key}</div>
+              <div>${rpeBadge}</div>
+            </div>
+            <div style="font-size:11px; color:var(--i3); margin-bottom:6px;">⏱️ ${dur} ${keyExos ? '· ⚡ ' + keyExos : ''}</div>
+            ${s.notes ? `<div style="font-size:11px; color:#aaa; font-style:italic; background:rgba(255,255,255,0.05); padding:6px 10px; border-radius:6px;">"${s.notes}"</div>` : ''}
+          </div>
+        `;
+      });
+      recentList.innerHTML = html;
     }
   }
 }
