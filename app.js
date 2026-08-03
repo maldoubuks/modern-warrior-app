@@ -550,10 +550,8 @@ let weightChart = null;
 function renderStats() {
   const sessMap = window._sessMap || {};
   
-  // Fonction de nettoyage des dates spéciale Safari iOS
   const parseSafely = (dateStr) => {
     if (!dateStr) return new Date(0);
-    // Safari iOS exige le 'T' entre la date et l'heure
     let cleanStr = dateStr.toString().replace(' ', 'T');
     let d = new Date(cleanStr);
     return isNaN(d.getTime()) ? new Date(0) : d;
@@ -564,61 +562,96 @@ function renderStats() {
     return parseSafely(a.created_at || a.completed_at) - parseSafely(b.created_at || b.completed_at);
   });
 
-  // 2. Décompte des séances
+  // 2. Décompte des séances restantes
   const totalPhase = PHASES_DATA[currentPhase] ? PHASES_DATA[currentPhase].total : 18;
   const currentData = PHASES_DATA[currentPhase] ? PHASES_DATA[currentPhase].data : [];
   let n = 0;
   currentData.forEach(item => { if (done.has(item.id)) n++; });
   
-  const restantes = Math.max(0, totalPhase - n);
   const countdownEl = document.getElementById('stat-countdown');
-  if(countdownEl) countdownEl.textContent = restantes;
+  if(countdownEl) countdownEl.textContent = Math.max(0, totalPhase - n);
 
-  // 3. Extraire les perfs pour le graphique
+  // 3. Détecter automatiquement TOUS les exercices enregistrés
+  const allExosSet = new Set();
+  sessions.forEach(s => {
+    if (s.detailed_exos) {
+      try {
+        const dt = typeof s.detailed_exos === 'string' ? JSON.parse(s.detailed_exos) : s.detailed_exos;
+        Object.keys(dt).forEach(exoName => allExosSet.add(exoName));
+      } catch(e){}
+    }
+  });
+
+  // Remplir le menu déroulant
+  const exoSelect = document.getElementById('chart-exo-select');
+  let selectedExo = null;
+
+  if (exoSelect) {
+    const currentVal = exoSelect.value;
+    let optionsHTML = '';
+    
+    if (allExosSet.size === 0) {
+      optionsHTML = '<option value="">Aucun exercice enregistré</option>';
+    } else {
+      allExosSet.forEach(exo => {
+        optionsHTML += `<option value="${exo}" ${currentVal === exo ? 'selected' : ''}>${exo}</option>`;
+      });
+    }
+    exoSelect.innerHTML = optionsHTML;
+    selectedExo = exoSelect.value || Array.from(allExosSet)[0];
+  }
+
+  // 4. Préparer les données pour l'exercice sélectionné
   const labels = [];
-  const tguData = [];
-  const swingData = [];
+  const exoData = [];
 
   sessions.forEach((s, idx) => {
     labels.push('S' + (idx+1));
-    let tguW = NaN; let swingW = NaN;
+    let weight = NaN;
     
-    if(s.detailed_exos) {
+    if (s.detailed_exos && selectedExo) {
       try {
         const dt = typeof s.detailed_exos === 'string' ? JSON.parse(s.detailed_exos) : s.detailed_exos;
-        
-        let tguKey = Object.keys(dt).find(k => k.toLowerCase().includes('get-up') || k.toLowerCase().includes('tgu'));
-        if(tguKey && dt[tguKey].kg) tguW = parseFloat(dt[tguKey].kg);
-        
-        let swingKey = Object.keys(dt).find(k => k.toLowerCase().includes('swing'));
-        if(swingKey && dt[swingKey].kg) swingW = parseFloat(dt[swingKey].kg);
+        if (dt[selectedExo] && dt[selectedExo].kg !== undefined && dt[selectedExo].kg !== '') {
+          weight = parseFloat(dt[selectedExo].kg);
+        }
       } catch(e) {}
     }
-    tguData.push(tguW);
-    swingData.push(swingW);
+    exoData.push(weight);
   });
 
-  // 4. Graphique Chart.js
+  // 5. Dessiner le graphique Chart.js
   const ctx = document.getElementById('weightChart');
   if (ctx) {
     if (weightChart) weightChart.destroy();
+    
+    const datasets = selectedExo ? [{
+      label: `${selectedExo} (kg)`,
+      data: exoData,
+      borderColor: '#D85A30',
+      backgroundColor: '#D85A30',
+      spanGaps: true,
+      tension: 0.3,
+      pointRadius: 5
+    }] : [];
+
     weightChart = new Chart(ctx, {
       type: 'line',
       data: {
         labels: labels,
-        datasets: [
-          { label: 'TGU (kg)', data: tguData, borderColor: '#D85A30', backgroundColor: '#D85A30', spanGaps: true, tension: 0.3, pointRadius: 5 },
-          { label: 'Swing (kg)', data: swingData, borderColor: '#378ADD', backgroundColor: '#378ADD', spanGaps: true, tension: 0.3, pointRadius: 5 }
-        ]
+        datasets: datasets
       },
       options: { 
-        responsive: true, maintainAspectRatio: false,
-        scales: { y: { beginAtZero: true, suggestedMax: 24 } }
+        responsive: true, 
+        maintainAspectRatio: false,
+        scales: { 
+          y: { beginAtZero: true, suggestedMax: 24 } 
+        }
       }
     });
   }
 
-  // 5. Calendrier (Compatible Safari)
+  // 6. Calendrier des 28 derniers jours
   const calGrid = document.getElementById('calendar-grid');
   if (calGrid) {
     calGrid.innerHTML = '';
