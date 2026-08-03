@@ -26,6 +26,7 @@
     <div class="hl">Modern Warrior &middot; Phase 0</div>
     <div class="ht">L'&Eacute;veil<br>6 semaines.</div>
     <div class="hs">Homme &lt;75 kg &middot; Basic Fit &middot; L/M/V matin &middot; 30-45 min</div>
+    <div style="margin-top:10px;font-size:12px;color:#aaa" id="user-level-badge">Niveau 1 (0 pts)</div>
   </div>
   <div class="g2">
     <div class="sc"><div class="sc-l">S&eacute;ances valid&eacute;es</div><div class="sc-v" id="h-done">0</div><div class="sc-s">sur 18</div></div>
@@ -33,6 +34,7 @@
   </div>
   <div class="pb"><div class="pf" id="h-bar" style="width:0%"></div></div>
   <div class="pl" id="h-pct">0% compl&eacute;t&eacute;</div>
+  
   <div class="st">Prochaine s&eacute;ance &mdash; Lundi</div>
   <div class="slc">
     <div class="slc-h" style="background:var(--orl)">
@@ -41,6 +43,7 @@
       <button class="slc-play" style="background:var(--or)" onclick="startPlayer('A-S1')">&#9654; Lancer</button>
     </div>
   </div>
+  
   <div class="st">Cette semaine</div>
   <div class="g3">
     <div class="sc" style="cursor:pointer;text-align:center" onclick="startPlayer('A-S1')">
@@ -59,9 +62,6 @@
       <div style="margin-top:6px"><button style="background:var(--gr);border:none;border-radius:6px;padding:4px 10px;color:#fff;font-size:10px;font-weight:700;cursor:pointer">&#9654;</button></div>
     </div>
   </div>
-  <div class="tb"><strong>Avant S1 :</strong> Masterclass TGU (10:47) + Swing (9:49) sur Skool &mdash; obligatoire avant de toucher un KB.</div>
-  <div class="tb tb-g"><strong>Auto-r&eacute;gulation :</strong> RPE &gt; 8 ou technique d&eacute;grad&eacute;e &rarr; r&eacute;duire les reps ou passer en E2MOM.</div>
-  <div class="tb tb-b"><strong>Charges d&eacute;part :</strong> 12 kg (TGU / press) &middot; 16 kg (swing / clean). Monter uniquement quand la technique est solide.</div>
 </div>
 
 <div id="page-guide" class="page">
@@ -93,29 +93,35 @@
 <div id="page-seances" class="page">
   <div class="hero"><div class="hl">S&eacute;ances Phase 0</div><div class="ht">Lance la<br>session.</div><div class="hs">&#9654; pour le player interactif &middot; D&eacute;plier pour voir la fiche d&eacute;taill&eacute;e</div></div>
   <div class="st">Semaines 1 &amp; 2</div>
+  
   <div class="slc">
     <div class="slc-h" style="background:var(--orl)">
       <div class="slc-icon" style="background:var(--or);color:#fff">A</div>
       <div class="slc-info"><div class="slc-title" style="color:var(--ord)">S&eacute;ance A &middot; Lundi S1-S2</div><div class="slc-sub">Deadstop Swing 2H + TGU &middot; ~35 min</div></div>
-      <button class="slc-play" style="background:var(--or)" onclick="startPlayer('A-S1')">&#9654; Lancer</button>
+      <button class="slc-play" style="background:var(--or)" onclick="startPlayer('A-S1')">&#9654; Live</button>
+      <button class="slc-play" style="background:#555;margin-left:4px" onclick="openRetroModal('A-S1')">📝 Saisir</button>
     </div>
     <div class="ch ch-n" style="border-top:1px solid var(--bd)" onclick="tog(this)"><div class="ci ci-n" style="font-size:9px">fiche</div><div class="ct" style="font-size:12px;color:var(--i3)">Voir la fiche d&eacute;taill&eacute;e</div><div class="chv">&rsaquo;</div></div>
     <div class="cb" id="fiche-A-S1"></div>
   </div>
+  
   <div class="slc">
     <div class="slc-h" style="background:var(--bll)">
       <div class="slc-icon" style="background:var(--bl);color:#fff">B</div>
       <div class="slc-info"><div class="slc-title" style="color:var(--bld)">S&eacute;ance B &middot; Mercredi S1-S2</div><div class="slc-sub">Dead Clean &amp; Push Press &middot; ~35 min</div></div>
-      <button class="slc-play" style="background:var(--bl)" onclick="startPlayer('B-S1')">&#9654; Lancer</button>
+      <button class="slc-play" style="background:var(--bl)" onclick="startPlayer('B-S1')">&#9654; Live</button>
+      <button class="slc-play" style="background:#555;margin-left:4px" onclick="openRetroModal('B-S1')">📝 Saisir</button>
     </div>
     <div class="ch ch-n" style="border-top:1px solid var(--bd)" onclick="tog(this)"><div class="ci ci-n" style="font-size:9px">fiche</div><div class="ct" style="font-size:12px;color:var(--i3)">Voir la fiche d&eacute;taill&eacute;e</div><div class="chv">&rsaquo;</div></div>
     <div class="cb" id="fiche-B-S1"></div>
   </div>
+  
   <div class="slc">
     <div class="slc-h" style="background:var(--grl)">
       <div class="slc-icon" style="background:var(--gr);color:#fff">C</div>
       <div class="slc-info"><div class="slc-title" style="color:var(--grd)">S&eacute;ance C &middot; Vendredi S1-S2</div><div class="slc-sub">2H Swing + TGU EMOM 20' &middot; ~35 min</div></div>
-      <button class="slc-play" style="background:var(--gr)" onclick="startPlayer('C-S1')">&#9654; Lancer</button>
+      <button class="slc-play" style="background:var(--gr)" onclick="startPlayer('C-S1')">&#9654; Live</button>
+      <button class="slc-play" style="background:#555;margin-left:4px" onclick="openRetroModal('C-S1')">📝 Saisir</button>
     </div>
     <div class="ch ch-n" style="border-top:1px solid var(--bd)" onclick="tog(this)"><div class="ci ci-n" style="font-size:9px">fiche</div><div class="ct" style="font-size:12px;color:var(--i3)">Voir la fiche d&eacute;taill&eacute;e</div><div class="chv">&rsaquo;</div></div>
     <div class="cb" id="fiche-C-S1"></div>
@@ -126,7 +132,8 @@
     <div class="slc-h" style="background:var(--orl)">
       <div class="slc-icon" style="background:var(--or);color:#fff">A</div>
       <div class="slc-info"><div class="slc-title" style="color:var(--ord)">S&eacute;ance A &middot; Lundi S3-S4</div><div class="slc-sub">1H Swing + TGU EMOM &middot; ~35 min</div></div>
-      <button class="slc-play" style="background:var(--or)" onclick="startPlayer('A-S3')">&#9654; Lancer</button>
+      <button class="slc-play" style="background:var(--or)" onclick="startPlayer('A-S3')">&#9654; Live</button>
+      <button class="slc-play" style="background:#555;margin-left:4px" onclick="openRetroModal('A-S3')">📝 Saisir</button>
     </div>
     <div class="ch ch-n" style="border-top:1px solid var(--bd)" onclick="tog(this)"><div class="ci ci-n" style="font-size:9px">fiche</div><div class="ct" style="font-size:12px;color:var(--i3)">Voir la fiche d&eacute;taill&eacute;e</div><div class="chv">&rsaquo;</div></div>
     <div class="cb" id="fiche-A-S3"></div>
@@ -135,7 +142,8 @@
     <div class="slc-h" style="background:var(--bll)">
       <div class="slc-icon" style="background:var(--bl);color:#fff">B</div>
       <div class="slc-info"><div class="slc-title" style="color:var(--bld)">S&eacute;ance B &middot; Mercredi S3-S4</div><div class="slc-sub">Clean &amp; Push Press &middot; ~35 min</div></div>
-      <button class="slc-play" style="background:var(--bl)" onclick="startPlayer('B-S3')">&#9654; Lancer</button>
+      <button class="slc-play" style="background:var(--bl)" onclick="startPlayer('B-S3')">&#9654; Live</button>
+      <button class="slc-play" style="background:#555;margin-left:4px" onclick="openRetroModal('B-S3')">📝 Saisir</button>
     </div>
     <div class="ch ch-n" style="border-top:1px solid var(--bd)" onclick="tog(this)"><div class="ci ci-n" style="font-size:9px">fiche</div><div class="ct" style="font-size:12px;color:var(--i3)">Voir la fiche d&eacute;taill&eacute;e</div><div class="chv">&rsaquo;</div></div>
     <div class="cb" id="fiche-B-S3"></div>
@@ -144,7 +152,8 @@
     <div class="slc-h" style="background:var(--grl)">
       <div class="slc-icon" style="background:var(--gr);color:#fff">C</div>
       <div class="slc-info"><div class="slc-title" style="color:var(--grd)">Complexe Ulysse &middot; Vendredi S3-S4</div><div class="slc-sub">Encha&icirc;nement sans reposer le KB &middot; ~35 min</div></div>
-      <button class="slc-play" style="background:var(--gr)" onclick="startPlayer('C-S3')">&#9654; Lancer</button>
+      <button class="slc-play" style="background:var(--gr)" onclick="startPlayer('C-S3')">&#9654; Live</button>
+      <button class="slc-play" style="background:#555;margin-left:4px" onclick="openRetroModal('C-S3')">📝 Saisir</button>
     </div>
     <div class="ch ch-n" style="border-top:1px solid var(--bd)" onclick="tog(this)"><div class="ci ci-n" style="font-size:9px">fiche</div><div class="ct" style="font-size:12px;color:var(--i3)">Voir la fiche d&eacute;taill&eacute;e</div><div class="chv">&rsaquo;</div></div>
     <div class="cb" id="fiche-C-S3"></div>
@@ -155,7 +164,8 @@
     <div class="slc-h" style="background:var(--orl)">
       <div class="slc-icon" style="background:var(--or);color:#fff">A</div>
       <div class="slc-info"><div class="slc-title" style="color:var(--ord)">S&eacute;ance A &middot; Lundi S5-S6</div><div class="slc-sub">Snatch + TGU EMOM &middot; ~40 min</div></div>
-      <button class="slc-play" style="background:var(--or)" onclick="startPlayer('A-S5')">&#9654; Lancer</button>
+      <button class="slc-play" style="background:var(--or)" onclick="startPlayer('A-S5')">&#9654; Live</button>
+      <button class="slc-play" style="background:#555;margin-left:4px" onclick="openRetroModal('A-S5')">📝 Saisir</button>
     </div>
     <div class="ch ch-n" style="border-top:1px solid var(--bd)" onclick="tog(this)"><div class="ci ci-n" style="font-size:9px">fiche</div><div class="ct" style="font-size:12px;color:var(--i3)">Voir la fiche d&eacute;taill&eacute;e</div><div class="chv">&rsaquo;</div></div>
     <div class="cb" id="fiche-A-S5"></div>
@@ -164,7 +174,8 @@
     <div class="slc-h" style="background:var(--bll)">
       <div class="slc-icon" style="background:var(--bl);color:#fff">B</div>
       <div class="slc-info"><div class="slc-title" style="color:var(--bld)">S&eacute;ance B &middot; Mercredi S5-S6</div><div class="slc-sub">Clean &amp; Press strict &middot; ~35 min</div></div>
-      <button class="slc-play" style="background:var(--bl)" onclick="startPlayer('B-S5')">&#9654; Lancer</button>
+      <button class="slc-play" style="background:var(--bl)" onclick="startPlayer('B-S5')">&#9654; Live</button>
+      <button class="slc-play" style="background:#555;margin-left:4px" onclick="openRetroModal('B-S5')">📝 Saisir</button>
     </div>
     <div class="ch ch-n" style="border-top:1px solid var(--bd)" onclick="tog(this)"><div class="ci ci-n" style="font-size:9px">fiche</div><div class="ct" style="font-size:12px;color:var(--i3)">Voir la fiche d&eacute;taill&eacute;e</div><div class="chv">&rsaquo;</div></div>
     <div class="cb" id="fiche-B-S5"></div>
@@ -173,7 +184,8 @@
     <div class="slc-h" style="background:var(--grl)">
       <div class="slc-icon" style="background:var(--gr);color:#fff">C</div>
       <div class="slc-info"><div class="slc-title" style="color:var(--grd)">Complexe Atlas &middot; Vendredi S5-S6</div><div class="slc-sub">4 mouvements encha&icirc;n&eacute;s &middot; ~40 min</div></div>
-      <button class="slc-play" style="background:var(--gr)" onclick="startPlayer('C-S5')">&#9654; Lancer</button>
+      <button class="slc-play" style="background:var(--gr)" onclick="startPlayer('C-S5')">&#9654; Live</button>
+      <button class="slc-play" style="background:#555;margin-left:4px" onclick="openRetroModal('C-S5')">📝 Saisir</button>
     </div>
     <div class="ch ch-n" style="border-top:1px solid var(--bd)" onclick="tog(this)"><div class="ci ci-n" style="font-size:9px">fiche</div><div class="ct" style="font-size:12px;color:var(--i3)">Voir la fiche d&eacute;taill&eacute;e</div><div class="chv">&rsaquo;</div></div>
     <div class="cb" id="fiche-C-S5"></div>
@@ -269,6 +281,7 @@
       <div class="exo"><div class="en">Avanc&eacute;</div><div class="pills"><span class="pi pk">32-40 kg+</span></div><div class="tip">Gainage, respiration et timing parfaits obligatoires.</div></div>
     </div>
   </div>
+  
   <div class="st">Masterclass TGU &mdash; les 7 &eacute;tapes</div>
   <div class="tb tb-b"><strong>Le TGU = chor&eacute;graphie sous charge.</strong> Regard fix&eacute; sur le KB du d&eacute;but &agrave; la fin. Si tu dois rusher &rarr; descendre la charge.</div>
   <div class="card">
@@ -291,6 +304,7 @@
       <div class="exo"><div class="en">Avanc&eacute;</div><div class="pills"><span class="pi pk">24-32 kg</span></div><div class="tip">Force fonctionnelle maximale. Mont&eacute;e fluide sans compensation obligatoire.</div></div>
     </div>
   </div>
+  
   <div class="st">Complexes nomm&eacute;s &mdash; r&eacute;pertoire MW</div>
   <div class="card">
     <div class="ch ch-o" onclick="tog(this)"><div class="ci ci-o">&#9876;</div><div class="ct ct-o">8 complexes disponibles maintenant</div><div class="chv">&rsaquo;</div></div>
@@ -306,6 +320,7 @@
       <div class="exo"><div class="en">Boromir &middot; Maximus &middot; Floki &middot; Fenrir <span class="lock">&#128274; +15j</span></div></div>
     </div>
   </div>
+  
   <div class="st">Guide choix des KB</div>
   <div class="rc rc-o"><div class="rl rl-o">M&eacute;thode 1H Press</div><div class="rt">Poids que tu presses pour 3x10 reps/c&ocirc;t&eacute; = ton KB l&eacute;ger. Les deux autres = +4 kg chacun.</div><div class="rs">Ex : tu presses 12 kg &rarr; tes KB sont 12 / 16 / 20 kg</div></div>
   <div class="rc rc-b"><div class="rl rl-b">Standard d&eacute;butant H</div><div class="rt">L&eacute;ger 12 kg &middot; Moyen 16 kg &middot; Lourd 20 kg</div></div>
@@ -314,6 +329,7 @@
 
 <div id="page-mobilite" class="page">
   <div class="hero"><div class="hl">Routines du Guerrier</div><div class="ht">Mobilit&eacute;<br>&amp; souplesse.</div><div class="hs">Warm-ups avant s&eacute;ance &middot; Isolations &middot; Stretching passif</div></div>
+  
   <div class="st">Warm-Up Flows &mdash; avant s&eacute;ance</div>
   <div class="card">
     <div class="ch ch-o" onclick="tog(this)"><div class="ci ci-o">1</div><div class="ct ct-o">Flow 1 &mdash; mobilit&eacute; g&eacute;n&eacute;rale + hanches &middot; 5-10 min</div><div class="chv">&rsaquo;</div></div>
@@ -460,11 +476,26 @@
 </div>
 
 <div id="page-tracking" class="page">
-  <div class="hero"><div class="hl">Ton tracker</div><div class="ht">18 s&eacute;ances.<br>Coche-les.</div><div class="hs">Tap pour valider &middot; Notes et RPE enregistr&eacute;s depuis le player</div></div>
+  <div class="hero"><div class="hl">Ton tracker</div><div class="ht">18 s&eacute;ances.<br>Coche-les.</div><div class="hs">Tap pour valider &middot; Notes et RPE enregistr&eacute;s</div></div>
   <div class="pb" style="margin-bottom:3px"><div class="pf" id="tb" style="width:0%"></div></div>
   <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--i3);margin-bottom:14px"><span id="td-txt">0 s&eacute;ances valid&eacute;es</span><span id="tp-txt">0%</span></div>
   <div id="track-content"></div>
-  <div class="fn">Tracking sauvegard&eacute; dans ton navigateur.<br>Chrome mobile &rarr; menu &middot; &rarr; "Ajouter &agrave; l'&eacute;cran d'accueil"</div>
+</div>
+
+<div id="retro-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:500;overflow-y:auto;padding:20px 16px">
+  <div style="background:#121212;border-radius:12px;border:1px solid #333;padding:16px;max-width:500px;margin:0 auto">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div style="font-size:16px;font-weight:700;color:#fff" id="retro-title">Saisie a posteriori</div>
+      <button onclick="closeRetroModal()" style="background:none;border:none;color:#aaa;font-size:20px;cursor:pointer">&#10005;</button>
+    </div>
+    
+    <div id="retro-exos-list"></div>
+    
+    <div style="font-size:11px;color:#888;font-weight:700;margin:12px 0 6px">Commentaire & Notes</div>
+    <textarea id="retro-notes" class="note-in" placeholder="Ex: TGU 12 kg facile · Swing 16 kg propre..."></textarea>
+    
+    <button class="save-btn" onclick="saveRetroSession()">✓ Enregistrer les performances</button>
+  </div>
 </div>
 
 <div id="player">
