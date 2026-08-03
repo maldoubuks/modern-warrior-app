@@ -533,6 +533,7 @@ window._sessMap = {};
 window.onload = () => {
   filterWod('all', document.querySelector('.wod-fb'));
   loadFromSupabase();
+  updateContextualReminder(); // <-- AJOUTE CETTE LIGNE ICI !
 };
 
 // ── DASHBOARD & STATS (CHART.JS + CALENDRIER) ──────────────────────────────
