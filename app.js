@@ -550,19 +550,31 @@ let weightChart = null;
 function renderStats() {
   const sessMap = window._sessMap || {};
   
-  // 1. Trier les sessions par date (gère created_at natif Supabase OU completed_at local)
+  // Fonction de nettoyage des dates spéciale Safari iOS
+  const parseSafely = (dateStr) => {
+    if (!dateStr) return new Date(0);
+    // Safari iOS exige le 'T' entre la date et l'heure
+    let cleanStr = dateStr.toString().replace(' ', 'T');
+    let d = new Date(cleanStr);
+    return isNaN(d.getTime()) ? new Date(0) : d;
+  };
+
+  // 1. Trier les sessions
   const sessions = Object.values(sessMap).sort((a, b) => {
-    let d1 = new Date(a.created_at || a.completed_at || 0);
-    let d2 = new Date(b.created_at || b.completed_at || 0);
-    return d1 - d2;
+    return parseSafely(a.created_at || a.completed_at) - parseSafely(b.created_at || b.completed_at);
   });
 
-  // 2. Compte à rebours
-  const restantes = Math.max(0, 18 - done.size);
+  // 2. Décompte des séances
+  const totalPhase = PHASES_DATA[currentPhase] ? PHASES_DATA[currentPhase].total : 18;
+  const currentData = PHASES_DATA[currentPhase] ? PHASES_DATA[currentPhase].data : [];
+  let n = 0;
+  currentData.forEach(item => { if (done.has(item.id)) n++; });
+  
+  const restantes = Math.max(0, totalPhase - n);
   const countdownEl = document.getElementById('stat-countdown');
   if(countdownEl) countdownEl.textContent = restantes;
 
-  // 3. Extraire les données pour la courbe
+  // 3. Extraire les perfs pour le graphique
   const labels = [];
   const tguData = [];
   const swingData = [];
@@ -573,21 +585,20 @@ function renderStats() {
     
     if(s.detailed_exos) {
       try {
-        // Sécurité vitale : Gère le format Objet (Supabase) ou String (Local)
         const dt = typeof s.detailed_exos === 'string' ? JSON.parse(s.detailed_exos) : s.detailed_exos;
         
-        let tguKey = Object.keys(dt).find(k => k.includes('Get-Up') || k.includes('TGU'));
+        let tguKey = Object.keys(dt).find(k => k.toLowerCase().includes('get-up') || k.toLowerCase().includes('tgu'));
         if(tguKey && dt[tguKey].kg) tguW = parseFloat(dt[tguKey].kg);
         
-        let swingKey = Object.keys(dt).find(k => k.includes('Swing'));
+        let swingKey = Object.keys(dt).find(k => k.toLowerCase().includes('swing'));
         if(swingKey && dt[swingKey].kg) swingW = parseFloat(dt[swingKey].kg);
-      } catch(e) { console.log("Erreur parsing", e); }
+      } catch(e) {}
     }
     tguData.push(tguW);
     swingData.push(swingW);
   });
 
-  // 4. Dessiner le graphique
+  // 4. Graphique Chart.js
   const ctx = document.getElementById('weightChart');
   if (ctx) {
     if (weightChart) weightChart.destroy();
@@ -607,23 +618,30 @@ function renderStats() {
     });
   }
 
-  // 5. Dessiner le calendrier (28 jours = 4 semaines pile)
+  // 5. Calendrier (Compatible Safari)
   const calGrid = document.getElementById('calendar-grid');
   if (calGrid) {
     calGrid.innerHTML = '';
     const today = new Date();
+    
+    const sessionDates = sessions.map(s => {
+      let d = parseSafely(s.created_at || s.completed_at);
+      return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    });
+
     for(let i = 27; i >= 0; i--) {
-      let d = new Date(today);
-      d.setDate(d.getDate() - i);
-      let dateStr = d.toISOString().split('T')[0];
+      let d = new Date();
+      d.setDate(today.getDate() - i);
+      let dateStr = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
       
-      let hasSession = sessions.some(s => {
-         let sDate = s.created_at || s.completed_at;
-         return sDate && sDate.startsWith(dateStr);
-      });
+      let hasSession = sessionDates.includes(dateStr);
       let color = hasSession ? 'var(--or)' : '#E2DFD9';
+      let label = hasSession ? '<span style="font-size:12px;color:#fff">&#10003;</span>' : (i === 0 ? '<span style="font-size:9px;color:#999;font-weight:700">Auj.</span>' : '');
       
-      calGrid.innerHTML += `<div style="aspect-ratio:1; background:${color}; border-radius:4px;" title="${dateStr}"></div>`;
+      calGrid.innerHTML += `
+        <div style="aspect-ratio:1; background:${color}; border-radius:4px; display:flex; align-items:center; justify-content:center; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);">
+          ${label}
+        </div>`;
     }
   }
 }
