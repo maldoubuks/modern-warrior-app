@@ -480,6 +480,16 @@ function updateStats(){
       `;
     }
   }
+} else {
+        // Si toutes les séances sont validées !
+        nextContainer.innerHTML = `
+          <div class="st">Phase 0 Terminée !</div>
+          <div class="slc"><div class="slc-h" style="background:var(--grl);color:var(--grd);font-weight:bold;padding:15px;text-align:center;border-radius:12px">🏆 Félicitations, tu as validé toutes les séances !</div></div>
+        `;
+      }
+    }
+
+    renderStats();
 }
 
 const TC = {fullbody:'background:var(--orl);color:var(--ord)',complex:'background:var(--bll);color:var(--bld)',emom:'background:var(--grl);color:var(--grd)',amrap:'background:var(--pul);color:var(--pud)',cible:'background:var(--aml);color:#854F0B'};
@@ -500,7 +510,8 @@ function showToast(msg, color='#378ADD') {
   setTimeout(() => { t.style.opacity='0'; setTimeout(()=>t.remove(),1000); }, 2500);
 }
 
-const PAGES = ['home','guide','seances','wod','snacks','technique','mobilite','alim','tracking'];
+const PAGES = ['home','guide','seances','wod','snacks','technique','mobilite','alim','tracking','stats'];
+
 function goPage(id){
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nb').forEach(b => b.classList.remove('active'));
@@ -526,3 +537,80 @@ window.onload = () => {
   filterWod('all', document.querySelector('.wod-fb'));
   loadFromSupabase();
 };
+
+// ── DASHBOARD & STATS (CHART.JS + CALENDRIER) ──────────────────────────────
+let weightChart = null;
+
+function renderStats() {
+  const sessMap = window._sessMap || {};
+  // Trier les sessions validées par date
+  const sessions = Object.values(sessMap).sort((a, b) => new Date(a.completed_at) - new Date(b.completed_at));
+
+  // 1. Compte à rebours avant Phase 1
+  const restantes = Math.max(0, 18 - done.size);
+  const countdownEl = document.getElementById('stat-countdown');
+  if(countdownEl) countdownEl.textContent = restantes;
+
+  // 2. Extraire les données pour le Graphique
+  const labels = [];
+  const tguData = [];
+  const swingData = [];
+
+  sessions.forEach((s, idx) => {
+    labels.push('Séance ' + (idx+1));
+    let tguW = null; let swingW = null;
+    
+    if(s.detailed_exos) {
+      try {
+        const dt = JSON.parse(s.detailed_exos);
+        // Chercher les poids du TGU et du Swing dans le JSON
+        let tguKey = Object.keys(dt).find(k => k.includes('Get-Up') || k.includes('TGU'));
+        if(tguKey) tguW = parseFloat(dt[tguKey].kg);
+        
+        let swingKey = Object.keys(dt).find(k => k.includes('Swing'));
+        if(swingKey) swingW = parseFloat(dt[swingKey].kg);
+      } catch(e){}
+    }
+    tguData.push(tguW || NaN);
+    swingData.push(swingW || NaN);
+  });
+
+  // 3. Dessiner le graphique
+  const ctx = document.getElementById('weightChart');
+  if (ctx) {
+    if (weightChart) weightChart.destroy();
+    weightChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          { label: 'TGU (kg)', data: tguData, borderColor: '#D85A30', backgroundColor: '#D85A30', spanGaps: true, tension: 0.3, pointRadius: 4 },
+          { label: 'Swing (kg)', data: swingData, borderColor: '#378ADD', backgroundColor: '#378ADD', spanGaps: true, tension: 0.3, pointRadius: 4 }
+        ]
+      },
+      options: { 
+        responsive: true, maintainAspectRatio: false,
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  }
+
+  // 4. Dessiner le calendrier (30 derniers jours)
+  const calGrid = document.getElementById('calendar-grid');
+  if (calGrid) {
+    calGrid.innerHTML = '';
+    const today = new Date();
+    // On génère 28 jours (4 semaines) pour faire un beau carré 7x4
+    for(let i = 27; i >= 0; i--) {
+      let d = new Date(today);
+      d.setDate(d.getDate() - i);
+      let dateStr = d.toISOString().split('T')[0];
+      
+      // Vérifie si une séance a été faite ce jour-là
+      let hasSession = sessions.some(s => s.completed_at && s.completed_at.startsWith(dateStr));
+      let color = hasSession ? 'var(--or)' : '#E2DFD9';
+      
+      calGrid.innerHTML += `<div style="aspect-ratio:1; background:${color}; border-radius:4px;" title="${dateStr}"></div>`;
+    }
+  }
+}
