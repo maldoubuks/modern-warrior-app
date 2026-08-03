@@ -41,6 +41,430 @@
       <button class="slc-play" style="background:var(--or)" onclick="startPlayer('A-S1')">&#9654; Lancer</button>
     </div>
   </div>
+  <div class="st">Cette semaine</div>
+  <div class="g3">
+    <div class="sc" style="cursor:pointer;text-align:center" onclick="startPlayer('A-S1')">
+      <div style="font-size:20px;font-weight:700;color:var(--or)">A</div>
+      <div style="font-size:10px;color:var(--i3);margin-top:2px">Lundi</div>
+      <div style="margin-top:6px"><button style="background:var(--or);border:none;border-radius:6px;padding:4px 10px;color:#fff;font-size:10px;font-weight:700;cursor:pointer">&#9654;</button></div>
+    </div>
+    <div class="sc" style="cursor:pointer;text-align:center" onclick="startPlayer('B-S1')">
+      <div style="font-size:20px;font-weight:700;color:var(--bl)">B</div>
+      <div style="font-size:10px;color:var(--i3);margin-top:2px">Mercredi</div>
+      <div style="margin-top:6px"><button style="background:var(--bl);border:none;border-radius:6px;padding:4px 10px;color:#fff;font-size:10px;font-weight:700;cursor:pointer">&#9654;</button></div>
+    </div>
+    <div class="sc" style="cursor:pointer;text-align:center" onclick="startPlayer('C-S1')">
+      <div style="font-size:20px;font-weight:700;color:var(--gr)">C</div>
+      <div style="font-size:10px;color:var(--i3);margin-top:2px">Vendredi</div>
+      <div style="margin-top:6px"><button style="background:var(--gr);border:none;border-radius:6px;padding:4px 10px;color:#fff;font-size:10px;font-weight:700;cursor:pointer">&#9654;</button></div>
+    </div>
+  </div>
+  <div class="tb"><strong>Avant S1 :</strong> Masterclass TGU (10:47) + Swing (9:49) sur Skool &mdash; obligatoire avant de toucher un KB.</div>
+  <div class="tb tb-g"><strong>Auto-r&eacute;gulation :</strong> RPE &gt; 8 ou technique d&eacute;grad&eacute;e &rarr; r&eacute;duire les reps ou passer en E2MOM.</div>
+  <div class="tb tb-b"><strong>Charges d&eacute;part :</strong> 12 kg (TGU / press) &middot; 16 kg (swing / clean). Monter uniquement quand la technique est solide.</div>
+</div>
+
+<div id="page-guide" class="page">
+  <div class="hero"><div class="hl">Guide de l'app</div><div class="ht">O&ugrave; trouver<br>quoi.</div><div class="hs">Toute la base de connaissance Modern Warrior en 9 sections</div></div>
+  <div class="sum-grid">
+    <div class="sum-card" onclick="goPage('home')"><div class="sum-icon">&#127968;</div><div class="sum-title">Accueil</div><div class="sum-desc">Progression, prochaine s&eacute;ance, rappels cl&eacute;s</div><span class="sum-tag" style="background:var(--orl);color:var(--ord)">Dashboard</span></div>
+    <div class="sum-card" onclick="goPage('seances')"><div class="sum-icon">&#9876;</div><div class="sum-title">S&eacute;ances</div><div class="sum-desc">Phase 0 + Phase 1 &middot; Fiches d&eacute;taill&eacute;es &middot; Player interactif avec timer</div><span class="sum-tag" style="background:var(--orl);color:var(--ord)">18 s&eacute;ances</span></div>
+    <div class="sum-card" onclick="goPage('wod')"><div class="sum-icon">&#128293;</div><div class="sum-title">WOD</div><div class="sum-desc">30+ s&eacute;ances filtrables &middot; Fullbody, Complex, EMOM, AMRAP, Cibl&eacute;es</div><span class="sum-tag" style="background:var(--bll);color:var(--bld)">Biblioth&egrave;que</span></div>
+    <div class="sum-card" onclick="goPage('snacks')"><div class="sum-icon">&#9889;</div><div class="sum-title">Snacks KB</div><div class="sum-desc">40+ s&eacute;ances express 10-20 min &middot; 5 cat&eacute;gories</div><span class="sum-tag" style="background:var(--pul);color:var(--pud)">10-20 min</span></div>
+    <div class="sum-card" onclick="goPage('technique')"><div class="sum-icon">&#128218;</div><div class="sum-title">Technique</div><div class="sum-desc">Masterclass Swing + TGU &middot; 7 &eacute;tapes &middot; Charges &middot; Complexes MW</div><span class="sum-tag" style="background:var(--grl);color:var(--grd)">Fondamentaux</span></div>
+    <div class="sum-card" onclick="goPage('mobilite')"><div class="sum-icon">&#129504;</div><div class="sum-title">Mobilit&eacute;</div><div class="sum-desc">3 Warm-up flows &middot; 4 isolations articulaires &middot; Stretching A et B</div><span class="sum-tag" style="background:var(--tel);color:var(--ted)">Routines</span></div>
+    <div class="sum-card" onclick="goPage('alim')"><div class="sum-icon">&#129367;</div><div class="sum-title">Alim &amp; Habits</div><div class="sum-desc">Je&ucirc;ne 16/8 &middot; 3 r&egrave;gles perso &middot; Compl&eacute;ments &middot; 4 habitudes &middot; Livres</div><span class="sum-tag" style="background:var(--aml);color:var(--am)">Reset Challenge</span></div>
+    <div class="sum-card" onclick="goPage('tracking')"><div class="sum-icon">&#128202;</div><div class="sum-title">Tracking</div><div class="sum-desc">18 s&eacute;ances &agrave; cocher &middot; RPE + notes sauv&eacute;s automatiquement</div><span class="sum-tag" style="background:var(--grl);color:var(--grd)">Progression</span></div>
+  </div>
+  <div class="st">Comment utiliser l'app</div>
+  <div class="rc rc-o"><div class="rl rl-o">En salle &mdash; le matin</div><div class="rt">S&eacute;ances &rarr; tape sur ta s&eacute;ance du jour &rarr; &#9654; Lancer &rarr; le player guide chaque exercice avec timer et minuteur de repos.</div></div>
+  <div class="rc rc-b"><div class="rl rl-b">Temps limit&eacute;</div><div class="rt">Snacks &rarr; choisir une cat&eacute;gorie &rarr; n'importe quel snack se fait en 10-20 min.</div></div>
+  <div class="rc rc-g"><div class="rl rl-g">Jours off</div><div class="rt">Mobilit&eacute; &rarr; Warm-Up Flow le matin (5 min) + Routine stretching A ou B le soir (10-15 min).</div></div>
+  <div class="rc rc-p"><div class="rl rl-p">Chaque semaine</div><div class="rt">Tracking &rarr; cocher les s&eacute;ances valid&eacute;es &rarr; notes et RPE enregistr&eacute;s depuis le player.</div></div>
+  <div class="st">Plan des 6 semaines</div>
+  <div class="wg">
+    <div class="wr"><div class="wc wch">Sem.</div><div class="wc wch wcl">Lundi A</div><div class="wc wch wcm">Mercredi B</div><div class="wc wch wcv">Vendredi C</div></div>
+    <div class="wr"><div class="wc wcw">S1-S2</div><div class="wc wcl">Deadstop Swing 2H + TGU</div><div class="wc wcm">Dead Clean &amp; Push Press</div><div class="wc wcv">2H Swing + TGU EMOM 20'</div></div>
+    <div class="wr"><div class="wc wcw">S3-S4</div><div class="wc wcl">1H Swing + TGU EMOM</div><div class="wc wcm">Clean &amp; Push Press</div><div class="wc wcv">Complexe Ulysse</div></div>
+    <div class="wr"><div class="wc wcw">S5-S6</div><div class="wc wcl">Snatch + TGU EMOM</div><div class="wc wcm">Clean &amp; Press strict</div><div class="wc wcv">Complexe Atlas</div></div>
+  </div>
+</div>
+
+<div id="page-seances" class="page">
+  <div class="hero"><div class="hl">S&eacute;ances Phase 0</div><div class="ht">Lance la<br>session.</div><div class="hs">&#9654; pour le player interactif &middot; D&eacute;plier pour voir la fiche d&eacute;taill&eacute;e</div></div>
+  <div class="st">Semaines 1 &amp; 2</div>
+  <div class="slc">
+    <div class="slc-h" style="background:var(--orl)">
+      <div class="slc-icon" style="background:var(--or);color:#fff">A</div>
+      <div class="slc-info"><div class="slc-title" style="color:var(--ord)">S&eacute;ance A &middot; Lundi S1-S2</div><div class="slc-sub">Deadstop Swing 2H + TGU &middot; ~35 min</div></div>
+      <button class="slc-play" style="background:var(--or)" onclick="startPlayer('A-S1')">&#9654; Lancer</button>
+    </div>
+    <div class="ch ch-n" style="border-top:1px solid var(--bd)" onclick="tog(this)"><div class="ci ci-n" style="font-size:9px">fiche</div><div class="ct" style="font-size:12px;color:var(--i3)">Voir la fiche d&eacute;taill&eacute;e</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb" id="fiche-A-S1"></div>
+  </div>
+  <div class="slc">
+    <div class="slc-h" style="background:var(--bll)">
+      <div class="slc-icon" style="background:var(--bl);color:#fff">B</div>
+      <div class="slc-info"><div class="slc-title" style="color:var(--bld)">S&eacute;ance B &middot; Mercredi S1-S2</div><div class="slc-sub">Dead Clean &amp; Push Press &middot; ~35 min</div></div>
+      <button class="slc-play" style="background:var(--bl)" onclick="startPlayer('B-S1')">&#9654; Lancer</button>
+    </div>
+    <div class="ch ch-n" style="border-top:1px solid var(--bd)" onclick="tog(this)"><div class="ci ci-n" style="font-size:9px">fiche</div><div class="ct" style="font-size:12px;color:var(--i3)">Voir la fiche d&eacute;taill&eacute;e</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb" id="fiche-B-S1"></div>
+  </div>
+  <div class="slc">
+    <div class="slc-h" style="background:var(--grl)">
+      <div class="slc-icon" style="background:var(--gr);color:#fff">C</div>
+      <div class="slc-info"><div class="slc-title" style="color:var(--grd)">S&eacute;ance C &middot; Vendredi S1-S2</div><div class="slc-sub">2H Swing + TGU EMOM 20' &middot; ~35 min</div></div>
+      <button class="slc-play" style="background:var(--gr)" onclick="startPlayer('C-S1')">&#9654; Lancer</button>
+    </div>
+    <div class="ch ch-n" style="border-top:1px solid var(--bd)" onclick="tog(this)"><div class="ci ci-n" style="font-size:9px">fiche</div><div class="ct" style="font-size:12px;color:var(--i3)">Voir la fiche d&eacute;taill&eacute;e</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb" id="fiche-C-S1"></div>
+  </div>
+  
+  <div class="st">Semaines 3 &amp; 4</div>
+  <div class="slc">
+    <div class="slc-h" style="background:var(--orl)">
+      <div class="slc-icon" style="background:var(--or);color:#fff">A</div>
+      <div class="slc-info"><div class="slc-title" style="color:var(--ord)">S&eacute;ance A &middot; Lundi S3-S4</div><div class="slc-sub">1H Swing + TGU EMOM &middot; ~35 min</div></div>
+      <button class="slc-play" style="background:var(--or)" onclick="startPlayer('A-S3')">&#9654; Lancer</button>
+    </div>
+    <div class="ch ch-n" style="border-top:1px solid var(--bd)" onclick="tog(this)"><div class="ci ci-n" style="font-size:9px">fiche</div><div class="ct" style="font-size:12px;color:var(--i3)">Voir la fiche d&eacute;taill&eacute;e</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb" id="fiche-A-S3"></div>
+  </div>
+  <div class="slc">
+    <div class="slc-h" style="background:var(--bll)">
+      <div class="slc-icon" style="background:var(--bl);color:#fff">B</div>
+      <div class="slc-info"><div class="slc-title" style="color:var(--bld)">S&eacute;ance B &middot; Mercredi S3-S4</div><div class="slc-sub">Clean &amp; Push Press &middot; ~35 min</div></div>
+      <button class="slc-play" style="background:var(--bl)" onclick="startPlayer('B-S3')">&#9654; Lancer</button>
+    </div>
+    <div class="ch ch-n" style="border-top:1px solid var(--bd)" onclick="tog(this)"><div class="ci ci-n" style="font-size:9px">fiche</div><div class="ct" style="font-size:12px;color:var(--i3)">Voir la fiche d&eacute;taill&eacute;e</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb" id="fiche-B-S3"></div>
+  </div>
+  <div class="slc">
+    <div class="slc-h" style="background:var(--grl)">
+      <div class="slc-icon" style="background:var(--gr);color:#fff">C</div>
+      <div class="slc-info"><div class="slc-title" style="color:var(--grd)">Complexe Ulysse &middot; Vendredi S3-S4</div><div class="slc-sub">Encha&icirc;nement sans reposer le KB &middot; ~35 min</div></div>
+      <button class="slc-play" style="background:var(--gr)" onclick="startPlayer('C-S3')">&#9654; Lancer</button>
+    </div>
+    <div class="ch ch-n" style="border-top:1px solid var(--bd)" onclick="tog(this)"><div class="ci ci-n" style="font-size:9px">fiche</div><div class="ct" style="font-size:12px;color:var(--i3)">Voir la fiche d&eacute;taill&eacute;e</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb" id="fiche-C-S3"></div>
+  </div>
+  
+  <div class="st">Semaines 5 &amp; 6</div>
+  <div class="slc">
+    <div class="slc-h" style="background:var(--orl)">
+      <div class="slc-icon" style="background:var(--or);color:#fff">A</div>
+      <div class="slc-info"><div class="slc-title" style="color:var(--ord)">S&eacute;ance A &middot; Lundi S5-S6</div><div class="slc-sub">Snatch + TGU EMOM &middot; ~40 min</div></div>
+      <button class="slc-play" style="background:var(--or)" onclick="startPlayer('A-S5')">&#9654; Lancer</button>
+    </div>
+    <div class="ch ch-n" style="border-top:1px solid var(--bd)" onclick="tog(this)"><div class="ci ci-n" style="font-size:9px">fiche</div><div class="ct" style="font-size:12px;color:var(--i3)">Voir la fiche d&eacute;taill&eacute;e</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb" id="fiche-A-S5"></div>
+  </div>
+  <div class="slc">
+    <div class="slc-h" style="background:var(--bll)">
+      <div class="slc-icon" style="background:var(--bl);color:#fff">B</div>
+      <div class="slc-info"><div class="slc-title" style="color:var(--bld)">S&eacute;ance B &middot; Mercredi S5-S6</div><div class="slc-sub">Clean &amp; Press strict &middot; ~35 min</div></div>
+      <button class="slc-play" style="background:var(--bl)" onclick="startPlayer('B-S5')">&#9654; Lancer</button>
+    </div>
+    <div class="ch ch-n" style="border-top:1px solid var(--bd)" onclick="tog(this)"><div class="ci ci-n" style="font-size:9px">fiche</div><div class="ct" style="font-size:12px;color:var(--i3)">Voir la fiche d&eacute;taill&eacute;e</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb" id="fiche-B-S5"></div>
+  </div>
+  <div class="slc">
+    <div class="slc-h" style="background:var(--grl)">
+      <div class="slc-icon" style="background:var(--gr);color:#fff">C</div>
+      <div class="slc-info"><div class="slc-title" style="color:var(--grd)">Complexe Atlas &middot; Vendredi S5-S6</div><div class="slc-sub">4 mouvements encha&icirc;n&eacute;s &middot; ~40 min</div></div>
+      <button class="slc-play" style="background:var(--gr)" onclick="startPlayer('C-S5')">&#9654; Lancer</button>
+    </div>
+    <div class="ch ch-n" style="border-top:1px solid var(--bd)" onclick="tog(this)"><div class="ci ci-n" style="font-size:9px">fiche</div><div class="ct" style="font-size:12px;color:var(--i3)">Voir la fiche d&eacute;taill&eacute;e</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb" id="fiche-C-S5"></div>
+  </div>
+</div>
+
+<div id="page-wod" class="page">
+  <div class="hero"><div class="hl">Workout of the Day</div><div class="ht">30+ s&eacute;ances.</div><div class="hs">Biblioth&egrave;que compl&egrave;te MW &middot; filtre par cat&eacute;gorie</div></div>
+  <div class="wod-f">
+    <button class="wod-fb on" onclick="filterWod('all',this)">Tous</button>
+    <button class="wod-fb" onclick="filterWod('fullbody',this)">Fullbody</button>
+    <button class="wod-fb" onclick="filterWod('complex',this)">Complex</button>
+    <button class="wod-fb" onclick="filterWod('emom',this)">EMOM</button>
+    <button class="wod-fb" onclick="filterWod('amrap',this)">AMRAP</button>
+    <button class="wod-fb" onclick="filterWod('cible',this)">Cibl&eacute;es</button>
+  </div>
+  <div id="wod-list"></div>
+</div>
+
+<div id="page-snacks" class="page">
+  <div class="hero"><div class="hl">Kettlebell Snacks</div><div class="ht">40+ s&eacute;ances<br>express.</div><div class="hs">10-20 min &middot; 5 cat&eacute;gories &middot; Temps limit&eacute; ou d&eacute;placement</div></div>
+  <div class="tb"><strong>Usage :</strong> s&eacute;ance bonus, remplacement quand press&eacute;, en d&eacute;placement ou vacances.</div>
+  
+  <div class="st">Quick Hit &#9876; &mdash; un seul mouvement</div>
+  <div class="snk"><div class="snk-t">2H Deadstop Swing V1</div><div class="snk-s">EMOM 10-15' &middot; 5 Deadstop Swing + 5 Swing classique/min &middot; charge moyenne</div></div>
+  <div class="snk"><div class="snk-t">2H Deadstop Swing V2</div><div class="snk-s">EMOM 10-15' &middot; 5 Deadstop + 8 Swing classique/min &middot; charge moyenne</div></div>
+  <div class="snk"><div class="snk-t">2H Deadstop Swing V3</div><div class="snk-s">EMOM 10-15' &middot; 10 Deadstop Swings/min &middot; charge lourde</div></div>
+  <div class="snk"><div class="snk-t">Non-Stop Single TGU</div><div class="snk-s">Chrono 10-15' &middot; max TGU (D+G) &middot; charge moyenne &middot; technique propre</div></div>
+  <div class="snk"><div class="snk-t">Non-Stop Double TGU</div><div class="snk-s">Chrono 10-15' &middot; max Double TGU (D+G)</div></div>
+  <div class="snk"><div class="snk-t">Squat to the Hell</div><div class="snk-s">EMOM 10' &middot; 10 Goblet Squat ou 1H Squat altern&eacute;s/min &middot; charge moyenne</div></div>
+  <div class="snk"><div class="snk-t">Clean &amp; Press V1</div><div class="snk-s">EMOM 10-20' &middot; 5 Clean + 5 Push Press/min &middot; charge lourde &middot; alternance bras</div></div>
+  <div class="snk"><div class="snk-t">Clean &amp; Press V2</div><div class="snk-s">Chrono 10-15' &middot; Ladders 1-2-3/bras &middot; charge lourde &middot; Push Press si &eacute;chec</div></div>
+  <div class="snk"><div class="snk-t">Clean &amp; Press V3</div><div class="snk-s">Chrono 10-15' &middot; Ladders Clean+Thruster 1+1/2+2/3+3/bras &middot; charge moyenne</div></div>
+  <div class="snk"><div class="snk-t">Snatch Hard V1</div><div class="snk-s">Chrono 10-15' &middot; Ladders Snatch 1-2-3/bras &middot; charge lourde contr&ocirc;lable</div></div>
+  <div class="snk"><div class="snk-t">Snatch Hard V2</div><div class="snk-s">EMOM 10' &middot; 5+5 Snatch/min &middot; charge moyenne</div></div>
+  <div class="snk"><div class="snk-t">Snatch Hard V3</div><div class="snk-s">EMOM 10' &middot; 10 Deadstop Snatch/min &middot; alternance bras</div></div>
+  
+  <div class="st">Power Mix &#9889; &mdash; deux exercices combin&eacute;s</div>
+  <div class="snk"><div class="snk-t">2H Swing + Goblet Squat</div><div class="snk-s">Chrono 10-15' &middot; Ladder montant 1+1 &agrave; 5+5 sans reposer le KB &middot; charge moyenne</div></div>
+  <div class="snk"><div class="snk-t">2H Deadstop Swing + Push-up</div><div class="snk-s">EMOM 10-20' &middot; min impaire : 10 Deadstop Swing &middot; min paire : 5-20 Push-up</div></div>
+  <div class="snk"><div class="snk-t">1H Swing + Get Up</div><div class="snk-s">EMOM 10' &middot; min impaire : 10 Swing 1H (altern&eacute;) &middot; min paire : 1 TGU (altern&eacute;)</div></div>
+  <div class="snk"><div class="snk-t">1H Swing + 1H Press</div><div class="snk-s">EMOM 8-12' &middot; min impaire : 10 Swing 1H &middot; min paire : 5 Press ou 10 Push Press</div></div>
+  <div class="snk"><div class="snk-t">1H Clean + 1H Press</div><div class="snk-s">EMOM 10' &middot; min impaire : 7+7 Clean &middot; min paire : 4+4 Press</div></div>
+  <div class="snk"><div class="snk-t">Snatch + Get Up</div><div class="snk-s">EMOM 10' &middot; min impaire : 5 Deadstop Snatch &middot; min paire : 1 TGU</div></div>
+  <div class="snk"><div class="snk-t">Snatch + Push-up</div><div class="snk-s">EMOM 10' &middot; min impaire : 10 Snatch &middot; min paire : 5-20 Push-up</div></div>
+  <div class="snk"><div class="snk-t">Snatch + Goblet Squat</div><div class="snk-s">EMOM 10' &middot; min impaire : 10 Snatch &middot; min paire : 10 Goblet Squat</div></div>
+  
+  <div class="st">Full Set &#127919; &mdash; mini s&eacute;ance compl&egrave;te</div>
+  <div class="snk"><div class="snk-t">The Basic 3</div><div class="snk-s">Chrono 10-20' &middot; 7 Goblet Squat + 1 TGU/c&ocirc;t&eacute; + 12 Swings &middot; max tours</div></div>
+  <div class="snk"><div class="snk-t">The Basic 3 &mdash; Hard</div><div class="snk-s">Chrono 10-20' &middot; 15 Goblet Squat + 2 TGU/c&ocirc;t&eacute; + 20 Swings</div></div>
+  <div class="snk"><div class="snk-t">The Big Six</div><div class="snk-s">1-3 tours &middot; Squat + TGU + Swings + Cleans + Press + Snatch</div></div>
+  <div class="snk"><div class="snk-t">The Vertical Hit V1</div><div class="snk-s">Chrono 10-15' &middot; 5 Clean + 5 Squat + 5 Press encha&icirc;n&eacute;s &middot; changement de bras</div></div>
+  <div class="snk"><div class="snk-t">The Vertical Hit V2</div><div class="snk-s">Chrono 10-15' &middot; 5 Clean + 5 Thruster + 5 Squat encha&icirc;n&eacute;s</div></div>
+  <div class="snk"><div class="snk-t">Death Carry</div><div class="snk-s">Chrono 10-15' &middot; 5 Clean + marche max Front Rack + marche max Suitcase</div></div>
+  <div class="snk"><div class="snk-t">Death Carry &mdash; Hard</div><div class="snk-s">Chrono 10-15' &middot; 5 Snatch + marche Overhead + Front Rack + Suitcase</div></div>
+  
+  <div class="st">Bodyweight &#129336; &mdash; sans KB</div>
+  <div class="snk"><div class="snk-t">For Time #1</div><div class="snk-s">3 tours &middot; 12 Sit-up + 10 Burpee + 12 Commando Plank + 20 Mountain Climbers</div></div>
+  <div class="snk"><div class="snk-t">AMRAP 15' #3</div><div class="snk-s">Max tours &middot; 10 V-Tuck + 10 Sprawl + 20 Toe Touch + 20 Mountain Climbers</div></div>
+  <div class="snk"><div class="snk-t">For Time #4</div><div class="snk-s">4 tours &middot; 15 Air Squat + 30 Russian Twist + 10 Push-up + 10 Leg Raise</div></div>
+  <div class="snk"><div class="snk-t">AMRAP 12' #6</div><div class="snk-s">Max tours &middot; 8 Burpee + 12 Sit-up + 12 Plank Shoulder Tap + 20 Jumping Jack</div></div>
+  <div class="snk"><div class="snk-t">AMRAP 15' #8</div><div class="snk-s">Max tours &middot; 20 Air Squat + 10 Push-up + 20 Bicycle Crunch + 10 Sprawl</div></div>
+  
+  <div class="st">Athletic Core &#129519; &mdash; gainage complet</div>
+  <div class="snk"><div class="snk-t">Flexion + Rotation</div><div class="snk-s">AMRAP 12' &middot; Roll to Elbow + Half Kneeling Uppercut + Floor Leg Raise + Trunk Twist</div></div>
+  <div class="snk"><div class="snk-t">Anti-extension + Rotation</div><div class="snk-s">30"ON/30"OFF &middot; 2-4 tours &middot; Hollow Hold + Kneeling Halo + KB Plank Tap + Wood Chop</div></div>
+  <div class="snk"><div class="snk-t">Anti-flexion + Anti-rotation</div><div class="snk-s">30"ON/30"OFF &middot; 2-4 tours &middot; Superman Hold + Bear Crawl + KB Pull Through</div></div>
+  <div class="snk"><div class="snk-t">Stabilit&eacute;</div><div class="snk-s">30"ON/30"OFF &middot; 2-4 tours &middot; Windmill + Zercher Carry + Suitcase High Knee + Overhead Carry</div></div>
+  <div class="snk"><div class="snk-t">Full Protocol Core</div><div class="snk-s">AMRAP 12' &middot; KB Pull Through 5+5 + Wood Chop 5+5 + Weighted V-up &times;10</div></div>
+</div>
+
+<div id="page-technique" class="page">
+  <div class="hero"><div class="hl">Masterclass technique</div><div class="ht">Swing + TGU<br>7 &eacute;tapes chacun.</div><div class="hs">Source : masterclass gratuites Modern Warrior</div></div>
+  <div class="st">Masterclass Swing &mdash; les 7 &eacute;tapes</div>
+  <div class="tb tb-g"><strong>Un swing bien ex&eacute;cut&eacute; ne sollicite pas le dos &mdash; il le prot&egrave;ge.</strong> Charni&egrave;re de hanche, pas squat. Puissance des fessiers, jamais des bras.</div>
+  <div class="card">
+    <div class="ch ch-o" onclick="tog(this)"><div class="ci ci-o">7</div><div class="ct ct-o">Les 7 &eacute;tapes du Swing</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb open">
+      <div class="exo"><div class="en"><span class="step-n">1</span>Position de d&eacute;part</div><div class="tip">Pieds l&eacute;g&egrave;rement + larges que les hanches. Dos engag&eacute;. Genoux l&eacute;g&egrave;rement fl&eacute;chis. Hanches bascul&eacute;es vers l'arri&egrave;re. Penser CHARNI&Egrave;RE de hanche, pas squat.</div></div>
+      <div class="exo"><div class="en"><span class="step-n">2</span>Amor&ccedil;age</div><div class="tip">Attraper le KB &agrave; deux mains, l'incliner l&eacute;g&egrave;rement vers soi. Engager abdominaux et &eacute;paules.</div></div>
+      <div class="exo"><div class="en"><span class="step-n">3</span>Hike Pass &mdash; balancier arri&egrave;re</div><div class="tip">Balancer le KB vers l'arri&egrave;re entre les jambes, hanches vers l'arri&egrave;re. C'est l&agrave; que se cr&eacute;e la tension.</div></div>
+      <div class="exo"><div class="en"><span class="step-n">4</span>Explosion des hanches</div><div class="tip">D&egrave;s que le KB atteint son point le plus bas &rarr; pousser fort avec les hanches vers l'avant. La puissance vient des FESSIERS, pas des bras.</div></div>
+      <div class="exo"><div class="en"><span class="step-n">5</span>Extension compl&egrave;te</div><div class="tip">Corps align&eacute;, hanches + genoux + &eacute;paules verrouill&eacute;s. KB niveau poitrine, flotte bri&egrave;vement. Ne pas tirer avec les bras.</div></div>
+      <div class="exo"><div class="en"><span class="step-n">6</span>Retour contr&ocirc;l&eacute;</div><div class="tip">Laisser la gravit&eacute; descendre, replier imm&eacute;diatement les hanches vers l'arri&egrave;re pour absorber et repartir.</div></div>
+      <div class="exo"><div class="en"><span class="step-n">7</span>Encha&icirc;nement</div><div class="tip">Rythme naturel. Chaque swing = explosif, contr&ocirc;l&eacute;, efficace. Fin de s&eacute;rie : ramener le KB au sol DOS DROIT.</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch ch-n" onclick="tog(this)"><div class="ci ci-n">kg</div><div class="ct">Charges Swing &middot; Hommes</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb">
+      <div class="exo"><div class="en">D&eacute;butant</div><div class="pills"><span class="pi pk">16-20 kg</span></div><div class="tip">Apprendre la m&eacute;canique de hanche, coordonner souffle + explosivit&eacute;.</div></div>
+      <div class="exo"><div class="en">Interm&eacute;diaire</div><div class="pills"><span class="pi pk">24-28 kg</span></div><div class="tip">Produire une vraie puissance sans sacrifier la forme.</div></div>
+      <div class="exo"><div class="en">Avanc&eacute;</div><div class="pills"><span class="pi pk">32-40 kg+</span></div><div class="tip">Gainage, respiration et timing parfaits obligatoires.</div></div>
+    </div>
+  </div>
+  <div class="st">Masterclass TGU &mdash; les 7 &eacute;tapes</div>
+  <div class="tb tb-b"><strong>Le TGU = chor&eacute;graphie sous charge.</strong> Regard fix&eacute; sur le KB du d&eacute;but &agrave; la fin. Si tu dois rusher &rarr; descendre la charge.</div>
+  <div class="card">
+    <div class="ch ch-b" onclick="tog(this)"><div class="ci ci-b">7</div><div class="ct ct-b">Les 7 &eacute;tapes du TGU</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb open">
+      <div class="exo"><div class="en"><span class="step-n" style="background:var(--bl)">1</span>Position au sol</div><div class="tip tip-b">Allong&eacute;, KB press&eacute; au-dessus de la poitrine. Jambe du m&ecirc;me c&ocirc;t&eacute; fl&eacute;chie. Bras et jambe oppos&eacute;s &agrave; 45&deg;.</div></div>
+      <div class="exo"><div class="en"><span class="step-n" style="background:var(--bl)">2</span>Sol &rarr; Assise basse</div><div class="tip tip-b">Pousser avec le pied fl&eacute;chi. Rouler sur le coude oppos&eacute;, main &agrave; plat. &Eacute;paules engag&eacute;es. REGARD sur le KB.</div></div>
+      <div class="exo"><div class="en"><span class="step-n" style="background:var(--bl)">3</span>Assise basse &rarr; Assise haute</div><div class="tip tip-b">Pousser sur la main en la tournant. Maintenir l'alignement main/KB. Se tenir droit sans s'affaisser.</div></div>
+      <div class="exo"><div class="en"><span class="step-n" style="background:var(--bl)">4</span>Assise haute &rarr; Windmill</div><div class="tip tip-b">Pousser sur le pied fl&eacute;chi + main au sol. "Balayer" la jambe tendue sous le corps, poser le genou.</div></div>
+      <div class="exo"><div class="en"><span class="step-n" style="background:var(--bl)">5</span>Windmill &rarr; Genou</div><div class="tip tip-b">Glisser la main vers le genou. Se redresser en position genou fendu. Bassin neutre.</div></div>
+      <div class="exo"><div class="en"><span class="step-n" style="background:var(--bl)">6</span>Alignement en fente</div><div class="tip tip-b">Jambes parall&egrave;les comme sur des rails. Ajuster avant de se lever.</div></div>
+      <div class="exo"><div class="en"><span class="step-n" style="background:var(--bl)">7</span>Fente &rarr; Debout</div><div class="tip tip-b">Engager la tension, pousser &agrave; travers les jambes. KB au-dessus de la t&ecirc;te. Redescente = s&eacute;quence invers&eacute;e compl&egrave;te.</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch ch-n" onclick="tog(this)"><div class="ci ci-n">kg</div><div class="ct">Charges TGU &middot; Hommes</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb">
+      <div class="exo"><div class="en">D&eacute;butant</div><div class="pills"><span class="pi pk">12-16 kg</span></div><div class="tip">Apprendre chaque &eacute;tape avec fluidit&eacute;. R&egrave;gle : pouvoir parler tout au long du mouvement.</div></div>
+      <div class="exo"><div class="en">Interm&eacute;diaire</div><div class="pills"><span class="pi pk">16-24 kg</span></div><div class="tip">Encha&icirc;ner plusieurs reps propres par bras. Gainage, stabilit&eacute; &eacute;paule, contr&ocirc;le.</div></div>
+      <div class="exo"><div class="en">Avanc&eacute;</div><div class="pills"><span class="pi pk">24-32 kg</span></div><div class="tip">Force fonctionnelle maximale. Mont&eacute;e fluide sans compensation obligatoire.</div></div>
+    </div>
+  </div>
+  <div class="st">Complexes nomm&eacute;s &mdash; r&eacute;pertoire MW</div>
+  <div class="card">
+    <div class="ch ch-o" onclick="tog(this)"><div class="ci ci-o">&#9876;</div><div class="ct ct-o">8 complexes disponibles maintenant</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb">
+      <div class="exo"><div class="en">Atlas</div><div class="pills"><span class="pi">3 Swing + 3 Clean + 3 Snatch + 3 Squat</span></div></div>
+      <div class="exo"><div class="en">Ulysse</div><div class="pills"><span class="pi">5 Dead Swings + 3 Dead Clean &amp; Press + 3 Squat</span></div></div>
+      <div class="exo"><div class="en">Achille</div><div class="pills"><span class="pi">4 H2H + 4 Cleans + 4 Push Press</span></div></div>
+      <div class="exo"><div class="en">Pers&eacute;e</div><div class="pills"><span class="pi">3 Swings + 3 High Pulls + 3 Snatches</span></div></div>
+      <div class="exo"><div class="en">Ragnar</div><div class="pills"><span class="pi">5 Rows + 4 Cleans + 3 Thruster</span></div></div>
+      <div class="exo"><div class="en">Bjorn</div><div class="pills"><span class="pi">6 Swings + 4 High Pulls + 4 Goblet Squats</span></div></div>
+      <div class="exo"><div class="en">Ares</div><div class="pills"><span class="pi">4 Swings + 4 Snatches + 4 Overhead Lunges</span></div></div>
+      <div class="exo"><div class="en">Eomer</div><div class="pills"><span class="pi">5 Rows + 5 Cleans + 3 Push Press</span></div></div>
+      <div class="exo"><div class="en">Boromir &middot; Maximus &middot; Floki &middot; Fenrir <span class="lock">&#128274; +15j</span></div></div>
+    </div>
+  </div>
+  <div class="st">Guide choix des KB</div>
+  <div class="rc rc-o"><div class="rl rl-o">M&eacute;thode 1H Press</div><div class="rt">Poids que tu presses pour 3x10 reps/c&ocirc;t&eacute; = ton KB l&eacute;ger. Les deux autres = +4 kg chacun.</div><div class="rs">Ex : tu presses 12 kg &rarr; tes KB sont 12 / 16 / 20 kg</div></div>
+  <div class="rc rc-b"><div class="rl rl-b">Standard d&eacute;butant H</div><div class="rt">L&eacute;ger 12 kg &middot; Moyen 16 kg &middot; Lourd 20 kg</div></div>
+  <div class="rc rc-g"><div class="rl rl-g">Marques recommand&eacute;es</div><div class="rt">Eryx Fitness (modulable 12-32 kg, code "mathisl") &middot; D&eacute;cathlon &middot; Le Bon Coin (budget)</div></div>
+</div>
+
+<div id="page-mobilite" class="page">
+  <div class="hero"><div class="hl">Routines du Guerrier</div><div class="ht">Mobilit&eacute;<br>&amp; souplesse.</div><div class="hs">Warm-ups avant s&eacute;ance &middot; Isolations &middot; Stretching passif</div></div>
+  <div class="st">Warm-Up Flows &mdash; avant s&eacute;ance</div>
+  <div class="card">
+    <div class="ch ch-o" onclick="tog(this)"><div class="ci ci-o">1</div><div class="ct ct-o">Flow 1 &mdash; mobilit&eacute; g&eacute;n&eacute;rale + hanches &middot; 5-10 min</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb">
+      <div class="exo"><div class="en">Neck CARs</div><div class="pills"><span class="pi">5 rotations/c&ocirc;t&eacute;</span></div><div class="tip">Cercle complet de la t&ecirc;te. Menton&rarr;plafond. Le plus grand arc possible.</div></div>
+      <div class="exo"><div class="en">Cat-Cow lent et contr&ocirc;l&eacute;</div><div class="pills"><span class="pi">10 reps</span></div><div class="tip">&Agrave; 4 pattes. Expire en arrondissant (chat), inspire en creusant (vache).</div></div>
+      <div class="exo"><div class="en">Spiderman Lunge + Rotation</div><div class="pills"><span class="pi">5 reps/c&ocirc;t&eacute;</span></div><div class="tip">Pied avant &agrave; c&ocirc;t&eacute; de la main. Ouvre le coude vers le plafond.</div></div>
+      <div class="exo"><div class="en">Prying Squat</div><div class="pills"><span class="pi">5 reps</span><span class="pi">5s pause</span><span class="pi pk">KB 12 kg</span></div><div class="tip">KB sous le menton. Coudes ouvrent les genoux. Talons au sol.</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch ch-b" onclick="tog(this)"><div class="ci ci-b">2</div><div class="ct ct-b">Flow 2 &mdash; cha&icirc;ne post&eacute;rieure &middot; 5-10 min</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb">
+      <div class="exo"><div class="en">Downward Dog to Cobra</div><div class="pills"><span class="pi">10 reps fluides</span></div><div class="tip tip-b">Flux continu. Hanches hautes &rarr; descend lentement en cobra.</div></div>
+      <div class="exo"><div class="en">90/90 Switch</div><div class="pills"><span class="pi">10 transitions lentes</span></div><div class="tip tip-b">Deux jambes &agrave; 90&deg;. Bascule lentement. Ne pas forcer.</div></div>
+      <div class="exo"><div class="en">Scapular Push-ups</div><div class="pills"><span class="pi">10 reps</span></div><div class="tip tip-b">Bras tendus. Serre et ouvre les omoplates seulement.</div></div>
+      <div class="exo"><div class="en">Ankle Rocks</div><div class="pills"><span class="pi">10 reps/c&ocirc;t&eacute;</span></div><div class="tip tip-b">Genou avant glisse vers l'avant. Talon au sol.</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch ch-g" onclick="tog(this)"><div class="ci ci-g">3</div><div class="ct ct-g">Flow 3 &mdash; flow segment&eacute; &middot; 5-10 min</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb">
+      <div class="exo"><div class="en">Shoulder CARs</div><div class="pills"><span class="pi">5 rotations/bras</span></div><div class="tip tip-g">Grand cercle bras tendu. Lent et contr&ocirc;l&eacute;.</div></div>
+      <div class="exo"><div class="en">Jefferson Curl l&eacute;ger</div><div class="pills"><span class="pi">5 reps</span><span class="pi pk">KB l&eacute;ger</span></div><div class="tip tip-g">Enroule la colonne vert&egrave;bre par vert&egrave;bre vers le bas. Remonte lentement.</div></div>
+      <div class="exo"><div class="en">Hip CARs</div><div class="pills"><span class="pi">5 rotations/jambe</span></div><div class="tip tip-g">Genou &agrave; 90&deg;, rotation compl&egrave;te de la hanche.</div></div>
+      <div class="exo"><div class="en">Ankle CARs</div><div class="pills"><span class="pi">5 rotations/pied</span></div><div class="tip tip-g">Trace le plus grand cercle possible avec ton pied.</div></div>
+    </div>
+  </div>
+  
+  <div class="st">Isolations articulaires &mdash; jours off</div>
+  <div class="card">
+    <div class="ch ch-o" onclick="tog(this)"><div class="ci ci-o">H</div><div class="ct ct-o">Hanches Flow 1 &middot; 2-3 tours &middot; Mardi ou Jeudi</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb">
+      <div class="exo"><div class="en">Standing Hip CARs</div><div class="pills"><span class="pi">5 rotations/c&ocirc;t&eacute;</span></div></div>
+      <div class="exo"><div class="en">Slow 90/90 Hip Switch</div><div class="pills"><span class="pi">10 transitions lentes</span></div></div>
+      <div class="exo"><div class="en">Hip Internal Rotation Lift &amp; Hold</div><div class="pills"><span class="pi">5 reps/c&ocirc;t&eacute;</span></div></div>
+      <div class="exo"><div class="en">Hip Rocks Side to Side</div><div class="pills"><span class="pi">10 reps/c&ocirc;t&eacute;</span></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch ch-g" onclick="tog(this)"><div class="ci ci-g">&Eacute;</div><div class="ct ct-g">&Eacute;paules Flow 1 &middot; avant s&eacute;ance overhead (S5-S6)</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb">
+      <div class="exo"><div class="en">Shoulder CARs</div><div class="pills"><span class="pi">5 rotations lentes/bras</span></div></div>
+      <div class="exo"><div class="en">Shoulder Flexion Passive + Lift Off</div><div class="pills"><span class="pi">30s stretch</span><span class="pi">10 reps &middot; maintien 3s</span></div></div>
+      <div class="exo"><div class="en">External Rotation Passive + Lift Off</div><div class="pills"><span class="pi">30s stretch</span><span class="pi">5 reps &middot; maintien 3s</span></div></div>
+      <div class="exo"><div class="en">Crab Extension + Blackburn</div><div class="pills"><span class="pi">10 reps chaque</span></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch ch-b" onclick="tog(this)"><div class="ci ci-b">C</div><div class="ct ct-b">Chevilles Flow 1 &middot; profondeur de squat</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb">
+      <div class="exo"><div class="en">Ankle CARs</div><div class="pills"><span class="pi">5 rotations/c&ocirc;t&eacute;</span></div></div>
+      <div class="exo"><div class="en">Kneeling Ankle Stretch + 10 Ankle Rocks</div><div class="pills"><span class="pi">60s + 10 rocks/c&ocirc;t&eacute;</span></div></div>
+      <div class="exo"><div class="en">Calf Stretch + Toe Stretch</div><div class="pills"><span class="pi">60s/posture/c&ocirc;t&eacute;</span></div></div>
+      <div class="exo"><div class="en">Deep Squat Hold</div><div class="pills"><span class="pi">120s</span></div></div>
+    </div>
+  </div>
+  
+  <div class="st">Stretching passif &mdash; jours off ou fin de s&eacute;ance</div>
+  <div class="card">
+    <div class="ch ch-n" onclick="tog(this)"><div class="ci ci-n">A</div><div class="ct">Routine A &mdash; cha&icirc;ne post&eacute;rieure &amp; hanches</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb">
+      <div style="font-size:11px;color:var(--i3);margin-bottom:7px">1-3 tours &middot; 60-120s par posture &middot; respiration profonde &middot; relax</div>
+      <div class="exo"><div class="en">Calf Stretch</div><div class="pills"><span class="pi">90s/c&ocirc;t&eacute;</span></div></div>
+      <div class="exo"><div class="en">Sitting on Toes</div><div class="pills"><span class="pi">60s</span></div></div>
+      <div class="exo"><div class="en">Half Kneeling Hip Flexor + Toe Grab</div><div class="pills"><span class="pi">90s/c&ocirc;t&eacute;</span></div></div>
+      <div class="exo"><div class="en">Kneeling Hamstring Stretch</div><div class="pills"><span class="pi">90s/jambe</span></div></div>
+      <div class="exo"><div class="en">Lying Side Glute Stretch</div><div class="pills"><span class="pi">90s/c&ocirc;t&eacute;</span></div></div>
+      <div class="exo"><div class="en">Stick Rounded Back Stretch</div><div class="pills"><span class="pi">90s</span></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch ch-n" onclick="tog(this)"><div class="ci ci-n">B</div><div class="ct">Routine B &mdash; cha&icirc;nes ant&eacute;rieures &middot; id&eacute;al apr&egrave;s assis toute la journ&eacute;e</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb">
+      <div class="exo"><div class="en">Child Pose</div><div class="pills"><span class="pi">90s</span></div></div>
+      <div class="exo"><div class="en">Bretzel Stretch</div><div class="pills"><span class="pi">90s/c&ocirc;t&eacute;</span></div></div>
+      <div class="exo"><div class="en">Couch Stretch</div><div class="pills"><span class="pi">90s/jambe</span></div></div>
+      <div class="exo"><div class="en">Seated Abductor Stretch</div><div class="pills"><span class="pi">90s</span></div></div>
+      <div class="exo"><div class="en">Forward Fold with Toes Elevated</div><div class="pills"><span class="pi">90s</span></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch ch-n" onclick="tog(this)"><div class="ci ci-n">RC</div><div class="ct">Stretching Reset Challenge &mdash; muscles cibl&eacute;s</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb">
+      <div class="exo"><div class="en">Child Pose</div><div class="pills"><span class="pi">60-120s</span></div><div class="tip">Dorsaux, paravert&eacute;braux, deltoides post., fessiers, quadriceps</div></div>
+      <div class="exo"><div class="en">Cobra</div><div class="pills"><span class="pi">60-120s</span></div><div class="tip">Abdominaux, psoas, quadriceps, grand dorsal</div></div>
+      <div class="exo"><div class="en">Half Kneeling Hip Flexor Stretch</div><div class="pills"><span class="pi">60-120s/c&ocirc;t&eacute;</span></div><div class="tip">Psoas-iliaque, quadriceps, fascia lata</div></div>
+      <div class="exo"><div class="en">Pigeon Stretch</div><div class="pills"><span class="pi">60-120s/c&ocirc;t&eacute;</span></div><div class="tip">Fessiers, piriforme, psoas-iliaque</div></div>
+      <div class="exo"><div class="en">Butterfly Stretch</div><div class="pills"><span class="pi">60-120s</span></div><div class="tip">Adducteurs, gracile, pectin&eacute;</div></div>
+      <div class="exo"><div class="en">Elephant Walk</div><div class="pills"><span class="pi">60-120s</span></div><div class="tip">Ischio-jambiers, mollets, lombaires</div></div>
+      <div class="exo"><div class="en">Jefferson Curl</div><div class="pills"><span class="pi">60-120s</span></div><div class="tip">Cha&icirc;ne post&eacute;rieure compl&egrave;te</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="page-alim" class="page">
+  <div class="hero"><div class="hl">Alimentation &amp; Habitudes</div><div class="ht">Tes r&egrave;gles.<br>Tes habits.</div><div class="hs">Reset Challenge MW + ajustements personnalis&eacute;s</div></div>
+  <div class="st">Ce que tu gardes &mdash; solide</div>
+  <div class="rc rc-g"><div class="rl rl-g">Bases acquises &#10003;</div><div class="rt">Petit-dej structur&eacute; &middot; L&eacute;gumes vari&eacute;s &middot; L&eacute;gumineuses &middot; Poissons &middot; Prot&eacute;ines correctes</div><div class="rs">Ne rien changer. C'est ta fondation.</div></div>
+  
+  <div class="st">3 r&egrave;gles personnalis&eacute;es</div>
+  <div class="rc rc-o"><div class="rl rl-o">R&egrave;gle 1 &mdash; Sucres parasites z&eacute;ro</div><div class="rt">Pas de g&acirc;teaux en pause, bonbons, cochonneries entre les repas.</div><div class="rs">Un &eacute;cart = exception consciente. Tu le d&eacute;cides, tu l'assumes, tu passes &agrave; autre chose.</div></div>
+  <div class="rc rc-b"><div class="rl rl-b">R&egrave;gle 2 &mdash; Hydratation structur&eacute;e</div><div class="rt">500 ml au r&eacute;veil &middot; un verre avant chaque repas &middot; 2,5-3 L/jour</div></div>
+  <div class="rc rc-g"><div class="rl rl-g">R&egrave;gle 3 &mdash; Prot&eacute;ine &agrave; chaque repas</div><div class="rt">Chaque repas contient une source prot&eacute;ique identifiable.</div></div>
+  
+  <div class="st">Je&ucirc;ne Intermittent 16/8</div>
+  <div class="card">
+    <div class="ch ch-a" onclick="tog(this)"><div class="ci" style="background:var(--am);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0">JI</div><div class="ct" style="color:#854F0B">Je&ucirc;ne Intermittent 16/8</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb">
+      <div class="exo"><div class="tip">Fen&ecirc;tre alimentaire : 8h (ex. 12h &rarr; 20h). Saute le petit-d&eacute;jeuner, premier repas &agrave; midi.</div></div>
+      <div class="exo"><div class="en">B&eacute;n&eacute;fices</div><div class="tip">Mode br&ucirc;le-graisse &middot; r&eacute;gulation hormonale &middot; clart&eacute; mentale &middot; moins de compensation alimentaire</div></div>
+      <div class="exo"><div class="en">Note pour ton profil</div><div class="tip">Ton petit-dej est structur&eacute; et de qualit&eacute;. Tu peux garder ce format OU tester le JI. Les deux sont compatibles avec la Phase 0.</div></div>
+    </div>
+  </div>
+  
+  <div class="card">
+    <div class="ch ch-n" onclick="tog(this)"><div class="ci ci-n">&asymp;</div><div class="ct">&Eacute;quivalences glucides au restaurant</div><div class="chv">&rsaquo;</div></div>
+    <div class="cb">
+      <div class="exo"><div class="en">1 verre de vin (150ml)</div><div class="pills"><span class="pi">&asymp; 50g p&acirc;tes cuites</span><span class="pi">ou 100g pommes de terre</span></div></div>
+      <div class="exo"><div class="en">1 bi&egrave;re (250ml)</div><div class="pills"><span class="pi">&asymp; 70g riz cuit</span></div></div>
+      <div class="exo"><div class="en">1 soda (33cl)</div><div class="pills"><span class="pi">&asymp; 60g quinoa cuit</span></div></div>
+      <div class="exo"><div class="en">1 pizza individuelle</div><div class="pills"><span class="pi">&asymp; 250g riz cuit</span></div></div>
+      <div class="tip">Compenser au repas suivant : supprimer les f&eacute;culents, l&eacute;gumes + prot&eacute;ines.</div>
+    </div>
+  </div>
+  
+  <div class="st">Compl&eacute;ments &mdash; class&eacute;s par rapport b&eacute;n&eacute;fices/co&ucirc;t</div>
+  <div class="g2">
+    <div class="sc"><div class="sc-l">Force + explosivit&eacute;</div><div class="sc-v" style="font-size:14px">Cr&eacute;atine</div><div class="sc-s">Monohydrate &middot; 3-5g/j</div></div>
+    <div class="sc"><div class="sc-l">Sommeil + crampes</div><div class="sc-v" style="font-size:14px">Magn&eacute;sium</div><div class="sc-s">Bisglycinate</div></div>
+    <div class="sc"><div class="sc-l">Cardio + articulaire</div><div class="sc-v" style="font-size:14px">Om&eacute;ga 3</div><div class="sc-s">EPA+DHA</div></div>
+    <div class="sc"><div class="sc-l">Immunit&eacute; + os</div><div class="sc-v" style="font-size:14px">D3 + K2</div><div class="sc-s">Synergie &middot; prendre ensemble</div></div>
+    <div class="sc"><div class="sc-l">Articulations</div><div class="sc-v" style="font-size:14px">Collag&egrave;ne</div><div class="sc-s">Hydrolys&eacute;</div></div>
+    <div class="sc"><div class="sc-l">R&eacute;hydratation</div><div class="sc-v" style="font-size:14px">&Eacute;lectrolytes</div><div class="sc-s">&Eacute;t&eacute; / sessions longues</div></div>
+  </div>
+  <div class="tb">Code promo ESN : <strong>"KB"</strong> &rarr; -10% sur les produits remis&eacute;s.</div>
+  
+  <div class="st">4 habitudes non-n&eacute;gociables</div>
+  <div class="rc rc-p"><div class="rl rl-p">Habitude 1 &mdash; 8 000-10 000 pas/jour</div><div class="rt">3 sessions de 20-30 min. Prendre les escaliers, marcher pendant les appels.</div><div class="rs">Toi : marche vers le boulot 3 matins/semaine au lieu du v&eacute;lo.</div></div>
+  <div class="rc rc-o"><div class="rl rl-o">Habitude 2 &mdash; Routine matin</div><div class="rt">10 min avant de partir : eau + Warm-Up Flow les jours sans s&eacute;ance.</div></div>
+  <div class="rc rc-b"><div class="rl rl-b">Habitude 3 &mdash; 10 pages/jour</div><div class="rt">Matin au r&eacute;veil + soir avant de dormir. Remplace le scrolling.</div><div class="rs">La Psycho Cybern&eacute;tique &middot; Rompre avec soi-m&ecirc;me &middot; Sto&iuml;cisme, le pouvoir de la discipline</div></div>
+  <div class="rc rc-p"><div class="rl rl-p">Habitude 4 &mdash; Coucher 22h30 max</div><div class="rt">Tu couches &agrave; 23h-23h30. Avancer de 45 min est le seul vrai levier.</div><div class="rs">C'est l'habitude la plus difficile et la plus impactante.</div></div>
+  <div class="tb tb-g"><strong>Discipline &gt; Motivation.</strong> La motivation lance, la discipline fait avancer, la r&eacute;gularit&eacute; m&egrave;ne au succ&egrave;s.</div>
+</div>
+
+<div id="page-tracking" class="page">
+  <div class="hero"><div class="hl">Ton tracker</div><div class="ht">18 s&eacute;ances.<br>Coche-les.</div><div class="hs">Tap pour valider &middot; Notes et RPE enregistr&eacute;s depuis le player</div></div>
+  <div class="pb" style="margin-bottom:3px"><div class="pf" id="tb" style="width:0%"></div></div>
+  <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--i3);margin-bottom:14px"><span id="td-txt">0 s&eacute;ances valid&eacute;es</span><span id="tp-txt">0%</span></div>
+  <div id="track-content"></div>
+  <div class="fn">Tracking sauvegard&eacute; dans ton navigateur.<br>Chrome mobile &rarr; menu &middot; &rarr; "Ajouter &agrave; l'&eacute;cran d'accueil"</div>
 </div>
 
 <div id="player">
