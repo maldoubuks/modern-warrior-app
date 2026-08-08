@@ -894,26 +894,29 @@ const SUPPS_LIST = [
 
 let selectedHabitDate = new Date().toISOString().split('T')[0];
 
+// ── FIX CHECKLIST HABITUDES (Couleur de texte foncée lisible sur fond clair) ──
+
 function initHabitsUI() {
   const dateInput = document.getElementById('habit-date-input');
   if (dateInput) dateInput.value = selectedHabitDate;
 
-  // Render Checklists
+  // Checklist Habitudes avec texte foncé (#1e1e1e)
   const hContainer = document.getElementById('habits-checklist-container');
   if (hContainer) {
     hContainer.innerHTML = HABITS_LIST.map(h => `
-      <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
-        <span style="font-size:13px; font-weight:600; color:#fff;">${h.label}</span>
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(0,0,0,0.08);">
+        <span style="font-size:13px; font-weight:700; color:#1e1e1e;">${h.label}</span>
         <input type="checkbox" id="${h.id}" onchange="saveCurrentHabits()" style="width:20px; height:20px; accent-color:var(--or); cursor:pointer;">
       </div>
     `).join('');
   }
 
+  // Checklist Compléments avec texte foncé (#1e1e1e)
   const sContainer = document.getElementById('supps-checklist-container');
   if (sContainer) {
     sContainer.innerHTML = SUPPS_LIST.map(s => `
-      <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
-        <span style="font-size:13px; font-weight:600; color:#fff;">${s.label}</span>
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(0,0,0,0.08);">
+        <span style="font-size:13px; font-weight:700; color:#1e1e1e;">${s.label}</span>
         <input type="checkbox" id="${s.id}" onchange="saveCurrentHabits()" style="width:20px; height:20px; accent-color:var(--gr); cursor:pointer;">
       </div>
     `).join('');
@@ -922,80 +925,24 @@ function initHabitsUI() {
   loadHabitsForDate(selectedHabitDate);
 }
 
-function loadHabitsForDate(dateStr) {
-  selectedHabitDate = dateStr;
-  const store = JSON.parse(localStorage.getItem('mw_habits_store') || '{}');
-  const dayData = store[dateStr] || { metrics: {}, habits: {} };
 
-  // Set Metrics
-  ['m-sleep', 'm-hr', 'm-steps', 'm-dur', 'm-cal'].forEach(mId => {
-    const el = document.getElementById(mId);
-    if (el) el.value = dayData.metrics[mId] || '';
-  });
+// ── FIX CALENDRIER (Numéros de semaine + Titres complets des séances) ──
 
-  // Set Checkboxes
-  [...HABITS_LIST, ...SUPPS_LIST].forEach(item => {
-    const el = document.getElementById(item.id);
-    if (el) el.checked = !!dayData.habits[item.id];
-  });
-
-  updateHabitScore();
-}
-
-function saveCurrentHabits() {
-  const store = JSON.parse(localStorage.getItem('mw_habits_store') || '{}');
-  const dayData = { metrics: {}, habits: {} };
-
-  ['m-sleep', 'm-hr', 'm-steps', 'm-dur', 'm-cal'].forEach(mId => {
-    const el = document.getElementById(mId);
-    if (el) dayData.metrics[mId] = el.value;
-  });
-
-  [...HABITS_LIST, ...SUPPS_LIST].forEach(item => {
-    const el = document.getElementById(item.id);
-    if (el) dayData.habits[item.id] = el.checked;
-  });
-
-  store[selectedHabitDate] = dayData;
-  localStorage.setItem('mw_habits_store', JSON.stringify(store));
-
-  updateHabitScore();
-}
-
-function updateHabitScore() {
-  let total = HABITS_LIST.length + SUPPS_LIST.length;
-  let count = 0;
-
-  [...HABITS_LIST, ...SUPPS_LIST].forEach(item => {
-    const el = document.getElementById(item.id);
-    if (el && el.checked) count++;
-  });
-
-  const pct = Math.round((count / total) * 100);
-  const pctEl = document.getElementById('habit-score-pct');
-  const tagEl = document.getElementById('habit-bilan-tag');
-  const countEl = document.getElementById('habit-score-count');
-
-  if (pctEl) pctEl.textContent = `${pct}%`;
-  if (countEl) countEl.textContent = `${count} / ${total} habitudes validées`;
-
-  if (tagEl) {
-    if (pct === 100) { tagEl.textContent = "PARFAIT ✨ (Légende MW)"; tagEl.style.color = "var(--or)"; }
-    else if (pct >= 80) { tagEl.textContent = "EXCELLENT 🔥"; tagEl.style.color = "var(--gr)"; }
-    else if (pct >= 60) { tagEl.textContent = "TRÈS BON 💪"; tagEl.style.color = "var(--bl)"; }
-    else if (pct >= 40) { tagEl.textContent = "EN PROGRÈS ⚡"; tagEl.style.color = "#FF9F43"; }
-    else { tagEl.textContent = "FOCUS WARRIOR 🎯"; tagEl.style.color = "#E74C3C"; }
-  }
-}
-
-// ── CALENDRIER & PROGRAMMATION INTERACTIVE ────────────────────────────────
-
-let calCurrentDate = new Date();
-
-function changeCalMonth(dir) {
-  calCurrentDate.setMonth(calCurrentDate.getMonth() + dir);
-  renderCalendarGrid();
-}
+// Dictionnaire des intitutés complets des séances Phase 0
+const SESSION_TITLES_MAP = {
+  // Semaines 1 & 2
+  'A_W1': 'Séance A - Deadstop Swing + TGU',
+  'B_W1': 'Séance B - Dead Clean & Push Press',
+  'C_W1': 'Séance C - 2H Swing + TGU',
+  // Semaines 3 & 4
+  'A_W3': 'Séance A - 1H Swing + TGU',
+  'B_W3': 'Séance B - Clean & Push Press',
+  'C_W3': 'Séance C - Complexe Ulysse',
+  // Semaines 5 & 6
+  'A_W5': 'Séance A - Snatch + TGU',
+  'B_W5': 'Séance B - Clean & Press strict',
+  'C_W5': 'Séance C - Complexe Atlas'
+};
 
 function renderCalendarGrid() {
   const grid = document.getElementById('month-calendar-grid');
@@ -1011,44 +958,73 @@ function renderCalendarGrid() {
   grid.innerHTML = '';
 
   const firstDay = new Date(y, m, 1).getDay();
-  const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1; // Align Lundi = 0
+  const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1; // Lundi = 0
   const daysInMonth = new Date(y, m + 1, 0).getDate();
 
   const scheduleStore = JSON.parse(localStorage.getItem('mw_schedule_store') || '{}');
+  const todayStr = new Date().toISOString().split('T')[0];
 
-  // Cases vides
+  // Cases vides début de mois
   for (let i = 0; i < adjustedFirstDay; i++) {
-    grid.innerHTML += `<div style="aspect-ratio:1; background:rgba(255,255,255,0.02); border-radius:6px;"></div>`;
+    grid.innerHTML += `<div style="aspect-ratio:1; background:rgba(0,0,0,0.02); border-radius:6px;"></div>`;
   }
 
-  // Jours du mois
-  const todayStr = new Date().toISOString().split('T')[0];
+  let currentWeekNum = 1;
 
   for (let day = 1; day <= daysInMonth; day++) {
     const dStr = `${y}-${String(m+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
     const isToday = (dStr === todayStr);
+    const dateObj = new Date(y, m, day);
+    const dayOfWeek = dateObj.getDay(); // 0 = Dimanche, 1 = Lundi, etc.
+
+    // Détermination du bloc de semaine (S1-S2, S3-S4, S5-S6)
+    let weekBlockKey = 'W1';
+    if (currentWeekNum >= 5) weekBlockKey = 'W5';
+    else if (currentWeekNum >= 3) weekBlockKey = 'W3';
 
     let scheduledTask = scheduleStore[dStr] || '';
-    let dayOfWeek = new Date(y, m, day).getDay();
 
-    // Planning par défaut : Lundi=1 (A), Mercredi=3 (B), Vendredi=5 (C)
+    // Affectation automatique par défaut si aucune modification manuelle
     if (!scheduledTask) {
-      if (dayOfWeek === 1) scheduledTask = 'Séance A';
-      else if (dayOfWeek === 3) scheduledTask = 'Séance B';
-      else if (dayOfWeek === 5) scheduledTask = 'Séance C';
+      if (dayOfWeek === 1) scheduledTask = SESSION_TITLES_MAP[`A_${weekBlockKey}`];
+      else if (dayOfWeek === 3) scheduledTask = SESSION_TITLES_MAP[`B_${weekBlockKey}`];
+      else if (dayOfWeek === 5) scheduledTask = SESSION_TITLES_MAP[`C_${weekBlockKey}`];
       else scheduledTask = 'Repos';
+    } else if (scheduledTask === 'Séance A') {
+      scheduledTask = SESSION_TITLES_MAP[`A_${weekBlockKey}`];
+    } else if (scheduledTask === 'Séance B') {
+      scheduledTask = SESSION_TITLES_MAP[`B_${weekBlockKey}`];
+    } else if (scheduledTask === 'Séance C') {
+      scheduledTask = SESSION_TITLES_MAP[`C_${weekBlockKey}`];
     }
 
-    let isWorkout = scheduledTask.includes('Séance');
-    let bgColor = isWorkout ? 'rgba(216,90,48,0.2)' : 'rgba(255,255,255,0.05)';
-    let borderColor = isToday ? 'var(--or)' : (isWorkout ? 'var(--or)' : '#333');
+    const isWorkout = scheduledTask.includes('Séance') || scheduledTask.includes('Complexe') || scheduledTask.includes('WOD');
+    const bgColor = isWorkout ? 'rgba(216,90,48,0.12)' : '#ffffff';
+    const borderColor = isToday ? 'var(--or)' : (isWorkout ? 'var(--or)' : '#e0e0e0');
+
+    // Badge de Semaine affiché sur chaque Lundi
+    let weekBadgeHTML = '';
+    if (dayOfWeek === 1 || day === 1) {
+      weekBadgeHTML = `<span style="font-size:8px; font-weight:800; background:var(--or); color:#fff; padding:1px 4px; border-radius:3px; margin-left:auto;">S${currentWeekNum}</span>`;
+    }
 
     grid.innerHTML += `
-      <div onclick="editCalendarDay('${dStr}', '${scheduledTask}')" style="aspect-ratio:1; background:${bgColor}; border:1px solid ${borderColor}; border-radius:6px; padding:4px; display:flex; flex-direction:column; justify-index:space-between; cursor:pointer; font-size:10px;">
-        <div style="font-weight:800; color:${isToday ? 'var(--or)' : '#fff'};">${day}</div>
-        <div style="font-size:8px; font-weight:700; color:${isWorkout ? 'var(--or)' : 'var(--i3)'}; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${scheduledTask}</div>
+      <div onclick="editCalendarDay('${dStr}', '${scheduledTask.replace(/'/g, "\\'")}')" 
+           style="min-height:75px; background:${bgColor}; border:1.5px solid ${borderColor}; border-radius:8px; padding:6px; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer; text-align:left;">
+        <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+          <span style="font-size:12px; font-weight:800; color:${isToday ? 'var(--or)' : '#1e1e1e'};">${day}</span>
+          ${weekBadgeHTML}
+        </div>
+        <div style="font-size:9.5px; font-weight:700; color:${isWorkout ? '#c0392b' : '#7f8c8d'}; line-height:1.2; margin-top:4px; word-break:break-word;">
+          ${scheduledTask}
+        </div>
       </div>
     `;
+
+    // Passage à la semaine suivante après le dimanche
+    if (dayOfWeek === 0) {
+      currentWeekNum++;
+    }
   }
 }
 
