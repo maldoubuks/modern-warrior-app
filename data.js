@@ -387,10 +387,201 @@ const SD = {
 
 // ── DONNÉES DES WODS & SUIVI DES TRACKS ───────────────────────────────────
 const WODS = [
-  {"c": "fullbody", "t": "AMRAP 30 min", "ti": "Fullbody AMRAP 30 min", "b": "10 Swings + 10 Pompes + 10 Goblet Squats + 10 Tirages/bras. Récupération libre entre tours. <strong>H:</strong> débutant 12-20 kg / intermédiaire 20-28 kg"},
-  {"c": "fullbody", "t": "EMOM 30 min", "ti": "Fullbody Débutant EMOM 30 min", "b": "Min 1: 7-10 Deadstop Swings &middot; Min 2: 8-12 Goblet Squats &middot; Min 3: 7-10 2H Dead Clean + Press. 10 tours."},
-  {"c": "complex", "t": "10 ROUNDS", "ti": "Complex KB - 10 rounds", "b": "1 Swing + 1 Cluster + 1 Snatch = 1 rep &middot; 5 reps = 1 round. Change de bras à chaque round. 2 min repos. <strong>H:</strong> 12-28 kg"},
-  {"c": "emom", "t": "EMOM 25 min", "ti": "Double KB EMOM 25 min", "b": "Min 1: 6-8 Double KB Clean &middot; Min 2: 4-6 Double KB Press &middot; Min 3: 8-10 Double KB Squat &middot; Min 4: Repos."}
+  // ── FULLBODY ─────────────────────────────────────────────────────────────
+  {
+    "c": "fullbody",
+    "t": "AMRAP 30 min",
+    "ti": "Séance Fullbody - 30'",
+    "b": "AMRAP 30' (max de tours) : 10 Swings + 10 Pompes + 10 Goblet Squats + 10 Tirages (chaque bras). Récupération libre entre les tours.<br><strong>Charges :</strong> H débutants 12-20 kg / H intermédiaires 20-28 kg &middot; F débutantes 6-10 kg / F intermédiaires 12-16 kg"
+  },
+  {
+    "c": "fullbody",
+    "t": "EMOM 30 min",
+    "ti": "Fullbody Débutant — EMOM 30'",
+    "b": "1 mouvement par minute, 10 tours :<br>• Min 1 : 7-10 Deadstop Swings<br>• Min 2 : 8-12 Goblet Squats<br>• Min 3 : 7-10 2H Dead Clean + 2H Press<br><strong>Charges :</strong> H 16-32 kg / F 6-16 kg"
+  },
+  {
+    "c": "fullbody",
+    "t": "AMRAP 20 min",
+    "ti": "Fullbody AMRAP 20'",
+    "b": "Max de tours de : 10 Dead Stop Swing + 5x (1 Row + 1 Dead Clean + 1 Squat) à droite + 5x (1 Row + 1 Dead Clean + 1 Squat) à gauche + 10 Pompes &middot; 30s de repos entre les exos."
+  },
+  {
+    "c": "fullbody",
+    "t": "AMRAP 30 min",
+    "ti": "Fullbody Swings, Squat & Halo AMRAP 30'",
+    "b": "Max de tours pendant 30' :<br>• Exo 1 : 10x (1 Swing + 1 Goblet Squat) &middot; 45s repos<br>• Exo 2 : 10x (1 Press + 1 Halo) &middot; 45s repos"
+  },
+  {
+    "c": "fullbody",
+    "t": "EMOM 30 min",
+    "ti": "Fullbody EMOM 30' (Squat, Pompes, High Pull)",
+    "b": "• Min 1 : 12 Goblet Squat<br>• Min 2 : 12 Pompes<br>• Min 3 : 12 Swing High Pull<br>Répéter 30 min &middot; Trop dur : 8 reps | Trop facile : 16-20 reps"
+  },
+
+  // ── COMPLEX ──────────────────────────────────────────────────────────────
+  {
+    "c": "complex",
+    "t": "10 ROUNDS",
+    "ti": "Complex Kettlebell - 10 rounds",
+    "b": "1 Swing + 1 Cluster + 1 Snatch = 1 rep &middot; 5 reps = 1 round. Change de bras à chaque round &middot; 2 min repos entre rounds.<br><strong>Charges :</strong> H 12-28 kg / F 6-16 kg"
+  },
+  {
+    "c": "complex",
+    "t": "5 ROUNDS",
+    "ti": "5 Rounds Complex (Snatch, Press, Reverse TGU)",
+    "b": "5 Snatchs + 3 Push Press + 1 Reverse TGU &middot; 1 bras = 1 round &middot; 1-2 min pause &middot; 5 tours/côté.<br><em>Note :</em> Reverse TGU demande un verrouillage poignet/coude. Variante débutant : remplacer Snatch par Swing 1H."
+  },
+  {
+    "c": "complex",
+    "t": "AMRAP 20 min",
+    "ti": "20' Kettlebell Complex",
+    "b": "1 bras = 1 round &middot; 2 min pause &middot; switch &middot; enchaîner sur 20' : 10 Swings + 5 Clean & Press + 5 Front Squats + 5 Snatchs.<br>Utiliser un KB pressable 10 fois en strict press.<br><strong>H :</strong> déb 8-16 kg / int 12-20 kg / av 24+ kg"
+  },
+  {
+    "c": "complex",
+    "t": "AMRAP 20 min",
+    "ti": "Complex Single KB AMRAP 20'",
+    "b": "Max de tours : 3 Clean to Squat + 3 Press 2 mains + 3 Swing US &middot; 30-60s repos."
+  },
+  {
+    "c": "complex",
+    "t": "AMRAP 18 min",
+    "ti": "Complex Row, Swing & Cluster AMRAP 18'",
+    "b": "1-Hand Row ×4 + 1-Hand Swing ×3 + 1-Hand Cluster ×2. 30-60s repos entre côté D et côté G &middot; enchaîner jusqu'à la fin."
+  },
+  {
+    "c": "complex",
+    "t": "5-7 TOURS",
+    "ti": "Complex Single Kettlebell (6 mouvements)",
+    "b": "Sans reposer le KB, 3 reps de chaque : 2H Row → 2H Clean → 2H Swing → 2H Swing High Pull → 2H Goblet Squat → 2H Thruster.<br>Repos 60-120s &middot; 5 à 7 tours (ou max de tours en 15 min).<br><strong>Charges :</strong> H 20-32 kg / F 12-20 kg"
+  },
+  {
+    "c": "complex",
+    "t": "AMRAP 20 min",
+    "ti": "Complex KB + Carries AMRAP 20'",
+    "b": "Max de tours/côté : 5x 1H Swing High Pull + 3x Cluster + 10m Front Rack Carry + 10m Farmer Carry.<br>Repos 30-60s entre côtés &middot; <strong>Charges :</strong> H 16-28 kg / F 8-16 kg"
+  },
+
+  // ── EMOM ─────────────────────────────────────────────────────────────────
+  {
+    "c": "emom",
+    "t": "EMOM 30 min",
+    "ti": "EMOM 30' (1H Swing + Pull Through)",
+    "b": "• Min 1 : 10 Swings 1H droit<br>• Min 2 : 20 Pull Through<br>• Min 3 : 10 Swings 1H gauche<br>• Min 4 : 20 Ballistic Row<br>• Min 5 : Repos complet<br>Répéter jusqu'à 30 min."
+  },
+  {
+    "c": "emom",
+    "t": "EMOM 25 min",
+    "ti": "EMOM 25' — Double Kettlebells",
+    "b": "• Min 1 : 6-8 Double KB Clean<br>• Min 2 : 4-6 Double KB Press<br>• Min 3 : 8-10 Double KB Squat<br>• Min 4 : Repos<br>×6 rounds."
+  },
+  {
+    "c": "emom",
+    "t": "EMOM 15 min",
+    "ti": "EMOM 15' (Deadstop + Swing)",
+    "b": "3 Deadstop Swing + 5 Swing &middot; répéter sur 15 min. Simple et efficace."
+  },
+  {
+    "c": "emom",
+    "t": "EMOM 30 min",
+    "ti": "EMOM 30' — Double Kettlebells",
+    "b": "• Min 1 : 10 Double Swings<br>• Min 2 : 5 Double Clean & Push Press<br>• Min 3 : 10 Double Front Squat<br>Répéter 30 min &middot; Trop dur : réduire les reps | Trop facile : augmenter la charge."
+  },
+
+  // ── AMRAP ────────────────────────────────────────────────────────────────
+  {
+    "c": "amrap",
+    "t": "AMRAP 20 min",
+    "ti": "AMRAP 20' — Flow à 1 bras",
+    "b": "1 Get-up (montée seulement) + 1 Press à chaque étape + 3 1H Swing + 2 1H Clean + 5 1H Squat.<br>30-60s repos &middot; repartir du sol avec l'autre côté."
+  },
+  {
+    "c": "amrap",
+    "t": "AMRAP 20 min",
+    "ti": "AMRAP 20' — Upper Body + Farmer Carry",
+    "b": "5 Double Row + 5 Double Clean + 5 Double Press + 30s Farmer Carry.<br>60-90s repos &middot; pendant 20 min (faisable avec 1 seul KB : 1 tour = 1 série/côté)."
+  },
+  {
+    "c": "amrap",
+    "t": "AMRAP 20 min",
+    "ti": "AMRAP 20' — Complex 1 bras (Row, Swing, Thruster)",
+    "b": "5 Row + 4 Swing + 3 Thruster &middot; 20-60s repos entre D et G &middot; enchaîner 20 min."
+  },
+  {
+    "c": "amrap",
+    "t": "AMRAP 25 min",
+    "ti": "AMRAP 25' — Push-up, Row, Gunslinger & Press",
+    "b": "5 Pompes bras surélevé + 5 Row + 3 Gunslinger Swing + 3 Clean + 3 Press + 3 Push Press.<br>30-90s repos &middot; changer de côté &middot; répéter 25 min."
+  },
+  {
+    "c": "amrap",
+    "t": "AMRAP 20 min",
+    "ti": "AMRAP 20' — Gunslinger",
+    "b": "3 Swing Gunslinger + 3 Clean + 3 Press (côté droit puis gauche).<br>Repos 45-90s entre rounds &middot; <strong>Charges :</strong> H 16-24 kg / F 6-12 kg"
+  },
+  {
+    "c": "amrap",
+    "t": "FINISHER 10 min",
+    "ti": "Finisher AMRAP 10'",
+    "b": "5 Rowing + 4 Swing + 3 Clean + 2 Squat + 1 Thruster &middot; changer de côté &middot; répéter 10 min."
+  },
+  {
+    "c": "amrap",
+    "t": "FOR TIME",
+    "ti": "100 Snatch For Time",
+    "b": "100 Snatch le plus vite possible — 50 droite + 50 gauche. Standard StrongFirst : moins de 5 min."
+  },
+
+  // ── CIBLÉES ──────────────────────────────────────────────────────────────
+  {
+    "c": "cible",
+    "t": "HAUT DU CORPS",
+    "ti": "Séance Haut du corps - 3 supersets",
+    "b": "• <strong>Superset 1</strong> (3x, 90s repos) : 8+8 See Saw Floor Press + 8+8 Gorilla Row<br>• <strong>Superset 2</strong> (3x, 75s repos) : 8 Double KB Press + 12 Upright Row<br>• <strong>Superset 3</strong> (2-3x, 60s repos) : 12 Horn Curl + 12 Triceps Extension"
+  },
+  {
+    "c": "cible",
+    "t": "DOS + ÉPAULES",
+    "ti": "Dos x Épaules (3-5 tours)",
+    "b": "Enchaîner les 3 mouvements (15-30s repos entre exos &middot; 75-90s repos entre tours) :<br>• Hike Pass — 10-12 reps (lourd)<br>• Kickstand Row — 8-10 reps/côté (modéré)<br>• Rear Delt Row + High Row — 12-15 reps (léger)"
+  },
+  {
+    "c": "cible",
+    "t": "PECTORAUX",
+    "ti": "Séance Pectoraux - 2 supersets",
+    "b": "• <strong>Superset 1</strong> (3-5x, 2 min repos) : 5-8 Banded KB Floor Press + Max Close Grip Push-up<br>• <strong>Superset 2</strong> (2-4x) : 8-10 Glute Bridge SA Press + Max Offset KB Push-up"
+  },
+  {
+    "c": "cible",
+    "t": "ÉPAULES x ABDOS",
+    "ti": "Épaules x Abdos (3 séries)",
+    "b": "3 séries / 5 reps par côté : Rotational Press | Halo + Low Chop | Standing Windmill.<br>Démarrer léger, augmenter progressivement. Isoler ou exécuter en circuit."
+  },
+  {
+    "c": "cible",
+    "t": "CENTRE DU CORPS",
+    "ti": "Centre du corps (Core Circuit)",
+    "b": "Circuit 30-60s/côté &middot; 10-20s repos entre exos &middot; 2-4 tours :<br>• Turkish Sit-up<br>• Half-Kneeling Wood Chop<br>• Bear Crawl Pull-Through<br>• Overhead Walk"
+  },
+  {
+    "c": "cible",
+    "t": "FORCE x MOBILITÉ",
+    "ti": "Force x Mobilité (Circuit)",
+    "b": "Circuit 30-60s/côté &middot; 10-20s repos entre exos &middot; 2-4 tours :<br>• Halo to Rotational Lunge<br>• Half-Kneeling Windmill<br>• Cossack Squat<br>• Prying Goblet Squat + Horn Curl"
+  },
+  {
+    "c": "cible",
+    "t": "JAMBES x ABDOS",
+    "ti": "Jambes x Abdos (2-4 séries)",
+    "b": "2-4 séries de 6-8 reps (charge modérée) :<br>• Front Rack Reverse Lunge<br>• Swing to Goblet Squat<br>• Goblet Curtsy Squat<br>• Kickstand RDL<br>• Overhead Walking Lunge<br>• Offset Goblet Squat"
+  },
+  {
+    "c": "cible",
+    "t": "ÉCHAUFFEMENT",
+    "ti": "Échauffement simple (3 exercices)",
+    "b": "2-3 tours, lent et contrôlé, respiration nasale :<br>1. <strong>KB Halo</strong> — 10 reps (5/sens) — mobilise épaules, omoplates, cervicales<br>2. <strong>Cobra to Downward Dog</strong> — 5 reps/côté — ouvre thorax, étire chaîne postérieure<br>3. <strong>Prying Goblet Squat</strong> — 30s — mobilité hanches/chevilles, gainage"
+  }
 ];
 
 const TRACK_IDS = [
