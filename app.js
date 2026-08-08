@@ -115,7 +115,14 @@ let selRpeVal=0, selFeelVal='', detailedExos={};
 function startPlayer(key){
   const s = SD[key]; if(!s) return;
   pKey = key; pIdx = 0; pStart = new Date(); detailedExos = {};
-  document.getElementById('player').style.display = 'block';
+  
+  const playerEl = document.getElementById('player');
+  if (playerEl) {
+    playerEl.style.display = 'block';
+    playerEl.style.pointerEvents = 'auto'; // 🟢 FIX : Active les clics sur la fenêtre !
+    playerEl.classList.add('active');
+  }
+  
   document.body.style.overflow = 'hidden';
   resetTimer(); stopRest();
   renderPlayer();
@@ -125,8 +132,22 @@ function startPlayer(key){
 function closePlayer(){
   if(tRunning) clearInterval(tInterval);
   clearInterval(rInterval);
-  document.getElementById('player').style.display = 'none';
+  
+  const playerEl = document.getElementById('player');
+  if (playerEl) {
+    playerEl.style.display = 'none';
+    playerEl.style.pointerEvents = 'none'; // 🔴 Désactive les clics une fois fermé
+    playerEl.classList.remove('active');
+  }
+  
   document.body.style.overflow = '';
+}
+
+function prevExo(){ 
+  if(pIdx > 0){ 
+    pIdx--; 
+    renderPlayer(); 
+  } 
 }
 
 function renderPlayer(){
