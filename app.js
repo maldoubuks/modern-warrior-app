@@ -578,12 +578,23 @@ function showToast(msg, color='#378ADD') {
 const PAGES = ['home','guide','seances','wod','snacks','technique','mobilite','alim','tracking','stats','habits','calendar'];
 
 function goPage(id){
+  // 1. Masque toutes les pages et retire la classe active des boutons
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nb').forEach(b => b.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  const idx = PAGES.indexOf(id);
-  document.querySelectorAll('.nb')[idx]?.classList.add('active');
-  window.scrollTo(0,0);
+  
+  // 2. Affiche la page demandée
+  const targetPage = document.getElementById('page-' + id);
+  if (targetPage) {
+    targetPage.classList.add('active');
+  }
+  
+  // 3. Surligne LE BON bouton dans le menu (sans risque de décalage !)
+  const targetBtn = document.querySelector(`.nb[onclick*="'${id}'"]`);
+  if (targetBtn) {
+    targetBtn.classList.add('active');
+  }
+  
+  window.scrollTo(0, 0);
 }
 
 function tog(h){
