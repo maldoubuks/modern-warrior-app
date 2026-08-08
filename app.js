@@ -1,4 +1,4 @@
-// app.js - Logique Modern Warrior, Supabase, Multi-Phases & Gamification
+// app.js - Logique Modern Warrior, Supabase, Multi-Phases, Habitudes & Calendrier Dynamique
 
 const SUPA_URL = 'https://shhxsxfwfskwdmaqkhqq.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoaHhzeGZ3ZnNrd2RtYXFraHFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU3MzI4OTQsImV4cCI6MjEwMTMwODg5NH0.1Z0495ck0MIX9Th3Z6iieppGIQ22fcf3F61luAcE-XU';
@@ -76,7 +76,7 @@ function calculateLevel(points) {
   return { current, next };
 }
 
-// ── FICHE HTML & EXERCICES AVEC VISUELS ──────────────────────────────────
+// ── FICHE HTML & EXERCICES ───────────────────────────────────────────────
 function ficheHTML(key){
   const s = SD[key]; if(!s) return '';
   const blocs={}, order=[];
@@ -88,27 +88,18 @@ function ficheHTML(key){
   order.forEach(b => {
     h += `<div style="margin-bottom:10px"><div style="font-size:10px;font-weight:700;color:var(--i3);text-transform:uppercase;letter-spacing:.06em;padding:8px 0 5px">${b}</div>`;
     blocs[b].forEach(e => {
-      h += `<div class="exo">
-        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
-          <div style="flex:1;">
-            <div class="en">${e.n}</div>
-            <div class="pills">${e.p.map(p => {
-              if(p.includes('KB')||p.includes('kg')) return `<span class="pi pk">${p}</span>`;
-              if(p.includes('Repos')||p.includes('min')||p.includes('&times;')) return `<span class="pi pr">${p}</span>`;
-              return `<span class="pi">${p}</span>`;
-            }).join('')}</div>
-            ${e.tip ? `<div class="tip">${e.tip}</div>` : ''}
-          </div>
-          ${e.img ? `<img src="${e.img}" style="width:70px; height:70px; object-fit:contain; border-radius:8px; background:#1e1e1e; border:1px solid #333; flex-shrink:0;">` : ''}
-        </div>
-      </div>`;
+      h += `<div class="exo"><div class="en">${e.n}</div><div class="pills">${e.p.map(p => {
+        if(p.includes('KB')||p.includes('kg')) return `<span class="pi pk">${p}</span>`;
+        if(p.includes('Repos')||p.includes('min')||p.includes('&times;')) return `<span class="pi pr">${p}</span>`;
+        return `<span class="pi">${p}</span>`;
+      }).join('')}</div>${e.tip ? `<div class="tip">${e.tip}</div>` : ''}</div>`;
     });
     h += '</div>';
   });
   return h;
 }
 
-// ── PLAYER EN DIRECT AVEC RENDU VISUEL ─────────────────────────────────────
+// ── PLAYER EN DIRECT ───────────────────────────────────────────────────────
 let pKey='', pIdx=0, tInterval=null, tSec=0, tRunning=false, rInterval=null, rSec=0, pStart=null;
 let selRpeVal=0, selFeelVal='', detailedExos={};
 
@@ -119,7 +110,7 @@ function startPlayer(key){
   const playerEl = document.getElementById('player');
   if (playerEl) {
     playerEl.style.display = 'block';
-    playerEl.style.pointerEvents = 'auto'; // 🟢 FIX : Active les clics sur la fenêtre !
+    playerEl.style.pointerEvents = 'auto';
     playerEl.classList.add('active');
   }
   
@@ -136,18 +127,11 @@ function closePlayer(){
   const playerEl = document.getElementById('player');
   if (playerEl) {
     playerEl.style.display = 'none';
-    playerEl.style.pointerEvents = 'none'; // 🔴 Désactive les clics une fois fermé
+    playerEl.style.pointerEvents = 'none';
     playerEl.classList.remove('active');
   }
   
   document.body.style.overflow = '';
-}
-
-function prevExo(){ 
-  if(pIdx > 0){ 
-    pIdx--; 
-    renderPlayer(); 
-  } 
 }
 
 function renderPlayer(){
@@ -413,6 +397,7 @@ function changePhase(phaseId) {
   currentPhase = phaseId;
   updateStats();
   buildTracking();
+  renderCalendarGrid();
 }
 
 function buildTracking(){
@@ -590,7 +575,7 @@ function showToast(msg, color='#378ADD') {
   setTimeout(() => { t.style.opacity='0'; setTimeout(()=>t.remove(),1000); }, 2500);
 }
 
-const PAGES = ['home','guide','seances','wod','snacks','technique','mobilite','alim','tracking','stats'];
+const PAGES = ['home','guide','seances','wod','snacks','technique','mobilite','alim','tracking','stats','habits','calendar'];
 
 function goPage(id){
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -625,6 +610,8 @@ window.onload = () => {
   updateStats();
   buildTracking();
   loadFromSupabase();
+  initHabitsUI();
+  renderCalendarGrid();
 };
 
 // ── DASHBOARD & STATS (CHART.JS + CALENDRIER + KPIS) ───────────────────────
@@ -894,13 +881,10 @@ const SUPPS_LIST = [
 
 let selectedHabitDate = new Date().toISOString().split('T')[0];
 
-// ── FIX CHECKLIST HABITUDES (Couleur de texte foncée lisible sur fond clair) ──
-
 function initHabitsUI() {
   const dateInput = document.getElementById('habit-date-input');
   if (dateInput) dateInput.value = selectedHabitDate;
 
-  // Checklist Habitudes avec texte foncé (#1e1e1e)
   const hContainer = document.getElementById('habits-checklist-container');
   if (hContainer) {
     hContainer.innerHTML = HABITS_LIST.map(h => `
@@ -911,7 +895,6 @@ function initHabitsUI() {
     `).join('');
   }
 
-  // Checklist Compléments avec texte foncé (#1e1e1e)
   const sContainer = document.getElementById('supps-checklist-container');
   if (sContainer) {
     sContainer.innerHTML = SUPPS_LIST.map(s => `
@@ -925,24 +908,121 @@ function initHabitsUI() {
   loadHabitsForDate(selectedHabitDate);
 }
 
+function loadHabitsForDate(dateStr) {
+  selectedHabitDate = dateStr;
+  const store = JSON.parse(localStorage.getItem('mw_habits_store') || '{}');
+  const dayData = store[dateStr] || { metrics: {}, habits: {} };
 
-// ── FIX CALENDRIER (Numéros de semaine + Titres complets des séances) ──
+  ['m-sleep', 'm-hr', 'm-steps', 'm-dur', 'm-cal'].forEach(mId => {
+    const el = document.getElementById(mId);
+    if (el) el.value = dayData.metrics[mId] || '';
+  });
 
-// Dictionnaire des intitutés complets des séances Phase 0
-const SESSION_TITLES_MAP = {
-  // Semaines 1 & 2
-  'A_W1': 'Séance A - Deadstop Swing + TGU',
-  'B_W1': 'Séance B - Dead Clean & Push Press',
-  'C_W1': 'Séance C - 2H Swing + TGU',
-  // Semaines 3 & 4
-  'A_W3': 'Séance A - 1H Swing + TGU',
-  'B_W3': 'Séance B - Clean & Push Press',
-  'C_W3': 'Séance C - Complexe Ulysse',
-  // Semaines 5 & 6
-  'A_W5': 'Séance A - Snatch + TGU',
-  'B_W5': 'Séance B - Clean & Press strict',
-  'C_W5': 'Séance C - Complexe Atlas'
-};
+  [...HABITS_LIST, ...SUPPS_LIST].forEach(item => {
+    const el = document.getElementById(item.id);
+    if (el) el.checked = !!dayData.habits[item.id];
+  });
+
+  updateHabitScore();
+}
+
+function saveCurrentHabits() {
+  const store = JSON.parse(localStorage.getItem('mw_habits_store') || '{}');
+  const dayData = { metrics: {}, habits: {} };
+
+  ['m-sleep', 'm-hr', 'm-steps', 'm-dur', 'm-cal'].forEach(mId => {
+    const el = document.getElementById(mId);
+    if (el) dayData.metrics[mId] = el.value;
+  });
+
+  [...HABITS_LIST, ...SUPPS_LIST].forEach(item => {
+    const el = document.getElementById(item.id);
+    if (el) dayData.habits[item.id] = el.checked;
+  });
+
+  store[selectedHabitDate] = dayData;
+  localStorage.setItem('mw_habits_store', JSON.stringify(store));
+
+  updateHabitScore();
+}
+
+function updateHabitScore() {
+  let total = HABITS_LIST.length + SUPPS_LIST.length;
+  let count = 0;
+
+  [...HABITS_LIST, ...SUPPS_LIST].forEach(item => {
+    const el = document.getElementById(item.id);
+    if (el && el.checked) count++;
+  });
+
+  const pct = Math.round((count / total) * 100);
+  const pctEl = document.getElementById('habit-score-pct');
+  const tagEl = document.getElementById('habit-bilan-tag');
+  const countEl = document.getElementById('habit-score-count');
+
+  if (pctEl) pctEl.textContent = `${pct}%`;
+  if (countEl) countEl.textContent = `${count} / ${total} habitudes validées`;
+
+  if (tagEl) {
+    if (pct === 100) { tagEl.textContent = "PARFAIT ✨ (Légende MW)"; tagEl.style.color = "var(--or)"; }
+    else if (pct >= 80) { tagEl.textContent = "EXCELLENT 🔥"; tagEl.style.color = "var(--gr)"; }
+    else if (pct >= 60) { tagEl.textContent = "TRÈS BON 💪"; tagEl.style.color = "var(--bl)"; }
+    else if (pct >= 40) { tagEl.textContent = "EN PROGRÈS ⚡"; tagEl.style.color = "#FF9F43"; }
+    else { tagEl.textContent = "FOCUS WARRIOR 🎯"; tagEl.style.color = "#E74C3C"; }
+  }
+}
+
+// ── INTITULÉS DYNAMIQUES SELON LA PHASE ET LA SEMAINE ───────────────────────
+
+function getSessionTitleForDay(dayOfWeek, weekNum, phase) {
+  // LUNDI (Séance A)
+  if (dayOfWeek === 1) {
+    if (phase === '0') {
+      if (weekNum <= 2) return 'Séance A - Deadstop Swing + TGU';
+      if (weekNum <= 4) return 'Séance A - 1H Swing + TGU';
+      return 'Séance A - Snatch + TGU';
+    } else if (phase === '1') {
+      return 'Séance A - Snatch, Push-up & 1H Swing';
+    } else if (phase === '2') {
+      return 'Bankai A - Upper/Lower Supersets';
+    }
+  } 
+  // MERCREDI (Séance B)
+  else if (dayOfWeek === 3) {
+    if (phase === '0') {
+      if (weekNum <= 2) return 'Séance B - Dead Clean & Push Press';
+      if (weekNum <= 4) return 'Séance B - Clean & Push Press';
+      return 'Séance B - Clean & Press strict';
+    } else if (phase === '1') {
+      return 'Séance B - Heavy Clean & Press';
+    } else if (phase === '2') {
+      return 'Bankai B - Push/Pull & Double Squat';
+    }
+  } 
+  // VENDREDI (Séance C)
+  else if (dayOfWeek === 5) {
+    if (phase === '0') {
+      if (weekNum <= 2) return 'Séance C - 2H Swing + TGU';
+      if (weekNum <= 4) return 'Séance C - Complexe Ulysse';
+      return 'Séance C - Complexe Atlas';
+    } else if (phase === '1') {
+      return 'Séance C - Double Complexes';
+    } else if (phase === '2') {
+      return (weekNum % 2 === 0) ? 'Bankai C - METCON Benchmark' : 'Bankai C - AMRAP Ichigo & Renji';
+    }
+  }
+
+  return 'Repos';
+}
+
+// ── RENDU DU CALENDRIER DYNAMIQUE (Toutes Phases) ───────────────────────────
+
+let calCurrentDate = new Date();
+
+function changeCalMonth(dir) {
+  calCurrentDate.setMonth(calCurrentDate.getMonth() + dir);
+  renderCalendarGrid();
+}
 
 function renderCalendarGrid() {
   const grid = document.getElementById('month-calendar-grid');
@@ -964,7 +1044,7 @@ function renderCalendarGrid() {
   const scheduleStore = JSON.parse(localStorage.getItem('mw_schedule_store') || '{}');
   const todayStr = new Date().toISOString().split('T')[0];
 
-  // Cases vides début de mois
+  // Cases vides au début du mois
   for (let i = 0; i < adjustedFirstDay; i++) {
     grid.innerHTML += `<div style="aspect-ratio:1; background:rgba(0,0,0,0.02); border-radius:6px;"></div>`;
   }
@@ -975,34 +1055,18 @@ function renderCalendarGrid() {
     const dStr = `${y}-${String(m+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
     const isToday = (dStr === todayStr);
     const dateObj = new Date(y, m, day);
-    const dayOfWeek = dateObj.getDay(); // 0 = Dimanche, 1 = Lundi, etc.
-
-    // Détermination du bloc de semaine (S1-S2, S3-S4, S5-S6)
-    let weekBlockKey = 'W1';
-    if (currentWeekNum >= 5) weekBlockKey = 'W5';
-    else if (currentWeekNum >= 3) weekBlockKey = 'W3';
+    const dayOfWeek = dateObj.getDay();
 
     let scheduledTask = scheduleStore[dStr] || '';
 
-    // Affectation automatique par défaut si aucune modification manuelle
-    if (!scheduledTask) {
-      if (dayOfWeek === 1) scheduledTask = SESSION_TITLES_MAP[`A_${weekBlockKey}`];
-      else if (dayOfWeek === 3) scheduledTask = SESSION_TITLES_MAP[`B_${weekBlockKey}`];
-      else if (dayOfWeek === 5) scheduledTask = SESSION_TITLES_MAP[`C_${weekBlockKey}`];
-      else scheduledTask = 'Repos';
-    } else if (scheduledTask === 'Séance A') {
-      scheduledTask = SESSION_TITLES_MAP[`A_${weekBlockKey}`];
-    } else if (scheduledTask === 'Séance B') {
-      scheduledTask = SESSION_TITLES_MAP[`B_${weekBlockKey}`];
-    } else if (scheduledTask === 'Séance C') {
-      scheduledTask = SESSION_TITLES_MAP[`C_${weekBlockKey}`];
+    if (!scheduledTask || scheduledTask === 'Séance A' || scheduledTask === 'Séance B' || scheduledTask === 'Séance C') {
+      scheduledTask = getSessionTitleForDay(dayOfWeek, currentWeekNum, currentPhase);
     }
 
-    const isWorkout = scheduledTask.includes('Séance') || scheduledTask.includes('Complexe') || scheduledTask.includes('WOD');
+    const isWorkout = scheduledTask.includes('Séance') || scheduledTask.includes('Complexe') || scheduledTask.includes('Bankai') || scheduledTask.includes('WOD');
     const bgColor = isWorkout ? 'rgba(216,90,48,0.12)' : '#ffffff';
     const borderColor = isToday ? 'var(--or)' : (isWorkout ? 'var(--or)' : '#e0e0e0');
 
-    // Badge de Semaine affiché sur chaque Lundi
     let weekBadgeHTML = '';
     if (dayOfWeek === 1 || day === 1) {
       weekBadgeHTML = `<span style="font-size:8px; font-weight:800; background:var(--or); color:#fff; padding:1px 4px; border-radius:3px; margin-left:auto;">S${currentWeekNum}</span>`;
@@ -1021,7 +1085,6 @@ function renderCalendarGrid() {
       </div>
     `;
 
-    // Passage à la semaine suivante après le dimanche
     if (dayOfWeek === 0) {
       currentWeekNum++;
     }
@@ -1037,9 +1100,3 @@ function editCalendarDay(dStr, currentTask) {
     renderCalendarGrid();
   }
 }
-
-// Ajouter l'initialisation au chargement
-window.addEventListener('DOMContentLoaded', () => {
-  initHabitsUI();
-  renderCalendarGrid();
-});
