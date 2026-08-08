@@ -867,3 +867,203 @@ function updateContextualReminder() {
   el.style.color = '#ffffff';
   el.style.borderLeft = `4px solid ${color}`;
 }
+
+// ── TRACKING DES HABITUDES & SANTÉ ────────────────────────────────────────
+
+const HABITS_LIST = [
+  { id: 'h_sleep8', label: '😴 Sommeil ≥ 8h' },
+  { id: 'h_bed2230', label: '🌙 Coucher 22h30 max' },
+  { id: 'h_flow', label: '🧘‍♂️ Warm-Up / Flow de Mobilité' },
+  { id: 'h_workout', label: '🏋️‍♂️ Séance Muscu / Renfo validée' },
+  { id: 'h_cardio', label: '🚲 Vélo / Marche Active / Cardio' },
+  { id: 'h_vacuum', label: '💨 Stomach Vacuum à jeun' },
+  { id: 'h_rule1', label: '🛑 Règle 1 — Sucres parasites zéro (bonbons, gâteaux)' },
+  { id: 'h_rule2', label: '💧 Règle 2 — Hydratation 2,5-3L (500ml au réveil + verre/repas)' },
+  { id: 'h_rule3', label: '🥩 Règle 3 — Protéine à chaque repas' },
+  { id: 'h_homefood', label: '🥗 Repas fait maison' },
+  { id: 'h_read', label: '📖 Lecture 20 min / 10 pages' },
+  { id: 'h_screen', label: '📱 Temps écran < 1h & Réseaux < 1h' }
+];
+
+const SUPPS_LIST = [
+  { id: 's_mag', label: '💊 Magnésium (Aroma-Zone - Bisglycinate)' },
+  { id: 's_crea', label: '⚡ Créatine Monohydrate (3-5g)' },
+  { id: 's_zinc', label: '🛡️ Zinc' },
+  { id: 's_spir', label: '🌿 Spiruline' }
+];
+
+let selectedHabitDate = new Date().toISOString().split('T')[0];
+
+function initHabitsUI() {
+  const dateInput = document.getElementById('habit-date-input');
+  if (dateInput) dateInput.value = selectedHabitDate;
+
+  // Render Checklists
+  const hContainer = document.getElementById('habits-checklist-container');
+  if (hContainer) {
+    hContainer.innerHTML = HABITS_LIST.map(h => `
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
+        <span style="font-size:13px; font-weight:600; color:#fff;">${h.label}</span>
+        <input type="checkbox" id="${h.id}" onchange="saveCurrentHabits()" style="width:20px; height:20px; accent-color:var(--or); cursor:pointer;">
+      </div>
+    `).join('');
+  }
+
+  const sContainer = document.getElementById('supps-checklist-container');
+  if (sContainer) {
+    sContainer.innerHTML = SUPPS_LIST.map(s => `
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
+        <span style="font-size:13px; font-weight:600; color:#fff;">${s.label}</span>
+        <input type="checkbox" id="${s.id}" onchange="saveCurrentHabits()" style="width:20px; height:20px; accent-color:var(--gr); cursor:pointer;">
+      </div>
+    `).join('');
+  }
+
+  loadHabitsForDate(selectedHabitDate);
+}
+
+function loadHabitsForDate(dateStr) {
+  selectedHabitDate = dateStr;
+  const store = JSON.parse(localStorage.getItem('mw_habits_store') || '{}');
+  const dayData = store[dateStr] || { metrics: {}, habits: {} };
+
+  // Set Metrics
+  ['m-sleep', 'm-hr', 'm-steps', 'm-dur', 'm-cal'].forEach(mId => {
+    const el = document.getElementById(mId);
+    if (el) el.value = dayData.metrics[mId] || '';
+  });
+
+  // Set Checkboxes
+  [...HABITS_LIST, ...SUPPS_LIST].forEach(item => {
+    const el = document.getElementById(item.id);
+    if (el) el.checked = !!dayData.habits[item.id];
+  });
+
+  updateHabitScore();
+}
+
+function saveCurrentHabits() {
+  const store = JSON.parse(localStorage.getItem('mw_habits_store') || '{}');
+  const dayData = { metrics: {}, habits: {} };
+
+  ['m-sleep', 'm-hr', 'm-steps', 'm-dur', 'm-cal'].forEach(mId => {
+    const el = document.getElementById(mId);
+    if (el) dayData.metrics[mId] = el.value;
+  });
+
+  [...HABITS_LIST, ...SUPPS_LIST].forEach(item => {
+    const el = document.getElementById(item.id);
+    if (el) dayData.habits[item.id] = el.checked;
+  });
+
+  store[selectedHabitDate] = dayData;
+  localStorage.setItem('mw_habits_store', JSON.stringify(store));
+
+  updateHabitScore();
+}
+
+function updateHabitScore() {
+  let total = HABITS_LIST.length + SUPPS_LIST.length;
+  let count = 0;
+
+  [...HABITS_LIST, ...SUPPS_LIST].forEach(item => {
+    const el = document.getElementById(item.id);
+    if (el && el.checked) count++;
+  });
+
+  const pct = Math.round((count / total) * 100);
+  const pctEl = document.getElementById('habit-score-pct');
+  const tagEl = document.getElementById('habit-bilan-tag');
+  const countEl = document.getElementById('habit-score-count');
+
+  if (pctEl) pctEl.textContent = `${pct}%`;
+  if (countEl) countEl.textContent = `${count} / ${total} habitudes validées`;
+
+  if (tagEl) {
+    if (pct === 100) { tagEl.textContent = "PARFAIT ✨ (Légende MW)"; tagEl.style.color = "var(--or)"; }
+    else if (pct >= 80) { tagEl.textContent = "EXCELLENT 🔥"; tagEl.style.color = "var(--gr)"; }
+    else if (pct >= 60) { tagEl.textContent = "TRÈS BON 💪"; tagEl.style.color = "var(--bl)"; }
+    else if (pct >= 40) { tagEl.textContent = "EN PROGRÈS ⚡"; tagEl.style.color = "#FF9F43"; }
+    else { tagEl.textContent = "FOCUS WARRIOR 🎯"; tagEl.style.color = "#E74C3C"; }
+  }
+}
+
+// ── CALENDRIER & PROGRAMMATION INTERACTIVE ────────────────────────────────
+
+let calCurrentDate = new Date();
+
+function changeCalMonth(dir) {
+  calCurrentDate.setMonth(calCurrentDate.getMonth() + dir);
+  renderCalendarGrid();
+}
+
+function renderCalendarGrid() {
+  const grid = document.getElementById('month-calendar-grid');
+  const title = document.getElementById('cal-month-title');
+  if (!grid || !title) return;
+
+  const y = calCurrentDate.getFullYear();
+  const m = calCurrentDate.getMonth();
+
+  const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+  title.textContent = `${monthNames[m]} ${y}`;
+
+  grid.innerHTML = '';
+
+  const firstDay = new Date(y, m, 1).getDay();
+  const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1; // Align Lundi = 0
+  const daysInMonth = new Date(y, m + 1, 0).getDate();
+
+  const scheduleStore = JSON.parse(localStorage.getItem('mw_schedule_store') || '{}');
+
+  // Cases vides
+  for (let i = 0; i < adjustedFirstDay; i++) {
+    grid.innerHTML += `<div style="aspect-ratio:1; background:rgba(255,255,255,0.02); border-radius:6px;"></div>`;
+  }
+
+  // Jours du mois
+  const todayStr = new Date().toISOString().split('T')[0];
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dStr = `${y}-${String(m+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    const isToday = (dStr === todayStr);
+
+    let scheduledTask = scheduleStore[dStr] || '';
+    let dayOfWeek = new Date(y, m, day).getDay();
+
+    // Planning par défaut : Lundi=1 (A), Mercredi=3 (B), Vendredi=5 (C)
+    if (!scheduledTask) {
+      if (dayOfWeek === 1) scheduledTask = 'Séance A';
+      else if (dayOfWeek === 3) scheduledTask = 'Séance B';
+      else if (dayOfWeek === 5) scheduledTask = 'Séance C';
+      else scheduledTask = 'Repos';
+    }
+
+    let isWorkout = scheduledTask.includes('Séance');
+    let bgColor = isWorkout ? 'rgba(216,90,48,0.2)' : 'rgba(255,255,255,0.05)';
+    let borderColor = isToday ? 'var(--or)' : (isWorkout ? 'var(--or)' : '#333');
+
+    grid.innerHTML += `
+      <div onclick="editCalendarDay('${dStr}', '${scheduledTask}')" style="aspect-ratio:1; background:${bgColor}; border:1px solid ${borderColor}; border-radius:6px; padding:4px; display:flex; flex-direction:column; justify-index:space-between; cursor:pointer; font-size:10px;">
+        <div style="font-weight:800; color:${isToday ? 'var(--or)' : '#fff'};">${day}</div>
+        <div style="font-size:8px; font-weight:700; color:${isWorkout ? 'var(--or)' : 'var(--i3)'}; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${scheduledTask}</div>
+      </div>
+    `;
+  }
+}
+
+function editCalendarDay(dStr, currentTask) {
+  const newTask = prompt(`Ajuster le planning du ${dStr} :\n(Ex: Séance A, Séance B, Séance C, Repos, WOD, Snack...)`, currentTask);
+  if (newTask !== null) {
+    const store = JSON.parse(localStorage.getItem('mw_schedule_store') || '{}');
+    store[dStr] = newTask;
+    localStorage.setItem('mw_schedule_store', JSON.stringify(store));
+    renderCalendarGrid();
+  }
+}
+
+// Ajouter l'initialisation au chargement
+window.addEventListener('DOMContentLoaded', () => {
+  initHabitsUI();
+  renderCalendarGrid();
+});
