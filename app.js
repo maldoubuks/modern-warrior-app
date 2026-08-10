@@ -76,9 +76,7 @@ function calculateLevel(points) {
   return { current, next };
 }
 
-// ── FICHE HTML & EXERCICES ───────────────────────────────────────────────
-// ── 1. FICHE DÉTAILLÉE AÉRÉE AVEC ASSETS (GIFS/IMAGES) ──────────────────────
-
+// ── FICHE HTML DÉTAILLÉE AÉRÉE ──────────────────────────────────────────────
 function ficheHTML(key){
   const s = SD[key]; 
   if(!s) return '<div style="padding:15px;color:#888;">Fiche non disponible.</div>';
@@ -89,25 +87,25 @@ function ficheHTML(key){
     blocs[e.b].push(e);
   });
 
-  let h = '<div style="padding:16px; background:#fafafa; border-radius:0 0 12px 12px; border-top:1px solid #eee;">';
+  let h = '<div style="padding:16px; background:#1e1e1e; border-radius:0 0 12px 12px; border-top:1px solid #333;">';
   
   order.forEach(b => {
     h += `<div style="margin-bottom:18px;">
-      <div style="font-size:11px; font-weight:800; color:var(--or); text-transform:uppercase; letter-spacing:.06em; padding-bottom:6px; border-bottom:2px solid rgba(216,90,48,0.2); margin-bottom:12px;">${b}</div>`;
+      <div style="font-size:11px; font-weight:800; color:var(--or); text-transform:uppercase; letter-spacing:.06em; padding-bottom:6px; border-bottom:2px solid rgba(216,90,48,0.3); margin-bottom:12px;">${b}</div>`;
       
     blocs[b].forEach(e => {
-      h += `<div style="display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 14px; margin-bottom:10px; background:#ffffff; border:1px solid #e2e2e2; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.02);">
+      h += `<div style="display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 14px; margin-bottom:10px; background:#2a2a2a; border:1px solid #3a3a3a; border-radius:10px;">
         <div style="flex:1;">
-          <div style="font-size:14px; font-weight:800; color:#1e1e1e; margin-bottom:6px;">${e.n}</div>
+          <div style="font-size:14px; font-weight:800; color:#ffffff; margin-bottom:6px;">${e.n}</div>
           <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:6px;">${e.p.map(p => {
-            let bg = '#f0f0f0', clr = '#444';
-            if(p.includes('KB')||p.includes('kg')) { bg = 'rgba(216,90,48,0.12)'; clr = 'var(--ord)'; }
-            else if(p.includes('Repos')||p.includes('min')||p.includes('&times;')) { bg = 'rgba(55,140,221,0.12)'; clr = '#1d6fa5'; }
+            let bg = '#333333', clr = '#dddddd';
+            if(p.includes('KB')||p.includes('kg')) { bg = 'rgba(216,90,48,0.25)'; clr = '#ff9f43'; }
+            else if(p.includes('Repos')||p.includes('min')||p.includes('&times;')) { bg = 'rgba(55,140,221,0.25)'; clr = '#54a0ff'; }
             return `<span style="font-size:10.5px; font-weight:700; background:${bg}; color:${clr}; padding:3px 8px; border-radius:4px;">${p}</span>`;
           }).join('')}</div>
-          ${e.tip ? `<div style="font-size:11px; color:#555; font-style:italic; border-left:3px solid var(--or); padding-left:8px; margin-top:6px; line-height:1.4;">${e.tip}</div>` : ''}
+          ${e.tip ? `<div style="font-size:11px; color:#bbb; font-style:italic; border-left:3px solid var(--or); padding-left:8px; margin-top:6px; line-height:1.4;">${e.tip}</div>` : ''}
         </div>
-        ${e.img ? `<img src="${e.img}" style="width:75px; height:75px; object-fit:contain; border-radius:8px; background:#181818; border:1px solid #333; padding:4px; flex-shrink:0;">` : ''}
+        ${e.img ? `<img src="${e.img}" style="width:75px; height:75px; object-fit:contain; border-radius:8px; background:#181818; border:1px solid #444; padding:4px; flex-shrink:0;">` : ''}
       </div>`;
     });
     
@@ -589,9 +587,12 @@ function updateStats(){
 const TC = {fullbody:'background:var(--orl);color:var(--ord)',complex:'background:var(--bll);color:var(--bld)',emom:'background:var(--grl);color:var(--grd)',amrap:'background:var(--pul);color:var(--pud)',cible:'background:var(--aml);color:#854F0B'};
 function filterWod(cat, btn){
   document.querySelectorAll('.wod-fb').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-  document.getElementById('wod-list').innerHTML = WODS.filter(w => cat==='all' || w.c===cat)
-    .map(w => `<div class="wod-card"><span class="wod-tag" style="${TC[w.c]}">${w.t}</span><div class="wod-title">${w.ti}</div><div class="wod-body">${w.b}</div></div>`).join('');
+  if (btn) btn.classList.add('on');
+  const listEl = document.getElementById('wod-list');
+  if (listEl && typeof WODS !== 'undefined') {
+    listEl.innerHTML = WODS.filter(w => cat==='all' || w.c===cat)
+      .map(w => `<div class="wod-card"><span class="wod-tag" style="${TC[w.c]}">${w.t}</span><div class="wod-title">${w.ti}</div><div class="wod-body">${w.b}</div></div>`).join('');
+  }
 }
 
 function showToast(msg, color='#378ADD') {
@@ -620,14 +621,17 @@ function goPage(id){
     targetBtn.classList.add('active');
   }
 
-  // 🟢 Recharge les contenus spécifiques selon la page ouverte
   if (id === 'seances') {
     renderSeances();
   } else if (id === 'wod') {
     const defaultBtn = document.querySelector('.wod-fb');
-    if (typeof filterWod === 'function' && defaultBtn) {
+    if (typeof filterWod === 'function') {
       filterWod('all', defaultBtn);
     }
+  } else if (id === 'habits') {
+    if (typeof initHabitsUI === 'function') initHabitsUI();
+  } else if (id === 'calendar') {
+    if (typeof renderCalendarGrid === 'function') renderCalendarGrid();
   }
 
   window.scrollTo(0, 0);
@@ -650,23 +654,75 @@ function tog(h){
   }
 }
 
-window._sessMap = {};
-window.onload = () => {
-  document.body.style.overflow = '';
-  ['retro-modal', 'finish', 'player', 'modal-overlay'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = 'none';
+// ── RENDU DYNAMIQUE DE LA PAGE SÉANCES ──────────────────────────────────────
+function renderSeances() {
+  const container = document.getElementById('seances-list-container');
+  const selectEl = document.getElementById('seances-phase-select');
+  
+  if (selectEl) selectEl.value = currentPhase;
+  if (!container) return;
+
+  let sessionSections = [];
+
+  if (currentPhase === '0') {
+    sessionSections = [
+      { section: "SEMAINES 1 & 2", keys: ["A-S1", "B-S1", "C-S1"] },
+      { section: "SEMAINES 3 & 4", keys: ["A-S3", "B-S3", "C-S3"] },
+      { section: "SEMAINES 5 & 6", keys: ["A-S5", "B-S5", "C-S5"] }
+    ];
+  } else if (currentPhase === '1') {
+    sessionSections = [
+      { section: "SEMAINES 1 & 2", keys: ["A-F1", "B-F1", "C-F1"] },
+      { section: "SEMAINES 3 & 4", keys: ["A-F3", "B-F3", "C-F3"] },
+      { section: "SEMAINES 5 À 8", keys: ["A-F5", "B-F5", "C-F5"] }
+    ];
+  } else if (currentPhase === '2') {
+    sessionSections = [
+      { section: "SEMAINES 1 & 2", keys: ["A-BK1", "B-BK1", "C-BK1"] },
+      { section: "SEMAINES 3 & 4", keys: ["A-BK3", "B-BK3", "C-BK3"] },
+      { section: "SEMAINE 4 (METCON)", keys: ["A-BK4", "B-BK4", "C-BK4"] }
+    ];
+  }
+
+  let h = '';
+  sessionSections.forEach(sec => {
+    h += `<div class="st" style="margin-top:22px; margin-bottom:12px;">${sec.section}</div>`;
+    sec.keys.forEach(k => {
+      const s = SD[k];
+      if (!s) return;
+      
+      let letter = k.charAt(0);
+      let c_bg = letter === 'A' ? 'rgba(216,90,48,0.15)' : (letter === 'B' ? 'rgba(55,140,221,0.15)' : 'rgba(46,204,113,0.15)');
+      let c_icn = letter === 'A' ? 'var(--or)' : (letter === 'B' ? '#378ADD' : '#2ecc71');
+      let c_txt = letter === 'A' ? '#ff9f43' : (letter === 'B' ? '#54a0ff' : '#2ed573');
+
+      h += `
+        <div class="slc" style="margin-bottom:14px; border:1px solid #333; border-radius:12px; overflow:hidden; background:#1e1e1e; box-shadow:0 4px 10px rgba(0,0,0,0.3);">
+          <div class="slc-h" style="background:${c_bg}; padding:14px; display:flex; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div class="slc-icon" style="background:${c_icn};color:#fff; font-weight:800; border-radius:8px; width:38px; height:38px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">${letter}</div>
+            <div class="slc-info" style="flex:1; min-width:150px;">
+              <div class="slc-title" style="color:${c_txt}; font-size:14px; font-weight:800;">${s.title}</div>
+              <div class="slc-sub" style="font-size:11px; color:#aaa; margin-top:2px;">${s.exos ? s.exos.length + ' exercices' : ''}</div>
+            </div>
+            <div style="display:flex; gap:6px;">
+              <button class="slc-play" style="background:${c_icn}; color:#fff; border:none; border-radius:8px; padding:8px 14px; font-size:12px; font-weight:700; cursor:pointer;" onclick="startPlayer('${k}')">▶ Live</button>
+              <button style="background:#2a2a2a; border:1px solid #555; border-radius:8px; padding:8px 12px; font-size:12px; font-weight:700; color:#fff; cursor:pointer;" onclick="openRetroModal('${k}')">📝 Saisir</button>
+            </div>
+          </div>
+          <div style="padding:12px 14px; cursor:pointer; background:#252525; border-top:1px solid rgba(255,255,255,0.05);" onclick="tog(this)">
+            <div style="font-size:12px; font-weight:700; color:#aaa; display:flex; align-items:center; justify-content:space-between;">
+              <span>Voir la fiche détaillée</span>
+              <span class="chv" style="transition:transform 0.2s; font-size:14px;">›</span>
+            </div>
+          </div>
+          <div class="fiche" id="fiche-${k}" style="display:none;"></div>
+        </div>
+      `;
+    });
   });
 
-  if (typeof filterWod === 'function') filterWod('all', document.querySelector('.wod-fb'));
-  if (typeof updateContextualReminder === 'function') updateContextualReminder();
-
-  updateStats();
-  buildTracking();
-  loadFromSupabase();
-  initHabitsUI();
-  renderCalendarGrid();
-};
+  container.innerHTML = h;
+}
 
 // ── DASHBOARD & STATS ──────────────────────────────────────────────────────
 let weightChart = null;
@@ -1071,7 +1127,7 @@ function getSessionTitleForDay(dayOfWeek, weekNum, phase) {
   return 'Repos';
 }
 
-// ── RENDU DU CALENDRIER DYNAMIQUE (Toutes Phases) ───────────────────────────
+// ── RENDU DU CALENDRIER DYNAMIQUE ───────────────────────────────────────────
 
 let calCurrentDate = new Date();
 
@@ -1101,7 +1157,7 @@ function renderCalendarGrid() {
   const todayStr = new Date().toISOString().split('T')[0];
 
   for (let i = 0; i < adjustedFirstDay; i++) {
-    grid.innerHTML += `<div style="aspect-ratio:1; background:rgba(0,0,0,0.02); border-radius:6px;"></div>`;
+    grid.innerHTML += `<div style="aspect-ratio:1; background:rgba(255,255,255,0.02); border-radius:6px;"></div>`;
   }
 
   let currentWeekNum = 1;
@@ -1119,8 +1175,8 @@ function renderCalendarGrid() {
     }
 
     const isWorkout = scheduledTask.includes('Séance') || scheduledTask.includes('Complexe') || scheduledTask.includes('Bankai') || scheduledTask.includes('WOD');
-    const bgColor = isWorkout ? 'rgba(216,90,48,0.12)' : '#ffffff';
-    const borderColor = isToday ? 'var(--or)' : (isWorkout ? 'var(--or)' : '#e0e0e0');
+    const bgColor = isWorkout ? 'rgba(216,90,48,0.15)' : '#1e1e1e';
+    const borderColor = isToday ? 'var(--or)' : (isWorkout ? 'var(--or)' : '#333333');
 
     let weekBadgeHTML = '';
     if (dayOfWeek === 1 || day === 1) {
@@ -1131,10 +1187,10 @@ function renderCalendarGrid() {
       <div onclick="editCalendarDay('${dStr}', '${scheduledTask.replace(/'/g, "\\'")}')" 
            style="min-height:75px; background:${bgColor}; border:1.5px solid ${borderColor}; border-radius:8px; padding:6px; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer; text-align:left;">
         <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
-          <span style="font-size:12px; font-weight:800; color:${isToday ? 'var(--or)' : '#1e1e1e'};">${day}</span>
+          <span style="font-size:12px; font-weight:800; color:${isToday ? 'var(--or)' : '#ffffff'};">${day}</span>
           ${weekBadgeHTML}
         </div>
-        <div style="font-size:9.5px; font-weight:700; color:${isWorkout ? '#c0392b' : '#7f8c8d'}; line-height:1.2; margin-top:4px; word-break:break-word;">
+        <div style="font-size:9.5px; font-weight:700; color:${isWorkout ? '#ff9f43' : '#888888'}; line-height:1.2; margin-top:4px; word-break:break-word;">
           ${scheduledTask}
         </div>
       </div>
@@ -1156,70 +1212,25 @@ function editCalendarDay(dStr, currentTask) {
   }
 }
 
-function renderSeances() {
-  const container = document.getElementById('seances-list-container');
-  const selectEl = document.getElementById('seances-phase-select');
-  
-  // 🟢 Sélectionne automatiquement la phase en cours
-  if (selectEl) selectEl.value = currentPhase;
-  if (!container) return;
-
-  let sessionSections = [];
-
-  if (currentPhase === '0') {
-    sessionSections = [
-      { section: "SEMAINES 1 & 2", keys: ["A-S1", "B-S1", "C-S1"] },
-      { section: "SEMAINES 3 & 4", keys: ["A-S3", "B-S3", "C-S3"] },
-      { section: "SEMAINES 5 & 6", keys: ["A-S5", "B-S5", "C-S5"] }
-    ];
-  } else if (currentPhase === '1') {
-    sessionSections = [
-      { section: "SEMAINES 1 & 2", keys: ["A-F1", "B-F1", "C-F1"] },
-      { section: "SEMAINES 3 & 4", keys: ["A-F3", "B-F3", "C-F3"] },
-      { section: "SEMAINES 5 À 8", keys: ["A-F5", "B-F5", "C-F5"] }
-    ];
-  } else if (currentPhase === '2') {
-    sessionSections = [
-      { section: "SEMAINES 1 & 2", keys: ["A-BK1", "B-BK1", "C-BK1"] },
-      { section: "SEMAINES 3 & 4", keys: ["A-BK3", "B-BK3", "C-BK3"] },
-      { section: "SEMAINE 4 (METCON)", keys: ["A-BK4", "B-BK4", "C-BK4"] }
-    ];
-  }
-
-  let h = '';
-  sessionSections.forEach(sec => {
-    h += `<div class="st" style="margin-top:22px; margin-bottom:12px;">${sec.section}</div>`;
-    sec.keys.forEach(k => {
-      const s = SD[k];
-      if (!s) return;
-      
-      let letter = k.charAt(0);
-      let c_bg = letter === 'A' ? 'var(--orl)' : (letter === 'B' ? 'var(--bll)' : 'var(--grl)');
-      let c_icn = letter === 'A' ? 'var(--or)' : (letter === 'B' ? 'var(--bl)' : 'var(--gr)');
-      let c_txt = letter === 'A' ? 'var(--ord)' : (letter === 'B' ? 'var(--bld)' : 'var(--grd)');
-
-      h += `
-        <div class="slc" style="margin-bottom:14px; border:1px solid #e0e0e0; border-radius:12px; overflow:hidden; background:#ffffff; box-shadow:0 2px 6px rgba(0,0,0,0.03);">
-          <div class="slc-h" style="background:${c_bg}; padding:14px; display:flex; align-items:center;">
-            <div class="slc-icon" style="background:${c_icn};color:#fff; font-weight:800; border-radius:8px; width:38px; height:38px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">${letter}</div>
-            <div class="slc-info" style="margin-left:12px; flex:1;">
-              <div class="slc-title" style="color:${c_txt}; font-size:14px; font-weight:800;">${s.title}</div>
-              <div class="slc-sub" style="font-size:11px; color:#666; margin-top:2px;">${s.exos ? s.exos.length + ' exercices' : ''}</div>
-            </div>
-            <button class="slc-play" style="background:${c_icn}; color:#fff; border:none; border-radius:8px; padding:8px 14px; font-size:12px; font-weight:700; cursor:pointer;" onclick="startPlayer('${k}')">▶ Live</button>
-            <button style="background:#2a2a2a; border:1px solid #444; border-radius:8px; padding:8px 12px; font-size:12px; font-weight:700; color:#fff; cursor:pointer; margin-left:8px;" onclick="openRetroModal('${k}')">📝 Saisir</button>
-          </div>
-          <div style="padding:12px 14px; cursor:pointer; background:#ffffff; border-top:1px solid rgba(0,0,0,0.05);" onclick="tog(this)">
-            <div style="font-size:12px; font-weight:700; color:var(--i3); display:flex; align-items:center; justify-content:space-between;">
-              <span>Voir la fiche détaillée</span>
-              <span class="chv" style="transition:transform 0.2s; font-size:14px;">›</span>
-            </div>
-          </div>
-          <div class="fiche" id="fiche-${k}" style="display:none;"></div>
-        </div>
-      `;
-    });
+// ── INITIALISATION COMPLÈTE AU CHARGEMENT ──────────────────────────────────
+window._sessMap = {};
+window.onload = () => {
+  document.body.style.overflow = '';
+  ['retro-modal', 'finish', 'player', 'modal-overlay'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
   });
 
-  container.innerHTML = h;
-}
+  if (typeof filterWod === 'function') {
+    const defaultBtn = document.querySelector('.wod-fb');
+    if (defaultBtn) filterWod('all', defaultBtn);
+  }
+  if (typeof updateContextualReminder === 'function') updateContextualReminder();
+
+  updateStats();
+  buildTracking();
+  loadFromSupabase();
+  initHabitsUI();
+  renderCalendarGrid();
+  renderSeances();
+};
