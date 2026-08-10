@@ -77,25 +77,44 @@ function calculateLevel(points) {
 }
 
 // ── FICHE HTML & EXERCICES ───────────────────────────────────────────────
+// ── 1. FICHE DÉTAILLÉE AÉRÉE AVEC ASSETS (GIFS/IMAGES) ──────────────────────
+
 function ficheHTML(key){
-  const s = SD[key]; if(!s) return '';
+  const s = SD[key]; 
+  if(!s) return '<div style="padding:15px;color:#888;">Fiche non disponible.</div>';
+  
   const blocs={}, order=[];
   s.exos.forEach(e => {
     if(!blocs[e.b]){ blocs[e.b] = []; order.push(e.b); }
     blocs[e.b].push(e);
   });
-  let h = '';
+
+  let h = '<div style="padding:16px; background:#fafafa; border-radius:0 0 12px 12px; border-top:1px solid #eee;">';
+  
   order.forEach(b => {
-    h += `<div style="margin-bottom:10px"><div style="font-size:10px;font-weight:700;color:var(--i3);text-transform:uppercase;letter-spacing:.06em;padding:8px 0 5px">${b}</div>`;
+    h += `<div style="margin-bottom:18px;">
+      <div style="font-size:11px; font-weight:800; color:var(--or); text-transform:uppercase; letter-spacing:.06em; padding-bottom:6px; border-bottom:2px solid rgba(216,90,48,0.2); margin-bottom:12px;">${b}</div>`;
+      
     blocs[b].forEach(e => {
-      h += `<div class="exo"><div class="en">${e.n}</div><div class="pills">${e.p.map(p => {
-        if(p.includes('KB')||p.includes('kg')) return `<span class="pi pk">${p}</span>`;
-        if(p.includes('Repos')||p.includes('min')||p.includes('&times;')) return `<span class="pi pr">${p}</span>`;
-        return `<span class="pi">${p}</span>`;
-      }).join('')}</div>${e.tip ? `<div class="tip">${e.tip}</div>` : ''}</div>`;
+      h += `<div style="display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 14px; margin-bottom:10px; background:#ffffff; border:1px solid #e2e2e2; border-radius:10px; box-shadow:0 2px 4px rgba(0,0,0,0.02);">
+        <div style="flex:1;">
+          <div style="font-size:14px; font-weight:800; color:#1e1e1e; margin-bottom:6px;">${e.n}</div>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:6px;">${e.p.map(p => {
+            let bg = '#f0f0f0', clr = '#444';
+            if(p.includes('KB')||p.includes('kg')) { bg = 'rgba(216,90,48,0.12)'; clr = 'var(--ord)'; }
+            else if(p.includes('Repos')||p.includes('min')||p.includes('&times;')) { bg = 'rgba(55,140,221,0.12)'; clr = '#1d6fa5'; }
+            return `<span style="font-size:10.5px; font-weight:700; background:${bg}; color:${clr}; padding:3px 8px; border-radius:4px;">${p}</span>`;
+          }).join('')}</div>
+          ${e.tip ? `<div style="font-size:11px; color:#555; font-style:italic; border-left:3px solid var(--or); padding-left:8px; margin-top:6px; line-height:1.4;">${e.tip}</div>` : ''}
+        </div>
+        ${e.img ? `<img src="${e.img}" style="width:75px; height:75px; object-fit:contain; border-radius:8px; background:#181818; border:1px solid #333; padding:4px; flex-shrink:0;">` : ''}
+      </div>`;
     });
+    
     h += '</div>';
   });
+  
+  h += '</div>';
   return h;
 }
 
@@ -601,6 +620,10 @@ function goPage(id){
     targetBtn.classList.add('active');
   }
 
+  if (id === 'seances') {
+    renderSeances();
+  }
+
   window.scrollTo(0, 0);
 }
 
@@ -610,8 +633,15 @@ function tog(h){
      b.innerHTML = ficheHTML(b.id.replace('fiche-',''));
      b.dataset.loaded = '1';
   }
-  if (b) b.classList.toggle('open');
-  if (c) c.style.transform = b.classList.contains('open') ? 'rotate(90deg)' : '';
+  if (b) {
+    if (b.style.display === 'none' || !b.style.display) {
+      b.style.display = 'block';
+      if (c) c.style.transform = 'rotate(90deg)';
+    } else {
+      b.style.display = 'none';
+      if (c) c.style.transform = 'rotate(0deg)';
+    }
+  }
 }
 
 window._sessMap = {};
@@ -1123,6 +1153,8 @@ function editCalendarDay(dStr, currentTask) {
 function renderSeances() {
   const container = document.getElementById('seances-list-container');
   const selectEl = document.getElementById('seances-phase-select');
+  
+  // 🟢 Sélectionne automatiquement la phase en cours
   if (selectEl) selectEl.value = currentPhase;
   if (!container) return;
 
@@ -1150,7 +1182,7 @@ function renderSeances() {
 
   let h = '';
   sessionSections.forEach(sec => {
-    h += `<div class="st" style="margin-top:16px;">${sec.section}</div>`;
+    h += `<div class="st" style="margin-top:22px; margin-bottom:12px;">${sec.section}</div>`;
     sec.keys.forEach(k => {
       const s = SD[k];
       if (!s) return;
@@ -1161,23 +1193,23 @@ function renderSeances() {
       let c_txt = letter === 'A' ? 'var(--ord)' : (letter === 'B' ? 'var(--bld)' : 'var(--grd)');
 
       h += `
-        <div class="slc" style="margin-bottom:12px;">
-          <div class="slc-h" style="background:${c_bg}">
-            <div class="slc-icon" style="background:${c_icn};color:#fff">${letter}</div>
-            <div class="slc-info">
-              <div class="slc-title" style="color:${c_txt}">${s.title}</div>
-              <div class="slc-sub">${s.exos ? s.exos.length + ' exercices' : ''}</div>
+        <div class="slc" style="margin-bottom:14px; border:1px solid #e0e0e0; border-radius:12px; overflow:hidden; background:#ffffff; box-shadow:0 2px 6px rgba(0,0,0,0.03);">
+          <div class="slc-h" style="background:${c_bg}; padding:14px; display:flex; align-items:center;">
+            <div class="slc-icon" style="background:${c_icn};color:#fff; font-weight:800; border-radius:8px; width:38px; height:38px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">${letter}</div>
+            <div class="slc-info" style="margin-left:12px; flex:1;">
+              <div class="slc-title" style="color:${c_txt}; font-size:14px; font-weight:800;">${s.title}</div>
+              <div class="slc-sub" style="font-size:11px; color:#666; margin-top:2px;">${s.exos ? s.exos.length + ' exercices' : ''}</div>
             </div>
-            <button class="slc-play" style="background:${c_icn}" onclick="startPlayer('${k}')">▶ Live</button>
-            <button style="background:none;border:1px solid var(--bd);border-radius:6px;padding:6px 10px;font-size:11px;color:var(--i2);cursor:pointer;margin-left:6px;" onclick="openRetroModal('${k}')">📝 Saisir</button>
+            <button class="slc-play" style="background:${c_icn}; color:#fff; border:none; border-radius:8px; padding:8px 14px; font-size:12px; font-weight:700; cursor:pointer;" onclick="startPlayer('${k}')">▶ Live</button>
+            <button style="background:#2a2a2a; border:1px solid #444; border-radius:8px; padding:8px 12px; font-size:12px; font-weight:700; color:#fff; cursor:pointer; margin-left:8px;" onclick="openRetroModal('${k}')">📝 Saisir</button>
           </div>
-          <div style="padding:10px; cursor:pointer;" onclick="tog(this)">
-            <div style="font-size:11px; font-weight:700; color:var(--i3); display:flex; align-items:center; justify-content:space-between;">
+          <div style="padding:12px 14px; cursor:pointer; background:#ffffff; border-top:1px solid rgba(0,0,0,0.05);" onclick="tog(this)">
+            <div style="font-size:12px; font-weight:700; color:var(--i3); display:flex; align-items:center; justify-content:space-between;">
               <span>Voir la fiche détaillée</span>
-              <span class="chv">›</span>
+              <span class="chv" style="transition:transform 0.2s; font-size:14px;">›</span>
             </div>
           </div>
-          <div class="fiche" id="fiche-${k}"></div>
+          <div class="fiche" id="fiche-${k}" style="display:none;"></div>
         </div>
       `;
     });
