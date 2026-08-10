@@ -11,6 +11,15 @@
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
+
+  /* 🟢 FIXE ABSOLU : Masque toutes les pages inactives pour éviter qu'elles ne s'empilent */
+.page {
+  display: none !important;
+}
+
+.page.active {
+  display: block !important;
+}
   /* 🟢 MODALES & OVERLAYS RESPONSIVE */
   #retro-modal, #player, #finish, .modal-overlay {
     display: none;
@@ -269,15 +278,21 @@
 </div>
 
 <div id="page-wod" class="page">
-  <div class="hero"><div class="hl">Workout of the Day</div><div class="ht">30+ s&eacute;ances.</div><div class="hs">Biblioth&egrave;que compl&egrave;te MW &middot; filtre par cat&eacute;gorie</div></div>
-  <div class="wod-f">
-    <button class="wod-fb on" onclick="filterWod('all',this)">Tous</button>
-    <button class="wod-fb" onclick="filterWod('fullbody',this)">Fullbody</button>
-    <button class="wod-fb" onclick="filterWod('complex',this)">Complex</button>
-    <button class="wod-fb" onclick="filterWod('emom',this)">EMOM</button>
-    <button class="wod-fb" onclick="filterWod('amrap',this)">AMRAP</button>
-    <button class="wod-fb" onclick="filterWod('cible',this)">Cibl&eacute;es</button>
+  <div class="hero">
+    <div class="hl">BIBLIOTHÈQUE WOD</div>
+    <div class="ht">Workout of<br>the Day.</div>
+    <div class="hs">31 séances Kettlebell &amp; Fullbody classées par catégorie</div>
   </div>
+
+  <div style="display:flex; gap:8px; overflow-x:auto; margin-bottom:16px; padding-bottom:6px; -webkit-overflow-scrolling:touch;">
+    <button class="wod-fb on" onclick="filterWod('all', this)">Tous</button>
+    <button class="wod-fb" onclick="filterWod('fullbody', this)">Fullbody</button>
+    <button class="wod-fb" onclick="filterWod('complex', this)">Complex</button>
+    <button class="wod-fb" onclick="filterWod('emom', this)">EMOM</button>
+    <button class="wod-fb" onclick="filterWod('amrap', this)">AMRAP</button>
+    <button class="wod-fb" onclick="filterWod('cible', this)">Ciblées</button>
+  </div>
+
   <div id="wod-list"></div>
 </div>
 
