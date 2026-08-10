@@ -221,10 +221,18 @@ function showFinish(){
 function selRpe(btn, v){ document.querySelectorAll('.rpe-btn').forEach(b => b.classList.remove('sel')); btn.classList.add('sel'); selRpeVal = v; }
 function selFeel(btn, v){ document.querySelectorAll('.feel-btn').forEach(b => b.classList.remove('sel')); btn.classList.add('sel'); selFeelVal = v; }
 
-// ── SAISIE A POSTERIORI ────────────────────────────────────────────────────
-function openRetroModal(key) {
-  const s = SD[key]; if (!s) return;
+// Variable globale pour stocker l'identifiant exact de la séance en cours de saisie
+let currentRetroTrackId = null;
+
+// ── SAISIE A POSTERIORI CORRIGÉE ──────────────────────────────────────────
+function openRetroModal(key, targetTrackId) {
+  const s = SD[key]; 
+  if (!s) return;
+  
   pKey = key;
+  // 🟢 FIX CRITIQUE : On force l'id cible (ex: 's2b') s'il est transmis !
+  currentRetroTrackId = targetTrackId || s.trackId || key;
+  
   document.getElementById('retro-title').textContent = s.title;
   
   let h = '';
@@ -232,9 +240,9 @@ function openRetroModal(key) {
     h += `<div style="background:#1E1E1E;border:1px solid #333;border-radius:8px;padding:10px;margin-bottom:8px">
       <div style="font-size:12px;font-weight:700;color:#fff;margin-bottom:4px">${e.n}</div>
       <div style="font-size:10px;color:#888;margin-bottom:6px">${e.p.join(' · ')}</div>
-      <div style="display:flex;gap:8px">
-        <input type="text" id="retro-kg-${idx}" placeholder="Poids (ex: 12 kg)" style="flex:1;background:#2A2A2A;border:1px solid #444;border-radius:6px;padding:6px;color:#fff;font-size:12px">
-        <input type="text" id="retro-reps-${idx}" placeholder="Reps / Notes" style="flex:1;background:#2A2A2A;border:1px solid #444;border-radius:6px;padding:6px;color:#fff;font-size:12px">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <input type="text" id="retro-kg-${idx}" placeholder="Poids (ex: 12 kg)" style="flex:1;min-width:110px;background:#2A2A2A;border:1px solid #444;border-radius:6px;padding:8px;color:#fff;font-size:12px">
+        <input type="text" id="retro-reps-${idx}" placeholder="Reps / Notes" style="flex:1;min-width:110px;background:#2A2A2A;border:1px solid #444;border-radius:6px;padding:8px;color:#fff;font-size:12px">
       </div>
     </div>`;
   });
@@ -243,7 +251,7 @@ function openRetroModal(key) {
   let metaHTML = `
     <div style="margin:12px 0">
       <div style="font-size:11px;color:#888;font-weight:700;margin-bottom:6px">Durée de la séance (minutes)</div>
-      <input type="number" id="retro-duration" placeholder="ex: 35" value="35" style="width:100%;background:#2A2A2A;border:1px solid #444;border-radius:6px;padding:8px;color:#fff;font-size:13px;outline:none;">
+      <input type="number" id="retro-duration" placeholder="ex: 35" value="35" style="width:100%;background:#2A2A2A;border:1px solid #444;border-radius:6px;padding:8px;color:#fff;font-size:13px;outline:none;box-sizing:border-box;">
     </div>
     <div style="margin:12px 0">
       <div style="font-size:11px;color:#888;font-weight:700;margin-bottom:6px">Difficulté ressentie (RPE 1 à 10)</div>
@@ -270,26 +278,19 @@ function openRetroModal(key) {
   if (m) {
     m.style.display = 'block';
     m.style.pointerEvents = 'auto';
+    m.classList.add('active');
   }
-}
-
-function closeRetroModal() {
-  const m = document.getElementById('retro-modal');
-  if (m) {
-    m.style.display = 'none';
-    m.style.pointerEvents = 'none';
-  }
-  document.body.style.overflow = '';
-  document.body.style.pointerEvents = 'auto';
 }
 
 async function saveRetroSession() {
   if (!pKey) return;
-  const s = SD[pKey]; if (!s) return;
+  const s = SD[pKey]; 
+  if (!s) return;
 
   closeRetroModal();
 
-  const trackId = s.trackId || pKey;
+  // 🟢 FIX : Utilisation du vrai trackId enregistré (ex: 's2b')
+  const trackId = currentRetroTrackId || s.trackId || pKey;
   const detailedExos = {};
   const notes = document.getElementById('retro-notes')?.value || '';
   const duration = parseInt(document.getElementById('retro-duration')?.value) || 35;
@@ -337,69 +338,7 @@ async function saveRetroSession() {
   }
 }
 
-async function saveSession(){
-  const s = SD[pKey];
-  const elapsed = Math.round((new Date() - pStart)/60000);
-  const notes = document.getElementById('f-notes').value;
-
-  const sessionData = {
-    user_id: USER_ID, session_key: pKey, session_title: s.title,
-    track_id: s.trackId, duration_min: elapsed, rpe: selRpeVal || null,
-    feel: selFeelVal || null, notes: notes || null
-  };
-  await supa.post('sessions', sessionData).catch(()=>{});
-
-  done.add(s.trackId);
-  await supa.upsert('tracking', {user_id: USER_ID, track_id: s.trackId, done: true}).catch(()=>{});
-
-  if (!window._sessMap) window._sessMap = {};
-  window._sessMap[s.trackId] = {...sessionData, completed_at: new Date().toISOString()};
-
-  localStorage.setItem('mw3-done', JSON.stringify([...done]));
-  localStorage.setItem('mw3-sessions', JSON.stringify(window._sessMap));
-
-  updateStats(); buildTracking();
-  document.getElementById('finish').style.display = 'none';
-  document.getElementById('player').style.display = 'none';
-  document.body.style.overflow = '';
-  showToast('Séance enregistrée avec succès !', '#639922');
-  goPage('tracking');
-}
-
-const done = new Set();
-async function loadFromSupabase() {
-  const localDone = JSON.parse(localStorage.getItem('mw3-done') || '[]');
-  localDone.forEach(id => done.add(id));
-  window._sessMap = JSON.parse(localStorage.getItem('mw3-sessions') || '{}');
-
-  const online = await supa.ping();
-  if (online) {
-    const rows = await supa.get('tracking', '?user_id=eq.'+USER_ID+'&done=eq.true&select=track_id');
-    rows.forEach(r => done.add(r.track_id));
-
-    const sessions = await supa.get('sessions', '?user_id=eq.'+USER_ID);
-    sessions.forEach(s => {
-      const key = s.track_id || s.session_key;
-      if (key) {
-        window._sessMap[key] = s;
-      }
-    });
-    
-    localStorage.setItem('mw3-done', JSON.stringify([...done]));
-    localStorage.setItem('mw3-sessions', JSON.stringify(window._sessMap));
-  } else {
-    showToast('Mode hors-ligne — données locales');
-  }
-  updateStats(); buildTracking();
-}
-
-function changePhase(phaseId) {
-  currentPhase = phaseId;
-  updateStats();
-  buildTracking();
-  renderCalendarGrid();
-}
-
+// ── TRACKING PAGE BUILDER ──────────────────────────────────────────────────
 function buildTracking(){
   const sessMap = window._sessMap || {};
   const currentData = PHASES_DATA[currentPhase].data;
@@ -439,6 +378,7 @@ function buildTracking(){
       let rowStyle = ok ? "opacity:0.6; filter:grayscale(100%); transition:all 0.3s;" : "transition:all 0.3s;";
       let btnText = ok ? "✏️ Modifier" : "📝 Saisir";
 
+      // 🟢 FIX : On passe item.id (ex: 's2b') comme 2ème argument à openRetroModal !
       h += `<div class="tr-row" style="${rowStyle}">
         <div class="tr-chk${ok ? ' done' : ''}" onclick="tgl('${item.id}', '${sessionKey}')" id="chk-${item.id}">${ok ? '&#10003;' : ''}</div>
         <div style="flex:1" onclick="tgl('${item.id}', '${sessionKey}')">
@@ -447,7 +387,7 @@ function buildTracking(){
           ${detailedTxt}
           ${se&&se.notes ? `<div style='font-size:11px;color:var(--i3);margin-top:2px;font-style:italic'>${se.notes}</div>` : ''}
         </div>
-        <button style="background:none;border:1px solid var(--bd);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--i2);cursor:pointer;flex-shrink:0" onclick="event.stopPropagation(); openRetroModal('${sessionKey}')">${btnText}</button>
+        <button style="background:none;border:1px solid var(--bd);border-radius:6px;padding:6px 10px;font-size:11px;color:var(--i2);cursor:pointer;flex-shrink:0" onclick="event.stopPropagation(); openRetroModal('${sessionKey}', '${item.id}')">${btnText}</button>
       </div>`;
     });
   }
