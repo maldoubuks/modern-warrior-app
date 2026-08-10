@@ -223,7 +223,7 @@ function selFeel(btn, v){ document.querySelectorAll('.feel-btn').forEach(b => b.
 
 let currentRetroTrackId = null;
 
-// ── SAISIE A POSTERIORI CORRIGÉE ──────────────────────────────────────────
+// ── SAISIE A POSTERIORI ────────────────────────────────────────────────────
 function openRetroModal(key, targetTrackId) {
   const s = SD[key]; 
   if (!s) return;
@@ -428,9 +428,9 @@ function buildTracking(){
       if (currentPhase === '0') {
         sessionKey = `${letter}-S${block}`;
       } else if (currentPhase === '1') {
-        sessionKey = `${letter}-F${block}`;
+        sessionKey = SD[`${letter}-F${w}`] ? `${letter}-F${w}` : `${letter}-F${block}`;
       } else {
-        sessionKey = `${letter}-BK${Math.min(w, 2)}`;
+        sessionKey = SD[`${letter}-BK${w}`] ? `${letter}-BK${w}` : `${letter}-BK${Math.min(w, 2)}`;
       }
 
       let detailedTxt = '';
@@ -530,8 +530,8 @@ function updateStats(){
 
       let sessionKey;
       if (currentPhase === '0') sessionKey = `${letter}-S${block}`;
-      else if (currentPhase === '1') sessionKey = `${letter}-F${block}`;
-      else sessionKey = `${letter}-BK${Math.min(week, 2)}`;
+      else if (currentPhase === '1') sessionKey = SD[`${letter}-F${week}`] ? `${letter}-F${week}` : `${letter}-F${block}`;
+      else sessionKey = SD[`${letter}-BK${week}`] ? `${letter}-BK${week}` : `${letter}-BK${Math.min(week, 2)}`;
 
       let desc = nextItem.d ? (nextItem.d.split('-')[1]?.trim() || nextItem.d) : '';
 
@@ -631,7 +631,7 @@ window.onload = () => {
   renderCalendarGrid();
 };
 
-// ── DASHBOARD & STATS (CHART.JS + CALENDRIER + KPIS) ───────────────────────
+// ── DASHBOARD & STATS ──────────────────────────────────────────────────────
 let weightChart = null;
 
 function getKeyMovements(detailedExos) {
@@ -992,37 +992,42 @@ function updateHabitScore() {
 // ── INTITULÉS DYNAMIQUES SELON LA PHASE ET LA SEMAINE ───────────────────────
 
 function getSessionTitleForDay(dayOfWeek, weekNum, phase) {
-  if (dayOfWeek === 1) {
+  if (dayOfWeek === 1) { // LUNDI
     if (phase === '0') {
       if (weekNum <= 2) return 'Séance A - Deadstop Swing + TGU';
       if (weekNum <= 4) return 'Séance A - 1H Swing + TGU';
       return 'Séance A - Snatch + TGU';
     } else if (phase === '1') {
-      return 'Séance A - Snatch, Push-up & 1H Swing';
+      return `Séance A${weekNum} - Snatch, Push-up & 1H Swing`;
     } else if (phase === '2') {
-      return 'Bankai A - Upper/Lower Supersets';
+      return `Bankai A${weekNum} - Upper/Lower Supersets`;
     }
   } 
-  else if (dayOfWeek === 3) {
+  else if (dayOfWeek === 3) { // MERCREDI
     if (phase === '0') {
       if (weekNum <= 2) return 'Séance B - Dead Clean & Push Press';
       if (weekNum <= 4) return 'Séance B - Clean & Push Press';
       return 'Séance B - Clean & Press strict';
     } else if (phase === '1') {
-      return 'Séance B - Heavy Clean & Press';
+      return `Séance B${weekNum} - Heavy Clean & Press`;
     } else if (phase === '2') {
-      return 'Bankai B - Push/Pull & Double Squat';
+      return `Bankai B${weekNum} - Push/Pull & Double Squat`;
     }
   } 
-  else if (dayOfWeek === 5) {
+  else if (dayOfWeek === 5) { // VENDREDI
     if (phase === '0') {
       if (weekNum <= 2) return 'Séance C - 2H Swing + TGU';
       if (weekNum <= 4) return 'Séance C - Complexe Ulysse';
       return 'Séance C - Complexe Atlas';
     } else if (phase === '1') {
+      if (weekNum <= 2) return 'Séance C - Complexes Achille & Persée';
+      if (weekNum <= 4) return 'Séance C - Complexes Ragnar & Arès';
       return 'Séance C - Double Complexes';
     } else if (phase === '2') {
-      return (weekNum % 2 === 0) ? 'Bankai C - METCON Benchmark' : 'Bankai C - AMRAP Ichigo & Renji';
+      if (weekNum <= 2) return (weekNum % 2 === 0) ? 'Bankai C - METCON Benchmark' : 'Bankai C - AMRAP Ichigo & Renji';
+      if (weekNum === 3) return 'Bankai C3 - AMRAP Aizen & GrimmJow';
+      if (weekNum === 4) return 'Bankai C4 - METCON Single KB';
+      return (weekNum % 2 === 0) ? 'Bankai C - METCON Benchmark' : 'Bankai C - AMRAPs Complexes';
     }
   }
 
