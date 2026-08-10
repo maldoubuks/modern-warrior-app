@@ -1292,3 +1292,14 @@ function checkNotificationStatus() {
     // btn.outerHTML = '<div style="margin-top:10px; font-size:11px; font-weight:700; color:var(--gr); text-align:center;">🔔 Notifications Push Activées ✓</div>';
   }
 }
+
+function testNotificationDifferée() {
+  showToast("⏳ Verrouille ton écran maintenant ! Test dans 5 secondes...", "#e67e22");
+  
+  setTimeout(() => {
+    testNotification(
+      "Modern Warrior ⚔️ · Matin (7h10)", 
+      "4 comprimés de Spiruline + 3g à 5g de Créatine + fruit/jus de citron. N'oublie pas tes 500ml d'eau et ton Warm-Up Flow !"
+    );
+  }, 5000); // 5000ms = 5 secondes
+}
