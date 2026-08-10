@@ -1240,6 +1240,7 @@ window.onload = () => {
   initHabitsUI();
   renderCalendarGrid();
   renderSeances();
+  checkNotificationStatus();
 };
 
 // ── GESTION DES NOTIFICATIONS PUSH NATIVES ─────────────────────────────────
@@ -1262,6 +1263,7 @@ async function requestNotificationPermission() {
   
   if (permission === 'granted') {
     showToast("🔔 Notifications activées avec succès !", "#2ecc71");
+    checkNotificationStatus(); // 👈 Masque le bouton dès validation
     testNotification("Rappels Activés ! ⚔️", "Tu recevras désormais tes notices de compléments & étirements !");
   } else if (permission === 'denied') {
     alert("Permission refusée. Tu dois autoriser les notifications dans les réglages de ton téléphone.");
@@ -1278,5 +1280,18 @@ function testNotification(title, body) {
         vibrate: [200, 100, 200]
       });
     });
+  }
+}
+
+function checkNotificationStatus() {
+  const btn = document.getElementById('notif-btn');
+  if (!btn) return;
+
+  // Si le navigateur a déjà la permission "granted", on masque le bouton (ou on le passe en vert)
+  if ('Notification' in window && Notification.permission === 'granted') {
+    btn.style.display = 'none'; // 👈 Se masque complètement !
+    
+    // Si tu préfères afficher un petit badge vert à la place, décommente la ligne ci-dessous :
+    // btn.outerHTML = '<div style="margin-top:10px; font-size:11px; font-weight:700; color:var(--gr); text-align:center;">🔔 Notifications Push Activées ✓</div>';
   }
 }
