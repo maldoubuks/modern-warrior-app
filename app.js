@@ -1,4 +1,4 @@
-// app.js - Logique Modern Warrior, Supabase, Multi-Phases, Habitudes & Calendrier Dynamique
+// app.js - Logique Modern Warrior, Supabase, Multi-Phases, Habitudes, Graphiques & Calendriers
 
 const SUPA_URL = 'https://shhxsxfwfskwdmaqkhqq.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoaHhzeGZ3ZnNrd2RtYXFraHFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU3MzI4OTQsImV4cCI6MjEwMTMwODg5NH0.1Z0495ck0MIX9Th3Z6iieppGIQ22fcf3F61luAcE-XU';
@@ -638,17 +638,14 @@ function goPage(id){
 }
 
 // ── FONCTION D'ACCORDÉON UNIVERSELLE (Mobilité, Séances, Guide...) ──────────
-
 function tog(h){
   const b = h.nextElementSibling, c = h.querySelector('.chv');
   
-  // 1. Chargement dynamique de la fiche si elle n'est pas encore générée
   if (b && b.id && b.id.startsWith('fiche-') && !b.dataset.loaded) {
      b.innerHTML = ficheHTML(b.id.replace('fiche-',''));
      b.dataset.loaded = '1';
   }
   
-  // 2. Bascule d'affichage compatible CSS (.open) et style inline
   if (b) {
     b.classList.toggle('open');
     const isOpen = b.classList.contains('open');
@@ -731,8 +728,9 @@ function renderSeances() {
   container.innerHTML = h;
 }
 
-// ── DASHBOARD & STATS ──────────────────────────────────────────────────────
+// ── DASHBOARD & STATS SÉANCES ─────────────────────────────────────────────
 let weightChart = null;
+let habitScoreChart = null;
 
 function getKeyMovements(detailedExos) {
   if (!detailedExos) return [];
@@ -941,6 +939,68 @@ function renderStats() {
       recentList.innerHTML = html;
     }
   }
+
+  // Rendu du graphique d'évolution des scores d'habitudes
+  renderHabitScoreChart();
+}
+
+// 📈 GRAFIQUE D'ÉVOLUTION PAR JOUR (Trié par date croissante)
+function renderHabitScoreChart() {
+  const ctx = document.getElementById('habitScoreChart');
+  if (!ctx) return;
+
+  const habitsStore = JSON.parse(localStorage.getItem('mw_habits_store') || '{}');
+  
+  // Tri chronologique croissant des dates
+  const sortedDates = Object.keys(habitsStore).sort((a, b) => new Date(a) - new Date(b));
+
+  const labels = [];
+  const scores = [];
+
+  sortedDates.forEach(dStr => {
+    const dayData = habitsStore[dStr];
+    if (dayData && typeof dayData.weightedScore !== 'undefined') {
+      const parts = dStr.split('-');
+      labels.push(`${parts[2]}/${parts[1]}`); // Format JJ/MM
+      scores.push(dayData.weightedScore);
+    }
+  });
+
+  if (habitScoreChart) habitScoreChart.destroy();
+
+  habitScoreChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Score Quotidien (%)',
+        data: scores,
+        borderColor: '#2ecc71',
+        backgroundColor: 'rgba(46, 204, 113, 0.15)',
+        fill: true,
+        spanGaps: true,
+        tension: 0.3,
+        pointRadius: 5,
+        pointBackgroundColor: '#2ecc71'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 100,
+          ticks: { color: '#888' },
+          grid: { color: 'rgba(255,255,255,0.05)' }
+        },
+        x: {
+          ticks: { color: '#888' },
+          grid: { color: 'rgba(255,255,255,0.05)' }
+        }
+      }
+    }
+  });
 }
 
 function updateContextualReminder() {
@@ -969,17 +1029,17 @@ function updateContextualReminder() {
   el.style.borderLeft = `4px solid ${color}`;
 }
 
-// ── TRACKING DES HABITUDES & SANTÉ ────────────────────────────────────────
+// ── TRACKING DES HABITUDES, PONDÉRATION & PALIERS ─────────────────────────
 
 const HABITS_LIST = [
+  { id: 'h_workout', label: '🏋️‍♂️ Séance Muscu / Renfo validée (Essentiel)' },
+  { id: 'h_cardio', label: '🚲 Vélo / Marche Active / Cardio (Bonus)' },
   { id: 'h_sleep8', label: '😴 Sommeil ≥ 8h' },
   { id: 'h_bed2230', label: '🌙 Coucher 22h30 max' },
   { id: 'h_flow', label: '🧘‍♂️ Warm-Up / Flow de Mobilité' },
-  { id: 'h_workout', label: '🏋️‍♂️ Séance Muscu / Renfo validée' },
-  { id: 'h_cardio', label: '🚲 Vélo / Marche Active / Cardio' },
   { id: 'h_vacuum', label: '💨 Stomach Vacuum à jeun' },
   { id: 'h_rule1', label: '🛑 Règle 1 — Sucres parasites zéro (bonbons, gâteaux)' },
-  { id: 'h_rule2', label: '💧 Règle 2 — Hydratation 2,5-3L (500ml au réveil + verre/repas)' },
+  { id: 'h_rule2', label: '💧 Règle 2 — Hydratation 2,5-3L' },
   { id: 'h_rule3', label: '🥩 Règle 3 — Protéine à chaque repas' },
   { id: 'h_homefood', label: '🥗 Repas fait maison' },
   { id: 'h_read', label: '📖 Lecture 20 min / 10 pages' },
@@ -987,10 +1047,10 @@ const HABITS_LIST = [
 ];
 
 const SUPPS_LIST = [
-  { id: 's_mag', label: '💊 Magnésium (Aroma-Zone - Bisglycinate)' },
-  { id: 's_crea', label: '⚡ Créatine Monohydrate (3-5g)' },
-  { id: 's_zinc', label: '🛡️ Zinc' },
-  { id: 's_spir', label: '🌿 Spiruline' }
+  { id: 's_spir', label: '🌿 Spiruline (Matin)' },
+  { id: 's_crea', label: '⚡ Créatine Monohydrate (Matin)' },
+  { id: 's_mag', label: '💊 Magnésium Triple (Soir)' },
+  { id: 's_zinc', label: '🛡️ Zinc (Soir)' }
 ];
 
 let selectedHabitDate = new Date().toISOString().split('T')[0];
@@ -1002,8 +1062,8 @@ function initHabitsUI() {
   const hContainer = document.getElementById('habits-checklist-container');
   if (hContainer) {
     hContainer.innerHTML = HABITS_LIST.map(h => `
-      <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(0,0,0,0.08);">
-        <span style="font-size:13px; font-weight:700; color:#1e1e1e;">${h.label}</span>
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+        <span style="font-size:13px; font-weight:700; color:#fff;">${h.label}</span>
         <input type="checkbox" id="${h.id}" onchange="saveCurrentHabits()" style="width:20px; height:20px; accent-color:var(--or); cursor:pointer;">
       </div>
     `).join('');
@@ -1012,8 +1072,8 @@ function initHabitsUI() {
   const sContainer = document.getElementById('supps-checklist-container');
   if (sContainer) {
     sContainer.innerHTML = SUPPS_LIST.map(s => `
-      <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(0,0,0,0.08);">
-        <span style="font-size:13px; font-weight:700; color:#1e1e1e;">${s.label}</span>
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+        <span style="font-size:13px; font-weight:700; color:#fff;">${s.label}</span>
         <input type="checkbox" id="${s.id}" onchange="saveCurrentHabits()" style="width:20px; height:20px; accent-color:var(--gr); cursor:pointer;">
       </div>
     `).join('');
@@ -1054,35 +1114,97 @@ function saveCurrentHabits() {
     if (el) dayData.habits[item.id] = el.checked;
   });
 
+  dayData.weightedScore = calculateWeightedScore(dayData.habits);
+
   store[selectedHabitDate] = dayData;
   localStorage.setItem('mw_habits_store', JSON.stringify(store));
 
   updateHabitScore();
+  renderCalendarGrid();
+  renderHabitScoreChart();
 }
 
+// 🧮 CALCUL DU SCORE PONDÉRÉ
+function calculateWeightedScore(habitsMap) {
+  let score = 0;
+
+  // Sport (Muscu = 20 pts + Cardio bonus = 5 pts)
+  const isMuscu = !!habitsMap['h_workout'];
+  const isCardio = !!habitsMap['h_cardio'];
+  if (isMuscu) {
+    score += 20;
+    if (isCardio) score += 5;
+  } else if (isCardio) {
+    score += 15;
+  }
+
+  // Sommeil (20 pts)
+  if (habitsMap['h_sleep8']) score += 10;
+  if (habitsMap['h_bed2230']) score += 10;
+
+  // Nutrition (25 pts)
+  if (habitsMap['h_rule1']) score += 7;
+  if (habitsMap['h_rule2']) score += 6;
+  if (habitsMap['h_rule3']) score += 6;
+  if (habitsMap['h_homefood']) score += 6;
+
+  // Discipline & Écran (15 pts)
+  if (habitsMap['h_read']) score += 8;
+  if (habitsMap['h_screen']) score += 7;
+
+  // Routines & Compléments (15 pts)
+  if (habitsMap['h_flow']) score += 4;
+  if (habitsMap['h_vacuum']) score += 3;
+  
+  let suppsCount = 0;
+  if (habitsMap['s_spir']) suppsCount++;
+  if (habitsMap['s_crea']) suppsCount++;
+  if (habitsMap['s_mag']) suppsCount++;
+  if (habitsMap['s_zinc']) suppsCount++;
+  score += Math.min(8, suppsCount * 2);
+
+  return Math.min(100, Math.round(score));
+}
+
+// 🎯 AFFICHAGE AVEC LES 5 PALIERS DYNAMIQUES
 function updateHabitScore() {
-  let total = HABITS_LIST.length + SUPPS_LIST.length;
-  let count = 0;
+  const store = JSON.parse(localStorage.getItem('mw_habits_store') || '{}');
+  const dayData = store[selectedHabitDate] || { habits: {} };
+  
+  const pct = dayData.weightedScore || calculateWeightedScore(dayData.habits || {});
 
-  [...HABITS_LIST, ...SUPPS_LIST].forEach(item => {
-    const el = document.getElementById(item.id);
-    if (el && el.checked) count++;
-  });
-
-  const pct = Math.round((count / total) * 100);
   const pctEl = document.getElementById('habit-score-pct');
   const tagEl = document.getElementById('habit-bilan-tag');
   const countEl = document.getElementById('habit-score-count');
 
   if (pctEl) pctEl.textContent = `${pct}%`;
+
+  let count = 0;
+  let total = HABITS_LIST.length + SUPPS_LIST.length;
+  [...HABITS_LIST, ...SUPPS_LIST].forEach(item => {
+    const el = document.getElementById(item.id);
+    if (el && el.checked) count++;
+  });
+
   if (countEl) countEl.textContent = `${count} / ${total} habitudes validées`;
 
   if (tagEl) {
-    if (pct === 100) { tagEl.textContent = "PARFAIT ✨ (Légende MW)"; tagEl.style.color = "var(--or)"; }
-    else if (pct >= 80) { tagEl.textContent = "EXCELLENT 🔥"; tagEl.style.color = "var(--gr)"; }
-    else if (pct >= 60) { tagEl.textContent = "TRÈS BON 💪"; tagEl.style.color = "var(--bl)"; }
-    else if (pct >= 40) { tagEl.textContent = "EN PROGRÈS ⚡"; tagEl.style.color = "#FF9F43"; }
-    else { tagEl.textContent = "FOCUS WARRIOR 🎯"; tagEl.style.color = "#E74C3C"; }
+    if (pct === 100) { 
+      tagEl.textContent = "PARFAIT ✨ (Légende MW)"; 
+      tagEl.style.color = "var(--or)"; 
+    } else if (pct >= 80) { 
+      tagEl.textContent = "EXCELLENT 🔥"; 
+      tagEl.style.color = "#2ecc71"; 
+    } else if (pct >= 60) { 
+      tagEl.textContent = "TRÈS BON 💪"; 
+      tagEl.style.color = "#3498db"; 
+    } else if (pct >= 40) { 
+      tagEl.textContent = "EN PROGRÈS ⚡"; 
+      tagEl.style.color = "#f1c40f"; 
+    } else { 
+      tagEl.textContent = "FOCUS WARRIOR 🎯"; 
+      tagEl.style.color = "#e74c3c"; 
+    }
   }
 }
 
@@ -1131,7 +1253,7 @@ function getSessionTitleForDay(dayOfWeek, weekNum, phase) {
   return 'Repos';
 }
 
-// ── RENDU DU CALENDRIER DYNAMIQUE ───────────────────────────────────────────
+// 📅 CALENDRIER AVEC LES COULEURS DES 5 PALIERS ──────────────────────────────
 
 let calCurrentDate = new Date();
 
@@ -1157,52 +1279,56 @@ function renderCalendarGrid() {
   const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1;
   const daysInMonth = new Date(y, m + 1, 0).getDate();
 
-  const scheduleStore = JSON.parse(localStorage.getItem('mw_schedule_store') || '{}');
+  const habitsStore = JSON.parse(localStorage.getItem('mw_habits_store') || '{}');
   const todayStr = new Date().toISOString().split('T')[0];
 
   for (let i = 0; i < adjustedFirstDay; i++) {
     grid.innerHTML += `<div style="aspect-ratio:1; background:rgba(255,255,255,0.02); border-radius:6px;"></div>`;
   }
 
-  let currentWeekNum = 1;
-
   for (let day = 1; day <= daysInMonth; day++) {
     const dStr = `${y}-${String(m+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
     const isToday = (dStr === todayStr);
-    const dateObj = new Date(y, m, day);
-    const dayOfWeek = dateObj.getDay();
 
-    let scheduledTask = scheduleStore[dStr] || '';
+    const dayHabitsData = habitsStore[dStr];
+    const habitScore = dayHabitsData ? (dayHabitsData.weightedScore || 0) : 0;
 
-    if (!scheduledTask || scheduledTask === 'Séance A' || scheduledTask === 'Séance B' || scheduledTask === 'Séance C') {
-      scheduledTask = getSessionTitleForDay(dayOfWeek, currentWeekNum, currentPhase);
-    }
+    let statusTag = '';
+    let bgColor = '#1e1e1e';
+    let borderColor = isToday ? 'var(--or)' : '#333333';
 
-    const isWorkout = scheduledTask.includes('Séance') || scheduledTask.includes('Complexe') || scheduledTask.includes('Bankai') || scheduledTask.includes('WOD');
-    const bgColor = isWorkout ? 'rgba(216,90,48,0.15)' : '#1e1e1e';
-    const borderColor = isToday ? 'var(--or)' : (isWorkout ? 'var(--or)' : '#333333');
-
-    let weekBadgeHTML = '';
-    if (dayOfWeek === 1 || day === 1) {
-      weekBadgeHTML = `<span style="font-size:8px; font-weight:800; background:var(--or); color:#fff; padding:1px 4px; border-radius:3px; margin-left:auto;">S${currentWeekNum}</span>`;
+    if (dayHabitsData && habitScore > 0) {
+      if (habitScore >= 80) {
+        statusTag = '🔥';
+        bgColor = 'rgba(46, 204, 113, 0.2)';
+        borderColor = '#2ecc71';
+      } else if (habitScore >= 60) {
+        statusTag = '💪';
+        bgColor = 'rgba(52, 152, 219, 0.2)';
+        borderColor = '#3498db';
+      } else if (habitScore >= 40) {
+        statusTag = '⚡';
+        bgColor = 'rgba(241, 196, 15, 0.2)';
+        borderColor = '#f1c40f';
+      } else {
+        statusTag = '🎯';
+        bgColor = 'rgba(231, 76, 60, 0.2)';
+        borderColor = '#e74c3c';
+      }
     }
 
     grid.innerHTML += `
-      <div onclick="editCalendarDay('${dStr}', '${scheduledTask.replace(/'/g, "\\'")}')" 
-           style="min-height:75px; background:${bgColor}; border:1.5px solid ${borderColor}; border-radius:8px; padding:6px; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer; text-align:left;">
+      <div onclick="loadHabitsForDate('${dStr}'); goPage('habits');" 
+           style="min-height:65px; background:${bgColor}; border:1.5px solid ${borderColor}; border-radius:8px; padding:6px; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer; text-align:left;">
         <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
           <span style="font-size:12px; font-weight:800; color:${isToday ? 'var(--or)' : '#ffffff'};">${day}</span>
-          ${weekBadgeHTML}
+          <span style="font-size:10px;">${statusTag}</span>
         </div>
-        <div style="font-size:9.5px; font-weight:700; color:${isWorkout ? '#ff9f43' : '#888888'}; line-height:1.2; margin-top:4px; word-break:break-word;">
-          ${scheduledTask}
+        <div style="font-size:10px; font-weight:800; color:${borderColor}; margin-top:4px;">
+          ${habitScore > 0 ? habitScore + '%' : ''}
         </div>
       </div>
     `;
-
-    if (dayOfWeek === 0) {
-      currentWeekNum++;
-    }
   }
 }
 
@@ -1242,14 +1368,12 @@ window.onload = () => {
 
 // ── GESTION DES NOTIFICATIONS PUSH NATIVES ─────────────────────────────────
 
-// Enregistrement du Service Worker au démarrage
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js')
     .then(() => console.log('Service Worker enregistré !'))
     .catch(err => console.error('Erreur SW:', err));
 }
 
-// Demande d'autorisation à l'utilisateur
 async function requestNotificationPermission() {
   if (!('Notification' in window)) {
     alert("Désolé, ton navigateur ne supporte pas les notifications.");
@@ -1260,14 +1384,13 @@ async function requestNotificationPermission() {
   
   if (permission === 'granted') {
     showToast("🔔 Notifications activées avec succès !", "#2ecc71");
-    checkNotificationStatus(); // 👈 Masque le bouton dès validation
+    checkNotificationStatus();
     testNotification("Rappels Activés ! ⚔️", "Tu recevras désormais tes notices de compléments & étirements !");
   } else if (permission === 'denied') {
     alert("Permission refusée. Tu dois autoriser les notifications dans les réglages de ton téléphone.");
   }
 }
 
-// Fonction pour envoyer une notification de test
 function testNotification(title, body) {
   if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
     navigator.serviceWorker.ready.then(registration => {
@@ -1284,22 +1407,7 @@ function checkNotificationStatus() {
   const btn = document.getElementById('notif-btn');
   if (!btn) return;
 
-  // Si le navigateur a déjà la permission "granted", on masque le bouton (ou on le passe en vert)
   if ('Notification' in window && Notification.permission === 'granted') {
-    btn.style.display = 'none'; // 👈 Se masque complètement !
-    
-    // Si tu préfères afficher un petit badge vert à la place, décommente la ligne ci-dessous :
-    // btn.outerHTML = '<div style="margin-top:10px; font-size:11px; font-weight:700; color:var(--gr); text-align:center;">🔔 Notifications Push Activées ✓</div>';
+    btn.style.display = 'none';
   }
-}
-
-function testNotificationDifferée() {
-  showToast("⏳ Verrouille ton écran maintenant ! Test dans 5 secondes...", "#e67e22");
-  
-  setTimeout(() => {
-    testNotification(
-      "Modern Warrior ⚔️ · Matin (7h10)", 
-      "4 comprimés de Spiruline + 3g à 5g de Créatine + fruit/jus de citron. N'oublie pas tes 500ml d'eau et ton Warm-Up Flow !"
-    );
-  }, 5000); // 5000ms = 5 secondes
 }
