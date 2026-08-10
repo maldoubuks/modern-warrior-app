@@ -1244,7 +1244,8 @@ function getSessionTitleForDay(dayOfWeek, weekNum, phase) {
   return 'Repos';
 }
 
-// 📅 CALENDRIER DU PLANNING COMPLET RESTAURÉ ────────────────────────────────
+// 📅 CALENDRIER DU PLANNING AVEC SURBRILLANCE JOUR J & SEMAINES DÉBUTANT LE LUNDI
+
 let calCurrentDate = new Date();
 
 function changeCalMonth(dir) {
@@ -1278,6 +1279,7 @@ function renderCalendarGrid() {
   }
 
   let currentWeekNum = 1;
+  let firstMondayReached = false;
 
   for (let day = 1; day <= daysInMonth; day++) {
     const dStr = `${y}-${String(m+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
@@ -1285,15 +1287,27 @@ function renderCalendarGrid() {
     const dateObj = new Date(y, m, day);
     const dayOfWeek = dateObj.getDay();
 
-    // 1. Séance programmée
+    // 1. Alignement parfait des Semaines : Le 1er Lundi du mois = S1
+    let weekBadgeHTML = '';
+    if (dayOfWeek === 1) { // C'est un Lundi
+      if (!firstMondayReached) {
+        firstMondayReached = true;
+        currentWeekNum = 1; // Lundi 3 Août = S1
+      } else {
+        currentWeekNum++; // Lundi 10 Août = S2
+      }
+      weekBadgeHTML = `<span style="font-size:8.5px; font-weight:800; background:var(--or); color:#fff; padding:1px 5px; border-radius:3px; margin-left:auto;">S${currentWeekNum}</span>`;
+    }
+
+    // 2. Intitulé de la séance
     let scheduledTask = scheduleStore[dStr] || '';
     if (!scheduledTask || scheduledTask === 'Séance A' || scheduledTask === 'Séance B' || scheduledTask === 'Séance C') {
-      scheduledTask = getSessionTitleForDay(dayOfWeek, currentWeekNum, currentPhase);
+      scheduledTask = getSessionTitleForDay(dayOfWeek, firstMondayReached ? currentWeekNum : 1, currentPhase);
     }
 
     const isWorkout = scheduledTask.includes('Séance') || scheduledTask.includes('Complexe') || scheduledTask.includes('Bankai') || scheduledTask.includes('WOD');
 
-    // 2. Score Habitudes
+    // 3. Badge score habitudes si existant
     const dayHabitsData = habitsStore[dStr];
     const habitScore = dayHabitsData ? (dayHabitsData.weightedScore || 0) : 0;
     let habitBadge = '';
@@ -1304,19 +1318,29 @@ function renderCalendarGrid() {
       else habitBadge = '🎯 ' + habitScore + '%';
     }
 
-    const bgColor = isWorkout ? 'rgba(216,90,48,0.12)' : '#ffffff';
-    const borderColor = isToday ? 'var(--or)' : (isWorkout ? 'var(--or)' : '#e0e0e0');
+    // 4. Style Visuel : Mode normal vs SURBRILLANCE JOUR J (Aujourd'hui)
+    let bgColor = isWorkout ? 'rgba(216,90,48,0.12)' : '#ffffff';
+    let borderColor = isWorkout ? 'var(--or)' : '#e0e0e0';
+    let borderWidth = '1.5px';
+    let extraStyle = '';
+    let todayBadge = '';
 
-    let weekBadgeHTML = '';
-    if (dayOfWeek === 1 || day === 1) {
-      weekBadgeHTML = `<span style="font-size:8px; font-weight:800; background:var(--or); color:#fff; padding:1px 4px; border-radius:3px; margin-left:auto;">S${currentWeekNum}</span>`;
+    if (isToday) {
+      bgColor = 'rgba(216,90,48,0.25)'; // Fond orangé vif
+      borderColor = 'var(--or)'; // Bordure orange fluo
+      borderWidth = '3px'; // Contour épais
+      extraStyle = 'box-shadow: 0 0 14px rgba(216,90,48,0.6); transform: scale(1.02); z-index: 2;';
+      todayBadge = `<span style="font-size:8px; font-weight:900; background:#2ecc71; color:#fff; padding:1px 4px; border-radius:3px; margin-right:4px;">AUJ.</span>`;
     }
 
     grid.innerHTML += `
       <div onclick="editCalendarDay('${dStr}', '${scheduledTask.replace(/'/g, "\\'")}')" 
-           style="min-height:75px; background:${bgColor}; border:1.5px solid ${borderColor}; border-radius:8px; padding:6px; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer; text-align:left;">
+           style="min-height:75px; background:${bgColor}; border:${borderWidth} solid ${borderColor}; border-radius:8px; padding:6px; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer; text-align:left; ${extraStyle}">
         <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
-          <span style="font-size:12px; font-weight:800; color:${isToday ? 'var(--or)' : '#1e1e1e'};">${day}</span>
+          <div style="display:flex; align-items:center;">
+            ${todayBadge}
+            <span style="font-size:12px; font-weight:800; color:${isToday ? 'var(--or)' : '#1e1e1e'};">${day}</span>
+          </div>
           ${weekBadgeHTML}
         </div>
         <div style="font-size:9.5px; font-weight:700; color:${isWorkout ? '#c0392b' : '#7f8c8d'}; line-height:1.2; margin-top:3px; word-break:break-word;">
@@ -1326,9 +1350,6 @@ function renderCalendarGrid() {
       </div>
     `;
 
-    if (dayOfWeek === 0) {
-      currentWeekNum++;
-    }
   }
 }
 
