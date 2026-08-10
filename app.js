@@ -1,4 +1,4 @@
-// app.js - Logique Modern Warrior, Supabase, Multi-Phases, Habitudes, Graphiques & Calendriers
+// app.js - Logique Modern Warrior, Supabase, Multi-Phases, Habitudes, Graphiques & Calendrier Restauré
 
 const SUPA_URL = 'https://shhxsxfwfskwdmaqkhqq.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoaHhzeGZ3ZnNrd2RtYXFraHFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU3MzI4OTQsImV4cCI6MjEwMTMwODg5NH0.1Z0495ck0MIX9Th3Z6iieppGIQ22fcf3F61luAcE-XU';
@@ -728,7 +728,7 @@ function renderSeances() {
   container.innerHTML = h;
 }
 
-// ── DASHBOARD & STATS SÉANCES ─────────────────────────────────────────────
+// ── DASHBOARD & STATS ──────────────────────────────────────────────────────
 let weightChart = null;
 let habitScoreChart = null;
 
@@ -940,18 +940,15 @@ function renderStats() {
     }
   }
 
-  // Rendu du graphique d'évolution des scores d'habitudes
   renderHabitScoreChart();
 }
 
-// 📈 GRAFIQUE D'ÉVOLUTION PAR JOUR (Trié par date croissante)
+// 📈 GRAPHIQUE D'ÉVOLUTION DU SCORE D'HABITUDES (Trié par date croissante)
 function renderHabitScoreChart() {
   const ctx = document.getElementById('habitScoreChart');
   if (!ctx) return;
 
   const habitsStore = JSON.parse(localStorage.getItem('mw_habits_store') || '{}');
-  
-  // Tri chronologique croissant des dates
   const sortedDates = Object.keys(habitsStore).sort((a, b) => new Date(a) - new Date(b));
 
   const labels = [];
@@ -961,7 +958,7 @@ function renderHabitScoreChart() {
     const dayData = habitsStore[dStr];
     if (dayData && typeof dayData.weightedScore !== 'undefined') {
       const parts = dStr.split('-');
-      labels.push(`${parts[2]}/${parts[1]}`); // Format JJ/MM
+      labels.push(`${parts[2]}/${parts[1]}`);
       scores.push(dayData.weightedScore);
     }
   });
@@ -1062,8 +1059,8 @@ function initHabitsUI() {
   const hContainer = document.getElementById('habits-checklist-container');
   if (hContainer) {
     hContainer.innerHTML = HABITS_LIST.map(h => `
-      <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.08);">
-        <span style="font-size:13px; font-weight:700; color:#fff;">${h.label}</span>
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;">
+        <span style="font-size:13px; font-weight:700; color:#1e1e1e;">${h.label}</span>
         <input type="checkbox" id="${h.id}" onchange="saveCurrentHabits()" style="width:20px; height:20px; accent-color:var(--or); cursor:pointer;">
       </div>
     `).join('');
@@ -1072,8 +1069,8 @@ function initHabitsUI() {
   const sContainer = document.getElementById('supps-checklist-container');
   if (sContainer) {
     sContainer.innerHTML = SUPPS_LIST.map(s => `
-      <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.08);">
-        <span style="font-size:13px; font-weight:700; color:#fff;">${s.label}</span>
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;">
+        <span style="font-size:13px; font-weight:700; color:#1e1e1e;">${s.label}</span>
         <input type="checkbox" id="${s.id}" onchange="saveCurrentHabits()" style="width:20px; height:20px; accent-color:var(--gr); cursor:pointer;">
       </div>
     `).join('');
@@ -1128,7 +1125,6 @@ function saveCurrentHabits() {
 function calculateWeightedScore(habitsMap) {
   let score = 0;
 
-  // Sport (Muscu = 20 pts + Cardio bonus = 5 pts)
   const isMuscu = !!habitsMap['h_workout'];
   const isCardio = !!habitsMap['h_cardio'];
   if (isMuscu) {
@@ -1138,21 +1134,17 @@ function calculateWeightedScore(habitsMap) {
     score += 15;
   }
 
-  // Sommeil (20 pts)
   if (habitsMap['h_sleep8']) score += 10;
   if (habitsMap['h_bed2230']) score += 10;
 
-  // Nutrition (25 pts)
   if (habitsMap['h_rule1']) score += 7;
   if (habitsMap['h_rule2']) score += 6;
   if (habitsMap['h_rule3']) score += 6;
   if (habitsMap['h_homefood']) score += 6;
 
-  // Discipline & Écran (15 pts)
   if (habitsMap['h_read']) score += 8;
   if (habitsMap['h_screen']) score += 7;
 
-  // Routines & Compléments (15 pts)
   if (habitsMap['h_flow']) score += 4;
   if (habitsMap['h_vacuum']) score += 3;
   
@@ -1209,7 +1201,6 @@ function updateHabitScore() {
 }
 
 // ── INTITULÉS DYNAMIQUES SELON LA PHASE ET LA SEMAINE ───────────────────────
-
 function getSessionTitleForDay(dayOfWeek, weekNum, phase) {
   if (dayOfWeek === 1) { // LUNDI
     if (phase === '0') {
@@ -1253,8 +1244,7 @@ function getSessionTitleForDay(dayOfWeek, weekNum, phase) {
   return 'Repos';
 }
 
-// 📅 CALENDRIER AVEC LES COULEURS DES 5 PALIERS ──────────────────────────────
-
+// 📅 CALENDRIER DU PLANNING COMPLET RESTAURÉ ────────────────────────────────
 let calCurrentDate = new Date();
 
 function changeCalMonth(dir) {
@@ -1279,56 +1269,66 @@ function renderCalendarGrid() {
   const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1;
   const daysInMonth = new Date(y, m + 1, 0).getDate();
 
+  const scheduleStore = JSON.parse(localStorage.getItem('mw_schedule_store') || '{}');
   const habitsStore = JSON.parse(localStorage.getItem('mw_habits_store') || '{}');
   const todayStr = new Date().toISOString().split('T')[0];
 
   for (let i = 0; i < adjustedFirstDay; i++) {
-    grid.innerHTML += `<div style="aspect-ratio:1; background:rgba(255,255,255,0.02); border-radius:6px;"></div>`;
+    grid.innerHTML += `<div style="aspect-ratio:1; background:rgba(0,0,0,0.02); border-radius:6px;"></div>`;
   }
+
+  let currentWeekNum = 1;
 
   for (let day = 1; day <= daysInMonth; day++) {
     const dStr = `${y}-${String(m+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
     const isToday = (dStr === todayStr);
+    const dateObj = new Date(y, m, day);
+    const dayOfWeek = dateObj.getDay();
 
+    // 1. Séance programmée
+    let scheduledTask = scheduleStore[dStr] || '';
+    if (!scheduledTask || scheduledTask === 'Séance A' || scheduledTask === 'Séance B' || scheduledTask === 'Séance C') {
+      scheduledTask = getSessionTitleForDay(dayOfWeek, currentWeekNum, currentPhase);
+    }
+
+    const isWorkout = scheduledTask.includes('Séance') || scheduledTask.includes('Complexe') || scheduledTask.includes('Bankai') || scheduledTask.includes('WOD');
+
+    // 2. Score Habitudes
     const dayHabitsData = habitsStore[dStr];
     const habitScore = dayHabitsData ? (dayHabitsData.weightedScore || 0) : 0;
-
-    let statusTag = '';
-    let bgColor = '#1e1e1e';
-    let borderColor = isToday ? 'var(--or)' : '#333333';
-
+    let habitBadge = '';
     if (dayHabitsData && habitScore > 0) {
-      if (habitScore >= 80) {
-        statusTag = '🔥';
-        bgColor = 'rgba(46, 204, 113, 0.2)';
-        borderColor = '#2ecc71';
-      } else if (habitScore >= 60) {
-        statusTag = '💪';
-        bgColor = 'rgba(52, 152, 219, 0.2)';
-        borderColor = '#3498db';
-      } else if (habitScore >= 40) {
-        statusTag = '⚡';
-        bgColor = 'rgba(241, 196, 15, 0.2)';
-        borderColor = '#f1c40f';
-      } else {
-        statusTag = '🎯';
-        bgColor = 'rgba(231, 76, 60, 0.2)';
-        borderColor = '#e74c3c';
-      }
+      if (habitScore >= 80) habitBadge = '🔥 ' + habitScore + '%';
+      else if (habitScore >= 60) habitBadge = '💪 ' + habitScore + '%';
+      else if (habitScore >= 40) habitBadge = '⚡ ' + habitScore + '%';
+      else habitBadge = '🎯 ' + habitScore + '%';
+    }
+
+    const bgColor = isWorkout ? 'rgba(216,90,48,0.12)' : '#ffffff';
+    const borderColor = isToday ? 'var(--or)' : (isWorkout ? 'var(--or)' : '#e0e0e0');
+
+    let weekBadgeHTML = '';
+    if (dayOfWeek === 1 || day === 1) {
+      weekBadgeHTML = `<span style="font-size:8px; font-weight:800; background:var(--or); color:#fff; padding:1px 4px; border-radius:3px; margin-left:auto;">S${currentWeekNum}</span>`;
     }
 
     grid.innerHTML += `
-      <div onclick="loadHabitsForDate('${dStr}'); goPage('habits');" 
-           style="min-height:65px; background:${bgColor}; border:1.5px solid ${borderColor}; border-radius:8px; padding:6px; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer; text-align:left;">
+      <div onclick="editCalendarDay('${dStr}', '${scheduledTask.replace(/'/g, "\\'")}')" 
+           style="min-height:75px; background:${bgColor}; border:1.5px solid ${borderColor}; border-radius:8px; padding:6px; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer; text-align:left;">
         <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
-          <span style="font-size:12px; font-weight:800; color:${isToday ? 'var(--or)' : '#ffffff'};">${day}</span>
-          <span style="font-size:10px;">${statusTag}</span>
+          <span style="font-size:12px; font-weight:800; color:${isToday ? 'var(--or)' : '#1e1e1e'};">${day}</span>
+          ${weekBadgeHTML}
         </div>
-        <div style="font-size:10px; font-weight:800; color:${borderColor}; margin-top:4px;">
-          ${habitScore > 0 ? habitScore + '%' : ''}
+        <div style="font-size:9.5px; font-weight:700; color:${isWorkout ? '#c0392b' : '#7f8c8d'}; line-height:1.2; margin-top:3px; word-break:break-word;">
+          ${scheduledTask}
         </div>
+        ${habitBadge ? `<div style="font-size:9px; font-weight:800; color:var(--or); margin-top:2px;">${habitBadge}</div>` : ''}
       </div>
     `;
+
+    if (dayOfWeek === 0) {
+      currentWeekNum++;
+    }
   }
 }
 
