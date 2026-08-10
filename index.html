@@ -164,19 +164,22 @@
 </div>
 
 <div id="page-seances" class="page">
-  <div class="hero"><div class="hl">S&eacute;ances Phase 0</div><div class="ht">Lance la<br>session.</div><div class="hs">&#9654; pour le player interactif &middot; D&eacute;plier pour voir la fiche d&eacute;taill&eacute;e</div></div>
-  
-  <div class="st">Semaines 1 &amp; 2</div>
-  <div class="slc">
-    <div class="slc-h" style="background:var(--orl)">
-      <div class="slc-icon" style="background:var(--or);color:#fff">A</div>
-      <div class="slc-info"><div class="slc-title" style="color:var(--ord)">S&eacute;ance A &middot; Lundi S1-S2</div><div class="slc-sub">Deadstop Swing 2H + TGU &middot; ~35 min</div></div>
-      <button class="slc-play" style="background:var(--or)" onclick="startPlayer('A-S1')">&#9654; Live</button>
-      <button class="slc-play" style="background:#555;margin-left:4px" onclick="openRetroModal('A-S1')">📝 Saisir</button>
+  <div class="hero">
+    <div class="hl" id="seances-hero-subtitle">SÉANCES DE L'ENTRAÎNEMENT</div>
+    <div class="ht">Lance la<br>session.</div>
+    <div class="hs">▶ pour le player interactif &middot; Déplier pour voir la fiche détaillée</div>
+    
+    <div style="margin-top:16px;">
+      <select id="seances-phase-select" onchange="changePhase(this.value)" style="background:#2A2A2A; color:#fff; border:1px solid var(--or); border-radius:8px; padding:10px 14px; font-size:13px; font-weight:700; width:100%; outline:none; cursor:pointer;">
+        <option value="0">Phase 0 : L'Éveil (6 semaines)</option>
+        <option value="1">Phase 1 : La Forge (8 semaines)</option>
+        <option value="2">Bankai : Hypertrophie (8 semaines)</option>
+      </select>
     </div>
-    <div class="ch ch-n" style="border-top:1px solid var(--bd)" onclick="tog(this)"><div class="ci ci-n" style="font-size:9px">fiche</div><div class="ct" style="font-size:12px;color:var(--i3)">Voir la fiche d&eacute;taill&eacute;e</div><div class="chv">&rsaquo;</div></div>
-    <div class="cb" id="fiche-A-S1"></div>
   </div>
+
+  <div id="seances-list-container"></div>
+ </div>
   
   <div class="slc">
     <div class="slc-h" style="background:var(--bll)">
