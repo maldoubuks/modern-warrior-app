@@ -950,21 +950,18 @@ function updateContextualReminder() {
   const h = new Date().getHours();
   let msg = ""; let color = "";
 
-  if (h >= 5 && h < 10) {
-    msg = "🌅 <b style='color:#FF9F43'>Matin :</b> As-tu bu tes 500ml d'eau ? N'oublie pas ton Warm-Up Flow (10 min) avant de partir !";
+  if (h >= 5 && h < 11) {
+    msg = "🌅 <b>Rappel 7h10 (Matin) :</b> 4 comprimés de <b>Spiruline</b> + <b>3g à 5g de Créatine</b> + 1 fruit (orange/kiwi) ou jus de citron ! 🍊⚡<br><span style='font-size:12px; opacity:0.9;'>👉 N'oublie pas tes 500ml d'eau et ton Warm-Up Flow (10 min).</span>";
     color = "#FF9F43";
-  } else if (h >= 10 && h < 14) {
-    msg = "⚡ <b style='color:#54A0FF'>Midi :</b> Hydratation (1 verre avant le repas) et protéines obligatoires au menu !";
+  } else if (h >= 11 && h < 17) {
+    msg = "🚶‍♂️ <b>Rappel Après-Midi :</b> Hydratation (1 verre avant chaque repas) & Objectif 8 000 à 10 000 pas ! 💧";
     color = "#54A0FF";
-  } else if (h >= 14 && h < 18) {
-    msg = "🚶‍♂️ <b style='color:#1DD1A1'>Aprèm :</b> Où en sont tes 8 000 pas ? Marche sur tes appels ou prends les escaliers !";
-    color = "#1DD1A1";
-  } else if (h >= 18 && h < 21) {
-    msg = "🧘‍♂️ <b style='color:#A855F7'>Soir :</b> Bientôt l'heure de ta routine d'étirements et de tes 10 pages de lecture.";
+  } else if (h >= 17 && h < 21) {
+    msg = "🌙 <b>Rappel Dîner :</b> 3 gélules de <b>Magnésium Triple</b> + 1 comprimé de <b>Zinc</b> ! 💊";
     color = "#A855F7";
   } else {
-    msg = "🌙 <b style='color:#C8D6E5'>Nuit :</b> Objectif coucher 22h30 max. Coupe le scrolling et prends ton livre !";
-    color = "#C8D6E5";
+    msg = "🧘 <b>Rappel Soir & Récup :</b> 10-15 min de Stretching (Routine A ou B) + 10 pages de lecture & Coucher 22h30 max ! 📖";
+    color = "#1DD1A1";
   }
 
   el.innerHTML = msg;
