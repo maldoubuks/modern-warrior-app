@@ -637,19 +637,26 @@ function goPage(id){
   window.scrollTo(0, 0);
 }
 
+// ── FONCTION D'ACCORDÉON UNIVERSELLE (Mobilité, Séances, Guide...) ──────────
+
 function tog(h){
   const b = h.nextElementSibling, c = h.querySelector('.chv');
+  
+  // 1. Chargement dynamique de la fiche si elle n'est pas encore générée
   if (b && b.id && b.id.startsWith('fiche-') && !b.dataset.loaded) {
      b.innerHTML = ficheHTML(b.id.replace('fiche-',''));
      b.dataset.loaded = '1';
   }
+  
+  // 2. Bascule d'affichage compatible CSS (.open) et style inline
   if (b) {
-    if (b.style.display === 'none' || !b.style.display) {
-      b.style.display = 'block';
-      if (c) c.style.transform = 'rotate(90deg)';
-    } else {
-      b.style.display = 'none';
-      if (c) c.style.transform = 'rotate(0deg)';
+    b.classList.toggle('open');
+    const isOpen = b.classList.contains('open');
+    
+    b.style.display = isOpen ? 'block' : 'none';
+    
+    if (c) {
+      c.style.transform = isOpen ? 'rotate(90deg)' : 'rotate(0deg)';
     }
   }
 }
