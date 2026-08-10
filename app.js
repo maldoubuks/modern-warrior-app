@@ -1241,3 +1241,42 @@ window.onload = () => {
   renderCalendarGrid();
   renderSeances();
 };
+
+// ── GESTION DES NOTIFICATIONS PUSH NATIVES ─────────────────────────────────
+
+// Enregistrement du Service Worker au démarrage
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js')
+    .then(() => console.log('Service Worker enregistré !'))
+    .catch(err => console.error('Erreur SW:', err));
+}
+
+// Demande d'autorisation à l'utilisateur
+async function requestNotificationPermission() {
+  if (!('Notification' in window)) {
+    alert("Désolé, ton navigateur ne supporte pas les notifications.");
+    return;
+  }
+
+  const permission = await Notification.requestPermission();
+  
+  if (permission === 'granted') {
+    showToast("🔔 Notifications activées avec succès !", "#2ecc71");
+    testNotification("Rappels Activés ! ⚔️", "Tu recevras désormais tes notices de compléments & étirements !");
+  } else if (permission === 'denied') {
+    alert("Permission refusée. Tu dois autoriser les notifications dans les réglages de ton téléphone.");
+  }
+}
+
+// Fonction pour envoyer une notification de test
+function testNotification(title, body) {
+  if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+    navigator.serviceWorker.ready.then(registration => {
+      registration.showNotification(title, {
+        body: body,
+        icon: 'https://img.icons8.com/emoji/192/crossed-swords-emoji.png',
+        vibrate: [200, 100, 200]
+      });
+    });
+  }
+}
