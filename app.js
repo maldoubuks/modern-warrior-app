@@ -407,6 +407,7 @@ function changePhase(phaseId) {
   updateStats();
   buildTracking();
   renderCalendarGrid();
+  renderSeances();
 }
 
 function buildTracking(){
@@ -1117,4 +1118,70 @@ function editCalendarDay(dStr, currentTask) {
     localStorage.setItem('mw_schedule_store', JSON.stringify(store));
     renderCalendarGrid();
   }
+}
+
+function renderSeances() {
+  const container = document.getElementById('seances-list-container');
+  const selectEl = document.getElementById('seances-phase-select');
+  if (selectEl) selectEl.value = currentPhase;
+  if (!container) return;
+
+  let sessionSections = [];
+
+  if (currentPhase === '0') {
+    sessionSections = [
+      { section: "SEMAINES 1 & 2", keys: ["A-S1", "B-S1", "C-S1"] },
+      { section: "SEMAINES 3 & 4", keys: ["A-S3", "B-S3", "C-S3"] },
+      { section: "SEMAINES 5 & 6", keys: ["A-S5", "B-S5", "C-S5"] }
+    ];
+  } else if (currentPhase === '1') {
+    sessionSections = [
+      { section: "SEMAINES 1 & 2", keys: ["A-F1", "B-F1", "C-F1"] },
+      { section: "SEMAINES 3 & 4", keys: ["A-F3", "B-F3", "C-F3"] },
+      { section: "SEMAINES 5 À 8", keys: ["A-F5", "B-F5", "C-F5"] }
+    ];
+  } else if (currentPhase === '2') {
+    sessionSections = [
+      { section: "SEMAINES 1 & 2", keys: ["A-BK1", "B-BK1", "C-BK1"] },
+      { section: "SEMAINES 3 & 4", keys: ["A-BK3", "B-BK3", "C-BK3"] },
+      { section: "SEMAINE 4 (METCON)", keys: ["A-BK4", "B-BK4", "C-BK4"] }
+    ];
+  }
+
+  let h = '';
+  sessionSections.forEach(sec => {
+    h += `<div class="st" style="margin-top:16px;">${sec.section}</div>`;
+    sec.keys.forEach(k => {
+      const s = SD[k];
+      if (!s) return;
+      
+      let letter = k.charAt(0);
+      let c_bg = letter === 'A' ? 'var(--orl)' : (letter === 'B' ? 'var(--bll)' : 'var(--grl)');
+      let c_icn = letter === 'A' ? 'var(--or)' : (letter === 'B' ? 'var(--bl)' : 'var(--gr)');
+      let c_txt = letter === 'A' ? 'var(--ord)' : (letter === 'B' ? 'var(--bld)' : 'var(--grd)');
+
+      h += `
+        <div class="slc" style="margin-bottom:12px;">
+          <div class="slc-h" style="background:${c_bg}">
+            <div class="slc-icon" style="background:${c_icn};color:#fff">${letter}</div>
+            <div class="slc-info">
+              <div class="slc-title" style="color:${c_txt}">${s.title}</div>
+              <div class="slc-sub">${s.exos ? s.exos.length + ' exercices' : ''}</div>
+            </div>
+            <button class="slc-play" style="background:${c_icn}" onclick="startPlayer('${k}')">▶ Live</button>
+            <button style="background:none;border:1px solid var(--bd);border-radius:6px;padding:6px 10px;font-size:11px;color:var(--i2);cursor:pointer;margin-left:6px;" onclick="openRetroModal('${k}')">📝 Saisir</button>
+          </div>
+          <div style="padding:10px; cursor:pointer;" onclick="tog(this)">
+            <div style="font-size:11px; font-weight:700; color:var(--i3); display:flex; align-items:center; justify-content:space-between;">
+              <span>Voir la fiche détaillée</span>
+              <span class="chv">›</span>
+            </div>
+          </div>
+          <div class="fiche" id="fiche-${k}"></div>
+        </div>
+      `;
+    });
+  });
+
+  container.innerHTML = h;
 }
