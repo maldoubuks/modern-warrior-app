@@ -114,9 +114,13 @@
     
     <div id="dynamic-reminder" style="margin-top:16px; padding:12px 16px; border-radius:10px; font-size:13px; font-weight:500; text-align:left; background:rgba(255,255,255,0.1); color:#ffffff; line-height:1.4;"></div>
 
-<button id="notif-btn" onclick="requestNotificationPermission()" style="margin-top:12px; width:100%; background:linear-gradient(135deg, var(--or), #e67e22); color:#fff; border:none; border-radius:10px; padding:12px; font-size:13px; font-weight:800; cursor:pointer; box-shadow:0 4px 12px rgba(216,90,48,0.3);">
-  🔔 Activer les Rappels Push sur mon Téléphone
-</button>
+    <button id="notif-btn" onclick="requestNotificationPermission()" style="margin-top:12px; width:100%; background:linear-gradient(135deg, var(--or), #e67e22); color:#fff; border:none; border-radius:10px; padding:12px; font-size:13px; font-weight:800; cursor:pointer; box-shadow:0 4px 12px rgba(216,90,48,0.3);">
+      🔔 Activer les Rappels Push sur mon Téléphone
+    </button>
+
+    <button onclick="testNotificationDifferée()" style="margin-top:8px; width:100%; background:#333; color:#aaa; border:1px solid #555; border-radius:8px; padding:8px; font-size:11px; font-weight:700; cursor:pointer;">
+      🧪 Tester une notification dans 5 secondes (Verrouille ton écran !)
+    </button>
   </div>
 
   <div class="g2">
