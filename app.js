@@ -620,8 +620,14 @@ function goPage(id){
     targetBtn.classList.add('active');
   }
 
+  // 🟢 Recharge les contenus spécifiques selon la page ouverte
   if (id === 'seances') {
     renderSeances();
+  } else if (id === 'wod') {
+    const defaultBtn = document.querySelector('.wod-fb');
+    if (typeof filterWod === 'function' && defaultBtn) {
+      filterWod('all', defaultBtn);
+    }
   }
 
   window.scrollTo(0, 0);
