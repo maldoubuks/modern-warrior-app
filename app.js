@@ -221,7 +221,6 @@ function showFinish(){
 function selRpe(btn, v){ document.querySelectorAll('.rpe-btn').forEach(b => b.classList.remove('sel')); btn.classList.add('sel'); selRpeVal = v; }
 function selFeel(btn, v){ document.querySelectorAll('.feel-btn').forEach(b => b.classList.remove('sel')); btn.classList.add('sel'); selFeelVal = v; }
 
-// Variable globale pour stocker l'identifiant exact de la séance en cours de saisie
 let currentRetroTrackId = null;
 
 // ── SAISIE A POSTERIORI CORRIGÉE ──────────────────────────────────────────
@@ -230,7 +229,6 @@ function openRetroModal(key, targetTrackId) {
   if (!s) return;
   
   pKey = key;
-  // 🟢 FIX CRITIQUE : On force l'id cible (ex: 's2b') s'il est transmis !
   currentRetroTrackId = targetTrackId || s.trackId || key;
   
   document.getElementById('retro-title').textContent = s.title;
@@ -282,6 +280,17 @@ function openRetroModal(key, targetTrackId) {
   }
 }
 
+function closeRetroModal() {
+  const m = document.getElementById('retro-modal');
+  if (m) {
+    m.style.display = 'none';
+    m.style.pointerEvents = 'none';
+    m.classList.remove('active');
+  }
+  document.body.style.overflow = '';
+  document.body.style.pointerEvents = 'auto';
+}
+
 async function saveRetroSession() {
   if (!pKey) return;
   const s = SD[pKey]; 
@@ -289,7 +298,6 @@ async function saveRetroSession() {
 
   closeRetroModal();
 
-  // 🟢 FIX : Utilisation du vrai trackId enregistré (ex: 's2b')
   const trackId = currentRetroTrackId || s.trackId || pKey;
   const detailedExos = {};
   const notes = document.getElementById('retro-notes')?.value || '';
@@ -338,12 +346,74 @@ async function saveRetroSession() {
   }
 }
 
-// ── TRACKING PAGE BUILDER ──────────────────────────────────────────────────
+async function saveSession(){
+  const s = SD[pKey];
+  const elapsed = Math.round((new Date() - pStart)/60000);
+  const notes = document.getElementById('f-notes').value;
+
+  const sessionData = {
+    user_id: USER_ID, session_key: pKey, session_title: s.title,
+    track_id: s.trackId, duration_min: elapsed, rpe: selRpeVal || null,
+    feel: selFeelVal || null, notes: notes || null
+  };
+  await supa.post('sessions', sessionData).catch(()=>{});
+
+  done.add(s.trackId);
+  await supa.upsert('tracking', {user_id: USER_ID, track_id: s.trackId, done: true}).catch(()=>{});
+
+  if (!window._sessMap) window._sessMap = {};
+  window._sessMap[s.trackId] = {...sessionData, completed_at: new Date().toISOString()};
+
+  localStorage.setItem('mw3-done', JSON.stringify([...done]));
+  localStorage.setItem('mw3-sessions', JSON.stringify(window._sessMap));
+
+  updateStats(); buildTracking();
+  document.getElementById('finish').style.display = 'none';
+  document.getElementById('player').style.display = 'none';
+  document.body.style.overflow = '';
+  showToast('Séance enregistrée avec succès !', '#639922');
+  goPage('tracking');
+}
+
+const done = new Set();
+async function loadFromSupabase() {
+  const localDone = JSON.parse(localStorage.getItem('mw3-done') || '[]');
+  localDone.forEach(id => done.add(id));
+  window._sessMap = JSON.parse(localStorage.getItem('mw3-sessions') || '{}');
+
+  const online = await supa.ping();
+  if (online) {
+    const rows = await supa.get('tracking', '?user_id=eq.'+USER_ID+'&done=eq.true&select=track_id');
+    rows.forEach(r => done.add(r.track_id));
+
+    const sessions = await supa.get('sessions', '?user_id=eq.'+USER_ID);
+    sessions.forEach(s => {
+      const key = s.track_id || s.session_key;
+      if (key) {
+        window._sessMap[key] = s;
+      }
+    });
+
+    localStorage.setItem('mw3-done', JSON.stringify([...done]));
+    localStorage.setItem('mw3-sessions', JSON.stringify(window._sessMap));
+  } else {
+    showToast('Mode hors-ligne — données locales');
+  }
+  updateStats(); buildTracking();
+}
+
+function changePhase(phaseId) {
+  currentPhase = phaseId;
+  updateStats();
+  buildTracking();
+  renderCalendarGrid();
+}
+
 function buildTracking(){
   const sessMap = window._sessMap || {};
   const currentData = PHASES_DATA[currentPhase].data;
   const numWeeks = PHASES_DATA[currentPhase].total / 3;
-  
+
   let h = '';
   for(let w=1; w<=numWeeks; w++){
     h += `<div class="st">Semaine ${w}</div>`;
@@ -353,7 +423,7 @@ function buildTracking(){
 
       let letter = item.id.slice(-1).toUpperCase();
       let block = w <= 2 ? 1 : (w <= 4 ? 3 : 5);
-      
+
       let sessionKey;
       if (currentPhase === '0') {
         sessionKey = `${letter}-S${block}`;
@@ -378,7 +448,6 @@ function buildTracking(){
       let rowStyle = ok ? "opacity:0.6; filter:grayscale(100%); transition:all 0.3s;" : "transition:all 0.3s;";
       let btnText = ok ? "✏️ Modifier" : "📝 Saisir";
 
-      // 🟢 FIX : On passe item.id (ex: 's2b') comme 2ème argument à openRetroModal !
       h += `<div class="tr-row" style="${rowStyle}">
         <div class="tr-chk${ok ? ' done' : ''}" onclick="tgl('${item.id}', '${sessionKey}')" id="chk-${item.id}">${ok ? '&#10003;' : ''}</div>
         <div style="flex:1" onclick="tgl('${item.id}', '${sessionKey}')">
@@ -405,11 +474,11 @@ async function tgl(id, sessionKey){
       done.add(id); 
       supa.upsert('tracking', { user_id: USER_ID, track_id: id, done: true }).catch(() => {});
     } else {
-      openRetroModal(sessionKey || id);
+      openRetroModal(sessionKey || id, id);
       return; 
     }
   }
-  
+
   localStorage.setItem('mw3-done', JSON.stringify([...done]));
   document.body.style.overflow = '';
   document.body.style.pointerEvents = 'auto';
@@ -458,7 +527,7 @@ function updateStats(){
       let letter = nextItem.id.charAt(2) ? nextItem.id.charAt(2).toUpperCase() : 'A';
       let week = parseInt(nextItem.id.charAt(1)) || 1;
       let block = week <= 2 ? 1 : (week <= 4 ? 3 : 5);
-      
+
       let sessionKey;
       if (currentPhase === '0') sessionKey = `${letter}-S${block}`;
       else if (currentPhase === '1') sessionKey = `${letter}-F${block}`;
@@ -518,22 +587,19 @@ function showToast(msg, color='#378ADD') {
 const PAGES = ['home','guide','seances','wod','snacks','technique','mobilite','alim','tracking','stats','habits','calendar'];
 
 function goPage(id){
-  // 1. Masque toutes les pages et retire la classe active des boutons
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nb').forEach(b => b.classList.remove('active'));
-  
-  // 2. Affiche la page demandée
+
   const targetPage = document.getElementById('page-' + id);
   if (targetPage) {
     targetPage.classList.add('active');
   }
-  
-  // 3. Surligne LE BON bouton dans le menu (sans risque de décalage !)
+
   const targetBtn = document.querySelector(`.nb[onclick*="'${id}'"]`);
   if (targetBtn) {
     targetBtn.classList.add('active');
   }
-  
+
   window.scrollTo(0, 0);
 }
 
@@ -557,7 +623,7 @@ window.onload = () => {
 
   if (typeof filterWod === 'function') filterWod('all', document.querySelector('.wod-fb'));
   if (typeof updateContextualReminder === 'function') updateContextualReminder();
-  
+
   updateStats();
   buildTracking();
   loadFromSupabase();
@@ -598,7 +664,7 @@ function showCalDetail(key) {
 
 function renderStats() {
   const sessMap = window._sessMap || {};
-  
+
   const parseSafely = (dateStr) => {
     if (!dateStr) return new Date(0);
     let d = new Date(dateStr.toString().replace(' ', 'T'));
@@ -714,12 +780,12 @@ function renderStats() {
   if (calGrid) {
     calGrid.innerHTML = '';
     const today = new Date();
-    
+
     for(let i = 27; i >= 0; i--) {
       let d = new Date();
       d.setDate(today.getDate() - i);
       let dateStr = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-      
+
       const sessionForDay = sessions.find(s => {
         let sd = parseSafely(s.created_at || s.completed_at);
         let sDateStr = sd.getFullYear() + '-' + String(sd.getMonth()+1).padStart(2,'0') + '-' + String(sd.getDate()).padStart(2,'0');
@@ -734,9 +800,9 @@ function renderStats() {
       let borderWidth = isToday && !hasSession ? '2px' : '1px';
       let textColor = hasSession ? '#FFFFFF' : (isToday ? 'var(--or)' : '#888888');
       let cursor = hasSession ? 'pointer' : 'default';
-      
+
       let label = hasSession ? '<span style="font-size:14px;font-weight:bold;color:#fff">&#10003;</span>' : (isToday ? '<span style="font-size:9px;font-weight:800;color:var(--or)">Auj.</span>' : '');
-      
+
       let onClickAction = '';
       if (hasSession) {
         let sKey = sessionForDay.track_id || sessionForDay.session_key || '';
@@ -760,7 +826,7 @@ function renderStats() {
         const keyExos = getKeyMovements(s.detailed_exos).join(' · ');
         const dur = s.duration_min ? `${s.duration_min} min` : '35 min';
         const rpeBadge = s.rpe ? `<span style="background:#E74C3C;color:#fff;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;">RPE ${s.rpe}</span>` : '';
-        
+
         html += `
           <div class="sc" style="margin-bottom:10px; padding:12px 16px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
@@ -780,7 +846,7 @@ function renderStats() {
 function updateContextualReminder() {
   const el = document.getElementById('dynamic-reminder');
   if (!el) return;
-  
+
   const h = new Date().getHours();
   let msg = ""; let color = "";
 
@@ -800,7 +866,7 @@ function updateContextualReminder() {
     msg = "🌙 <b style='color:#C8D6E5'>Nuit :</b> Objectif coucher 22h30 max. Coupe le scrolling et prends ton livre !";
     color = "#C8D6E5";
   }
-  
+
   el.innerHTML = msg;
   el.style.color = '#ffffff';
   el.style.borderLeft = `4px solid ${color}`;
@@ -926,7 +992,6 @@ function updateHabitScore() {
 // ── INTITULÉS DYNAMIQUES SELON LA PHASE ET LA SEMAINE ───────────────────────
 
 function getSessionTitleForDay(dayOfWeek, weekNum, phase) {
-  // LUNDI (Séance A)
   if (dayOfWeek === 1) {
     if (phase === '0') {
       if (weekNum <= 2) return 'Séance A - Deadstop Swing + TGU';
@@ -938,7 +1003,6 @@ function getSessionTitleForDay(dayOfWeek, weekNum, phase) {
       return 'Bankai A - Upper/Lower Supersets';
     }
   } 
-  // MERCREDI (Séance B)
   else if (dayOfWeek === 3) {
     if (phase === '0') {
       if (weekNum <= 2) return 'Séance B - Dead Clean & Push Press';
@@ -950,7 +1014,6 @@ function getSessionTitleForDay(dayOfWeek, weekNum, phase) {
       return 'Bankai B - Push/Pull & Double Squat';
     }
   } 
-  // VENDREDI (Séance C)
   else if (dayOfWeek === 5) {
     if (phase === '0') {
       if (weekNum <= 2) return 'Séance C - 2H Swing + TGU';
@@ -989,13 +1052,12 @@ function renderCalendarGrid() {
   grid.innerHTML = '';
 
   const firstDay = new Date(y, m, 1).getDay();
-  const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1; // Lundi = 0
+  const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1;
   const daysInMonth = new Date(y, m + 1, 0).getDate();
 
   const scheduleStore = JSON.parse(localStorage.getItem('mw_schedule_store') || '{}');
   const todayStr = new Date().toISOString().split('T')[0];
 
-  // Cases vides au début du mois
   for (let i = 0; i < adjustedFirstDay; i++) {
     grid.innerHTML += `<div style="aspect-ratio:1; background:rgba(0,0,0,0.02); border-radius:6px;"></div>`;
   }
