@@ -76,42 +76,140 @@ function calculateLevel(points) {
   return { current, next };
 }
 
-// ── FICHE HTML DÉTAILLÉE AÉRÉE ──────────────────────────────────────────────
-function ficheHTML(key){
-  const s = SD[key]; 
-  if(!s) return '<div style="padding:15px;color:#888;">Fiche non disponible.</div>';
-  
-  const blocs={}, order=[];
+// ── FICHE HTML DÉTAILLÉE (UX CLEAN LIGHT & EN-TÊTES DE BLOCS STRUCTURÉS) ───
+
+function ficheHTML(key) {
+  const s = SD[key];
+  if (!s) return '<div style="padding:15px;color:#888;">Fiche non disponible.</div>';
+
+  // 1. Regroupement logique des exercices par blocs de travail
+  const blockMap = [];
+
   s.exos.forEach(e => {
-    if(!blocs[e.b]){ blocs[e.b] = []; order.push(e.b); }
-    blocs[e.b].push(e);
+    let rawB = e.b || 'Exercices';
+    let cleanB = rawB.replace(/🔹\s*/g, '').trim();
+
+    // Déterminer la catégorie principale
+    let cat = 'CORPS';
+    if (/mobilité|warm-up|échauffement/i.test(cleanB)) {
+      cat = 'WARMUP';
+      cleanB = 'Échauffement & Mobilité';
+    } else if (/renforcement|finisher/i.test(cleanB)) {
+      cat = 'RENFO';
+    }
+
+    let existing = blockMap.find(b => b.name === cleanB);
+    if (!existing) {
+      existing = { name: cleanB, cat: cat, exos: [] };
+      blockMap.push(existing);
+    }
+    existing.exos.push(e);
   });
 
-  let h = '<div style="padding:16px; background:#1e1e1e; border-radius:0 0 12px 12px; border-top:1px solid #333;">';
-  
-  order.forEach(b => {
-    h += `<div style="margin-bottom:18px;">
-      <div style="font-size:11px; font-weight:800; color:var(--or); text-transform:uppercase; letter-spacing:.06em; padding-bottom:6px; border-bottom:2px solid rgba(216,90,48,0.3); margin-bottom:12px;">${b}</div>`;
-      
-    blocs[b].forEach(e => {
-      h += `<div style="display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 14px; margin-bottom:10px; background:#2a2a2a; border:1px solid #3a3a3a; border-radius:10px;">
-        <div style="flex:1;">
-          <div style="font-size:14px; font-weight:800; color:#ffffff; margin-bottom:6px;">${e.n}</div>
-          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:6px;">${e.p.map(p => {
-            let bg = '#333333', clr = '#dddddd';
-            if(p.includes('KB')||p.includes('kg')) { bg = 'rgba(216,90,48,0.25)'; clr = '#ff9f43'; }
-            else if(p.includes('Repos')||p.includes('min')||p.includes('&times;')) { bg = 'rgba(55,140,221,0.25)'; clr = '#54a0ff'; }
-            return `<span style="font-size:10.5px; font-weight:700; background:${bg}; color:${clr}; padding:3px 8px; border-radius:4px;">${p}</span>`;
-          }).join('')}</div>
-          ${e.tip ? `<div style="font-size:11px; color:#bbb; font-style:italic; border-left:3px solid var(--or); padding-left:8px; margin-top:6px; line-height:1.4;">${e.tip}</div>` : ''}
-        </div>
-        ${e.img ? `<img src="${e.img}" style="width:75px; height:75px; object-fit:contain; border-radius:8px; background:#181818; border:1px solid #444; padding:4px; flex-shrink:0;">` : ''}
-      </div>`;
+  let h = '<div style="padding:16px; background:#fafafa; border-radius:0 0 12px 12px; border-top:1px solid #e0e0e0;">';
+
+  blockMap.forEach((b) => {
+    // Extraction automatique des métadonnées (Séries, Repos, Format)
+    let rounds = '';
+    let rest = '';
+    let format = '';
+
+    // Détecter les séries/rounds dans le nom du bloc
+    let matchRoundsB = b.name.match(/\(?(\d+[\s–-aà]*\d*\s*(RDS|rounds|tours|séries))\)?/i);
+    if (matchRoundsB) rounds = matchRoundsB[1];
+
+    // Parcourir les pilules des exercices du bloc
+    b.exos.forEach(e => {
+      if (e.p) {
+        e.p.forEach(p => {
+          if (!rounds && /(\d+[\s–-aà]*\d*\s*(séries|rounds|RDS|tours))/i.test(p)) {
+            let m = p.match(/(\d+[\s–-aà]*\d*\s*(séries|rounds|RDS|tours))/i);
+            if (m) rounds = m[1];
+          }
+          if (!rest && /repos/i.test(p)) {
+            rest = p;
+          }
+          if (!format) {
+            if (/EMOM/i.test(p) || /EMOM/i.test(b.name)) format = 'EMOM';
+            else if (/AMRAP/i.test(p) || /AMRAP/i.test(b.name)) format = 'AMRAP';
+            else if (/superset/i.test(p) || /superset/i.test(b.name)) format = 'Superset';
+            else if (/circuit/i.test(p) || /circuit/i.test(b.name)) format = 'Circuit';
+            else if (/deadstop/i.test(p) || /deadstop/i.test(b.name)) format = 'Deadstop';
+          }
+        });
+      }
     });
-    
-    h += '</div>';
+
+    // Configuration visuelle selon le type de bloc
+    let catBadgeText = '⚡ CORPS DE SÉANCE';
+    let catBadgeBg = 'rgba(216,90,48,0.12)';
+    let catBadgeColor = 'var(--or)';
+    let borderAccent = 'var(--or)';
+
+    if (b.cat === 'WARMUP') {
+      catBadgeText = '🔥 1. ÉCHAUFFEMENT & ACTIVATION';
+      catBadgeBg = 'rgba(255,159,67,0.15)';
+      catBadgeColor = '#e67e22';
+      borderAccent = '#e67e22';
+      if (!rounds) rounds = '1 Tour';
+      if (!rest) rest = 'Flux continu';
+    } else if (b.cat === 'RENFO') {
+      catBadgeText = '💪 3. RENFORCEMENT & ACCESSOIRES';
+      catBadgeBg = 'rgba(46,204,113,0.15)';
+      catBadgeColor = '#2ecc71';
+      borderAccent = '#2ecc71';
+      if (!format) format = 'Circuit Accessoires';
+    } else {
+      catBadgeText = '⚡ 2. CORPS DE SÉANCE';
+    }
+
+    let cleanName = b.name.replace(/\(\d+[\s–-aà]*\d*\s*(RDS|rounds|tours|séries)\)/gi, '').trim();
+
+    h += `
+      <div style="background:#ffffff; border:1px solid #e0e0e0; border-radius:12px; padding:14px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.02);">
+        
+        <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; margin-bottom:12px; padding-bottom:10px; border-bottom:2px solid ${borderAccent};">
+          <div>
+            <span style="font-size:10px; font-weight:800; text-transform:uppercase; background:${catBadgeBg}; color:${catBadgeColor}; padding:3px 8px; border-radius:4px; letter-spacing:0.5px;">${catBadgeText}</span>
+            <div style="font-size:14px; font-weight:800; color:#1e1e1e; margin-top:4px;">${cleanName}</div>
+          </div>
+
+          <div style="display:flex; flex-wrap:wrap; gap:6px; font-size:11px; font-weight:700;">
+            ${rounds ? `<span style="background:#f0f2f5; color:#2c3e50; padding:4px 8px; border-radius:6px; border:1px solid #dcdfe6;">🔁 ${rounds}</span>` : ''}
+            ${rest ? `<span style="background:#eef9ff; color:#2980b9; padding:4px 8px; border-radius:6px; border:1px solid #b3e5fc;">⏱️ ${rest}</span>` : ''}
+            ${format ? `<span style="background:#fef5e7; color:#d35400; padding:4px 8px; border-radius:6px; border:1px solid #fbeee6;">🎯 ${format}</span>` : ''}
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:10px;">
+    `;
+
+    b.exos.forEach(e => {
+      h += `
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px; background:#fafafa; border:1px solid #e8e8e8; border-radius:10px;">
+          <div style="flex:1;">
+            <div style="font-size:13.5px; font-weight:800; color:#1e1e1e; margin-bottom:6px;">${e.n}</div>
+            <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:6px;">
+              ${e.p.map(p => {
+                let bg = '#e9ecef', clr = '#212529';
+                if(p.includes('KB') || p.includes('kg')) { bg = 'rgba(216,90,48,0.15)'; clr = '#d85a30'; }
+                else if(p.includes('Repos') || p.includes('min')) { bg = '#e3fafc'; clr = '#0c8599'; }
+                return `<span style="font-size:10.5px; font-weight:700; background:${bg}; color:${clr}; padding:3px 8px; border-radius:4px;">${p}</span>`;
+              }).join('')}
+            </div>
+            ${e.tip ? `<div style="font-size:11px; color:#555555; font-style:italic; border-left:3px solid var(--or); padding-left:8px; margin-top:6px; line-height:1.4;">${e.tip}</div>` : ''}
+          </div>
+          ${e.img ? `<img src="${e.img}" style="width:70px; height:75px; object-fit:contain; border-radius:8px; background:#ffffff; border:1px solid #ddd; padding:4px; flex-shrink:0;">` : ''}
+        </div>
+      `;
+    });
+
+    h += `
+        </div>
+      </div>
+    `;
   });
-  
+
   h += '</div>';
   return h;
 }
