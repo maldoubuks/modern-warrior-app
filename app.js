@@ -1432,3 +1432,66 @@ function checkNotificationStatus() {
     btn.style.display = 'none';
   }
 }
+
+// ── RENDU DYNAMIQUE DE LA PAGE MOBILITÉ (EXHAUSTIF AVEC ÉTAPES) ────────────
+
+function renderMobilite() {
+  const container = document.getElementById('mobilite-list-container');
+  if (!container || typeof MOBILITY_DATA === 'undefined') return;
+
+  let h = '';
+
+  MOBILITY_DATA.forEach(cat => {
+    h += `<div class="st" style="margin-top:22px; margin-bottom:12px;">${cat.category}</div>`;
+    
+    cat.items.forEach(item => {
+      let badgeStyle = item.badgeClass === 'ci-k' ? 'background:#854F0B;color:#fff;' : '';
+      let titleStyle = item.titleClass === 'ct-k' ? 'color:#854F0B;' : '';
+
+      h += `
+        <div class="card" style="margin-bottom:14px; border:1px solid #e0e0e0; border-radius:12px; overflow:hidden; background:#ffffff; box-shadow:0 2px 6px rgba(0,0,0,0.03);">
+          <div class="ch ${item.badgeClass.replace('ci-', 'ch-')}" onclick="tog(this)" style="padding:14px; cursor:pointer;">
+            <div class="ci ${item.badgeClass}" style="${badgeStyle}">${item.badge}</div>
+            <div class="ct ${item.titleClass}" style="${titleStyle}">${item.title}</div>
+            <div class="chv">&rsaquo;</div>
+          </div>
+          <div class="cb" style="padding:14px; background:#fafafa; border-top:1px solid #eee;">
+            ${item.desc ? `<div style="font-size:12px; color:#555; margin-bottom:12px; font-style:italic; line-height:1.4;">${item.desc}</div>` : ''}
+            
+            ${item.exos.map(e => `
+              <div class="exo" style="background:#ffffff; border:1px solid #e2e2e2; border-radius:10px; padding:12px; margin-bottom:10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                  <div class="en" style="font-size:14px; font-weight:800; color:#1e1e1e;">${e.n}</div>
+                </div>
+                
+                <div class="pills" style="margin-bottom:8px;">
+                  ${e.p.map(p => `<span class="pi ${p.includes('KB') ? 'pk' : ''}" style="font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:4px;">${p}</span>`).join('')}
+                </div>
+
+                ${e.pos ? `
+                  <div style="font-size:11.5px; color:#333; margin-bottom:6px; line-height:1.4;">
+                    <strong style="color:var(--or);">📍 Position :</strong> ${e.pos}
+                  </div>
+                ` : ''}
+
+                ${e.steps ? `
+                  <div style="font-size:11.5px; color:#444; margin-bottom:6px; line-height:1.5; background:#f5f5f5; padding:8px 10px; border-radius:6px;">
+                    <strong style="color:#222; display:block; margin-bottom:2px;">🦶 Étapes :</strong> ${e.steps}
+                  </div>
+                ` : ''}
+
+                ${e.tip ? `
+                  <div class="tip" style="font-size:11px; color:#555; font-style:italic; border-left:3px solid var(--or); padding-left:8px; margin-top:6px; line-height:1.4;">
+                    <strong>💡 Conseil :</strong> ${e.tip}
+                  </div>
+                ` : ''}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    });
+  });
+
+  container.innerHTML = h;
+}
