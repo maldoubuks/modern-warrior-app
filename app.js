@@ -77,19 +77,16 @@ function calculateLevel(points) {
 }
 
 // ── FICHE HTML DÉTAILLÉE (UX CLEAN LIGHT & EN-TÊTES DE BLOCS STRUCTURÉS) ───
-
 function ficheHTML(key) {
   const s = SD[key];
   if (!s) return '<div style="padding:15px;color:#888;">Fiche non disponible.</div>';
 
-  // 1. Regroupement logique des exercices par blocs de travail
   const blockMap = [];
 
   s.exos.forEach(e => {
     let rawB = e.b || 'Exercices';
     let cleanB = rawB.replace(/🔹\s*/g, '').trim();
 
-    // Déterminer la catégorie principale
     let cat = 'CORPS';
     if (/mobilité|warm-up|échauffement/i.test(cleanB)) {
       cat = 'WARMUP';
@@ -109,16 +106,13 @@ function ficheHTML(key) {
   let h = '<div style="padding:16px; background:#fafafa; border-radius:0 0 12px 12px; border-top:1px solid #e0e0e0;">';
 
   blockMap.forEach((b) => {
-    // Extraction automatique des métadonnées (Séries, Repos, Format)
     let rounds = '';
     let rest = '';
     let format = '';
 
-    // Détecter les séries/rounds dans le nom du bloc
     let matchRoundsB = b.name.match(/\(?(\d+[\s–-aà]*\d*\s*(RDS|rounds|tours|séries))\)?/i);
     if (matchRoundsB) rounds = matchRoundsB[1];
 
-    // Parcourir les pilules des exercices du bloc
     b.exos.forEach(e => {
       if (e.p) {
         e.p.forEach(p => {
@@ -140,8 +134,7 @@ function ficheHTML(key) {
       }
     });
 
-    // Configuration visuelle selon le type de bloc
-    let catBadgeText = '⚡ CORPS DE SÉANCE';
+    let catBadgeText = '⚡ 2. CORPS DE SÉANCE';
     let catBadgeBg = 'rgba(216,90,48,0.12)';
     let catBadgeColor = 'var(--or)';
     let borderAccent = 'var(--or)';
@@ -159,28 +152,23 @@ function ficheHTML(key) {
       catBadgeColor = '#2ecc71';
       borderAccent = '#2ecc71';
       if (!format) format = 'Circuit Accessoires';
-    } else {
-      catBadgeText = '⚡ 2. CORPS DE SÉANCE';
     }
 
     let cleanName = b.name.replace(/\(\d+[\s–-aà]*\d*\s*(RDS|rounds|tours|séries)\)/gi, '').trim();
 
     h += `
       <div style="background:#ffffff; border:1px solid #e0e0e0; border-radius:12px; padding:14px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.02);">
-        
         <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; margin-bottom:12px; padding-bottom:10px; border-bottom:2px solid ${borderAccent};">
           <div>
             <span style="font-size:10px; font-weight:800; text-transform:uppercase; background:${catBadgeBg}; color:${catBadgeColor}; padding:3px 8px; border-radius:4px; letter-spacing:0.5px;">${catBadgeText}</span>
             <div style="font-size:14px; font-weight:800; color:#1e1e1e; margin-top:4px;">${cleanName}</div>
           </div>
-
           <div style="display:flex; flex-wrap:wrap; gap:6px; font-size:11px; font-weight:700;">
             ${rounds ? `<span style="background:#f0f2f5; color:#2c3e50; padding:4px 8px; border-radius:6px; border:1px solid #dcdfe6;">🔁 ${rounds}</span>` : ''}
             ${rest ? `<span style="background:#eef9ff; color:#2980b9; padding:4px 8px; border-radius:6px; border:1px solid #b3e5fc;">⏱️ ${rest}</span>` : ''}
             ${format ? `<span style="background:#fef5e7; color:#d35400; padding:4px 8px; border-radius:6px; border:1px solid #fbeee6;">🎯 ${format}</span>` : ''}
           </div>
         </div>
-
         <div style="display:flex; flex-direction:column; gap:10px;">
     `;
 
