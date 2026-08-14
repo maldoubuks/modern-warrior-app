@@ -76,7 +76,8 @@ function calculateLevel(points) {
   return { current, next };
 }
 
-// ── FICHE HTML DÉTAILLÉE (UX CLEAN LIGHT & EN-TÊTES DE BLOCS STRUCTURÉS) ───
+// ── FICHE HTML DÉTAILLÉE (REGEX CORRIGÉE) ───────────────────────────────────
+
 function ficheHTML(key) {
   const s = SD[key];
   if (!s) return '<div style="padding:15px;color:#888;">Fiche non disponible.</div>';
@@ -110,14 +111,15 @@ function ficheHTML(key) {
     let rest = '';
     let format = '';
 
-    let matchRoundsB = b.name.match(/\(?(\d+[\s–-aà]*\d*\s*(RDS|rounds|tours|séries))\)?/i);
+    // Regex sécurisée avec tirets échappés
+    let matchRoundsB = b.name.match(/\(?(\d+[\s\-\–aà]*\d*\s*(RDS|rounds|tours|séries))\)?/i);
     if (matchRoundsB) rounds = matchRoundsB[1];
 
     b.exos.forEach(e => {
       if (e.p) {
         e.p.forEach(p => {
-          if (!rounds && /(\d+[\s–-aà]*\d*\s*(séries|rounds|RDS|tours))/i.test(p)) {
-            let m = p.match(/(\d+[\s–-aà]*\d*\s*(séries|rounds|RDS|tours))/i);
+          if (!rounds && /(\d+[\s\-\–aà]*\d*\s*(séries|rounds|RDS|tours))/i.test(p)) {
+            let m = p.match(/(\d+[\s\-\–aà]*\d*\s*(séries|rounds|RDS|tours))/i);
             if (m) rounds = m[1];
           }
           if (!rest && /repos/i.test(p)) {
@@ -154,7 +156,7 @@ function ficheHTML(key) {
       if (!format) format = 'Circuit Accessoires';
     }
 
-    let cleanName = b.name.replace(/\(\d+[\s–-aà]*\d*\s*(RDS|rounds|tours|séries)\)/gi, '').trim();
+    let cleanName = b.name.replace(/\(\d+[\s\-\–aà]*\d*\s*(RDS|rounds|tours|séries)\)/gi, '').trim();
 
     h += `
       <div style="background:#ffffff; border:1px solid #e0e0e0; border-radius:12px; padding:14px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.02);">
