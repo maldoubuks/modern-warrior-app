@@ -996,4 +996,4 @@ const MOBILITY_DATA = [
       }
     ]
   }
-];
+]; // 👈 LE FICHIER DATA.JS SE TERMINE ICI ! (Pas de '}' en dessous)
