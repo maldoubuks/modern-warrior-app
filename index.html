@@ -448,54 +448,61 @@
 <div id="player">
   <div class="p-nav">
     <button class="p-close" onclick="closePlayer()">&#10005;</button>
-    <div class="p-nav-title" id="p-nav-title">S&eacute;ance</div>
-    <div style="font-size:11px;color:#666;flex-shrink:0" id="p-nav-prog">0/0</div>
+    <div class="p-nav-title" id="p-nav-title">Séance</div>
+    <div style="font-size:11px; color:#aaa; font-weight:800;" id="p-nav-prog">0/0</div>
   </div>
   <div class="p-topbar-wrap"><div class="p-topbar" id="p-topbar" style="width:0%"></div></div>
-  <div class="p-bloc-hdr">
-    <div class="p-bloc-name" id="p-bloc-name">MOBILIT&Eacute;</div>
-    <div class="p-bloc-idx" id="p-bloc-idx"></div>
+
+  <div class="player-content-scroll">
+    <div class="p-bloc-hdr" style="margin-top:6px; margin-bottom:8px;">
+      <span id="p-bloc-name" style="font-size:11px; font-weight:800; background:rgba(216,90,48,0.2); color:var(--or); padding:4px 10px; border-radius:6px; text-transform:uppercase;">MOBILITÉ</span>
+    </div>
+
+    <div class="p-exo-card">
+      <div class="p-exo-hdr">
+        <div class="p-exo-num" id="p-exo-num" style="font-size:11px; color:#666666; font-weight:700; margin-bottom:4px;">Exercice 1 sur 9</div>
+        <div class="p-exo-name" id="p-exo-name">Turkish Get-Up</div>
+      </div>
+      <div class="p-exo-body">
+        <div class="p-pills" id="p-pills" style="display:flex; flex-wrap:wrap; gap:6px; margin:10px 0;"></div>
+        <div class="p-tip" id="p-tip"></div>
+      </div>
+    </div>
+
+    <div class="t-zone">
+      <div class="t-label" id="t-label" style="font-size:10px; font-weight:800; color:#888888; letter-spacing:1px;">CHRONO SÉANCE</div>
+      <div class="t-display" id="t-display">00:00</div>
+      <div class="t-bar" style="height:4px; background:#333; border-radius:2px; margin:8px 0; overflow:hidden;"><div class="t-fill" id="t-fill" style="width:0%; height:100%; background:var(--or);"></div></div>
+      <div class="t-btns" style="display:flex; gap:8px; justify-content:center; margin-top:10px;">
+        <button class="t-btn t-start" id="t-start-btn" onclick="toggleTimer()" style="background:var(--or); color:#fff; border:none; padding:8px 16px; border-radius:6px; font-weight:700; cursor:pointer;">▶ Démarrer</button>
+        <button class="t-btn t-reset" onclick="resetTimer()" style="background:#333333; color:#aaa; border:none; padding:8px 16px; border-radius:6px; font-weight:700; cursor:pointer;">↺ Reset</button>
+      </div>
+    </div>
+
+    <div class="r-zone" id="r-zone" style="display:none; background:#1e1e1e; border:1px solid #333; border-radius:12px; padding:12px; margin-bottom:12px; text-align:center;">
+      <div class="r-label" style="font-size:10px; font-weight:800; color:#54a0ff;">REPOS</div>
+      <div class="r-display" id="r-display" style="font-size:24px; font-weight:900; color:#fff; font-family:monospace; margin:4px 0;">01:00</div>
+      <div class="r-presets" style="display:flex; gap:6px; justify-content:center; margin-top:6px;">
+        <button class="r-preset" onclick="setRest(30)" style="background:#2a2a2a; color:#fff; border:1px solid #444; border-radius:4px; padding:4px 8px; font-size:11px; cursor:pointer;">30s</button>
+        <button class="r-preset" onclick="setRest(60)" style="background:#2a2a2a; color:#fff; border:1px solid #444; border-radius:4px; padding:4px 8px; font-size:11px; cursor:pointer;">1 min</button>
+        <button class="r-preset" onclick="setRest(90)" style="background:#2a2a2a; color:#fff; border:1px solid #444; border-radius:4px; padding:4px 8px; font-size:11px; cursor:pointer;">1:30</button>
+        <button class="r-preset" onclick="setRest(120)" style="background:#2a2a2a; color:#fff; border:1px solid #444; border-radius:4px; padding:4px 8px; font-size:11px; cursor:pointer;">2 min</button>
+      </div>
+      <div style="margin-top:8px"><button class="r-cancel" onclick="stopRest()" style="background:none; border:none; color:#e74c3c; font-size:11px; font-weight:700; cursor:pointer;">✕ Annuler le repos</button></div>
+    </div>
+
+    <div class="p-next" id="p-next">
+      <div>
+        <div class="p-next-label" style="font-size:10px; color:#888888; font-weight:700; text-transform:uppercase;">SUIVANT</div>
+        <div class="p-next-name" id="p-next-name" style="font-size:13px; font-weight:800; color:#ffffff;">—</div>
+      </div>
+      <div style="font-size:18px; color:#888888;">›</div>
+    </div>
   </div>
-  <div class="p-exo-card">
-    <div class="p-exo-hdr">
-      <div class="p-exo-num" id="p-exo-num">Exercice 1 sur 9</div>
-      <div class="p-exo-name" id="p-exo-name">Turkish Get-Up</div>
-    </div>
-    <div class="p-exo-body">
-      <div class="p-pills" id="p-pills"></div>
-      <div class="p-tip" id="p-tip"></div>
-    </div>
-  </div>
-  <div class="t-zone">
-    <div class="t-label" id="t-label">CHRONO S&Eacute;ANCE</div>
-    <div class="t-display" id="t-display">00:00</div>
-    <div class="t-bar"><div class="t-fill" id="t-fill" style="width:0%"></div></div>
-    <div class="t-btns">
-      <button class="t-btn t-start" id="t-start-btn" onclick="toggleTimer()">&#9654; D&eacute;marrer</button>
-      <button class="t-btn t-reset" onclick="resetTimer()">&#8635; Reset</button>
-    </div>
-  </div>
-  <div class="r-zone" id="r-zone" style="display:none">
-    <div class="r-label">REPOS</div>
-    <div class="r-display" id="r-display">01:00</div>
-    <div class="r-presets">
-      <button class="r-preset" onclick="setRest(30)">30s</button>
-      <button class="r-preset" onclick="setRest(60)">1 min</button>
-      <button class="r-preset" onclick="setRest(90)">1:30</button>
-      <button class="r-preset" onclick="setRest(120)">2 min</button>
-    </div>
-    <div style="margin-top:8px"><button class="r-cancel" onclick="stopRest()">&#10005; Annuler le repos</button></div>
-  </div>
-  <div class="p-next" id="p-next">
-    <div style="flex:1">
-      <div class="p-next-label">Suivant</div>
-      <div class="p-next-name" id="p-next-name">&mdash;</div>
-    </div>
-    <div style="font-size:18px;color:var(--i3)">&rsaquo;</div>
- </div>
+
   <div class="p-actions">
-    <button class="pa-prev" onclick="prevExo()">&#8249; Pr&eacute;c.</button>
-    <button class="pa-next" id="p-action-btn" onclick="nextExo()">Exercice suivant &rarr;</button>
+    <button class="pa-prev" onclick="prevExo()">‹ Préc.</button>
+    <button class="pa-next" id="p-action-btn" onclick="nextExo()">Exercice suivant →</button>
   </div>
 </div>
 
