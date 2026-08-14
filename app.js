@@ -76,8 +76,7 @@ function calculateLevel(points) {
   return { current, next };
 }
 
-// ── FICHE HTML DÉTAILLÉE (RENDU CLEAN LIGHT ET SANS REDONDANCES) ───────────
-
+// ── FICHE HTML DÉTAILLÉE (DURÉES EMOM/AMRAP & EN-TÊTES DE BLOCS) ───────────
 function ficheHTML(key) {
   const s = SD[key];
   if (!s) return '<div style="padding:15px;color:#888;">Fiche non disponible.</div>';
@@ -111,31 +110,49 @@ function ficheHTML(key) {
     let rest = '';
     let format = '';
 
-    // Extraction des rounds depuis le nom du bloc
-    let matchRoundsB = b.name.match(/\(?(\d+[\s\-\–aà]*\d*\s*(RDS|rounds|tours|séries))\)?/i);
-    if (matchRoundsB) rounds = matchRoundsB[1];
+    // 1. Détection des durées EMOM & AMRAP
+    let emomMatch = b.name.match(/EMOM\s*(\d+[\s\-\–aà]*\d*\s*(min|'|mn)?(\s*\([^)]+\))?)/i);
+    if (emomMatch) {
+      format = 'EMOM';
+      let dur = emomMatch[1].trim();
+      if (dur) rounds = dur;
+    }
 
-    // Extraction des repos depuis le nom du bloc
+    let amrapMatch = b.name.match(/AMRAP\s*(\d+[\s\-\–aà]*\d*\s*(min|'|mn)?(\s*\([^)]+\))?)/i);
+    if (amrapMatch) {
+      format = 'AMRAP';
+      let dur = amrapMatch[1].trim();
+      if (dur) rounds = dur;
+    }
+
+    // 2. Détection Séries / Rounds / RDS / Tours / Cycles dans le nom
+    let matchRoundsB = b.name.match(/\(?(\d+[\s\-\–aà]*\d*\s*(RDS|rounds|tours|séries|cycles))\)?/i);
+    if (matchRoundsB && !rounds) {
+      rounds = matchRoundsB[1];
+    }
+
+    // 3. Détection Repos dans le nom
     let matchRestB = b.name.match(/repos\s*([\d\-\–\s]+min|[\d\-\–\s]+s)/i);
     if (matchRestB) rest = 'Repos ' + matchRestB[1];
 
+    // 4. Inspection des pilules des exercices
     b.exos.forEach(e => {
       if (e.p) {
         e.p.forEach(p => {
-          if (!rounds && /(\d+[\s\-\–aà]*\d*\s*(séries|rounds|RDS|tours))/i.test(p)) {
-            let m = p.match(/(\d+[\s\-\–aà]*\d*\s*(séries|rounds|RDS|tours))/i);
-            if (m) rounds = m[1];
+          if (!rounds && /(\d+[\s\-\–aà]*\d*\s*(séries|rounds|RDS|tours|cycles|min|mn|'))/i.test(p)) {
+            let m = p.match(/(\d+[\s\-\–aà]*\d*\s*(séries|rounds|RDS|tours|cycles|min|mn|'))/i);
+            if (m && !/repos/i.test(p)) rounds = m[1];
           }
           if (!rest && /repos/i.test(p)) {
             rest = p;
           }
           if (!format) {
-            if (/EMOM/i.test(p) || /EMOM/i.test(b.name)) format = 'EMOM';
-            else if (/AMRAP/i.test(p) || /AMRAP/i.test(b.name)) format = 'AMRAP';
-            else if (/complexe/i.test(p) || /complexe/i.test(b.name)) format = 'Complex';
-            else if (/superset/i.test(p) || /superset/i.test(b.name)) format = 'Superset';
-            else if (/circuit/i.test(p) || /circuit/i.test(b.name)) format = 'Circuit';
-            else if (/deadstop/i.test(p) || /deadstop/i.test(b.name)) format = 'Deadstop';
+            if (/EMOM/i.test(p)) format = 'EMOM';
+            else if (/AMRAP/i.test(p)) format = 'AMRAP';
+            else if (/complexe/i.test(p)) format = 'Complex';
+            else if (/superset/i.test(p)) format = 'Superset';
+            else if (/circuit/i.test(p)) format = 'Circuit';
+            else if (/deadstop/i.test(p)) format = 'Deadstop';
           }
         });
       }
@@ -163,12 +180,15 @@ function ficheHTML(key) {
       if (!format) format = 'Circuit Accessoires';
     }
 
-    // Nettoyage du nom de bloc affiché sous la catégorie
+    // Nettoyage intelligent du nom de bloc affiché
     let cleanName = b.name
-      .replace(/\(\d+[\s\-\–aà]*\d*\s*(RDS|rounds|tours|séries)[^\)]*\)/gi, '')
-      .replace(/- Repos[^\)]*/gi, '')
+      .replace(/\(\d+[\s\-\–aà]*\d*\s*(RDS|rounds|tours|séries|cycles)[^\)]*\)/gi, '')
       .replace(/-\s*EMOM.*/gi, '')
+      .replace(/-\s*AMRAP.*/gi, '')
+      .replace(/- Repos[^\)]*/gi, '')
       .trim();
+
+    if (!cleanName) cleanName = b.name;
 
     h += `
       <div style="background:#ffffff; border:1px solid #e0e0e0; border-radius:12px; padding:14px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.02);">
@@ -187,7 +207,6 @@ function ficheHTML(key) {
     `;
 
     b.exos.forEach(e => {
-      // Filtrer les pilules redondantes déjà présentes dans les badges
       let filteredPills = (e.p || []).filter(p => !/séries|RDS|rounds|repos/i.test(p));
 
       h += `
@@ -1599,4 +1618,4 @@ function checkNotificationStatus() {
   if ('Notification' in window && Notification.permission === 'granted') {
     btn.style.display = 'none';
   }
-} // 👈 LE FICHIER APP.JS SE TERMINE ICI ! (Pas de '}' en dessous)
+}
