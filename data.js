@@ -1,9 +1,10 @@
-// =========================================================================
-// ── PHASE 0 : L'ÉVEIL (S1 à S6) ──────────────────────────────────────────
-// =========================================================================
+// data.js - Base de données centrale Modern Warrior (Phase 0, Phase 1, Bankai, WODs & Mobilité)
 
 const SD = {
-  // ── SEMAINE 1 & 2 ────────────────────────────────────────────────────────
+  // =========================================================================
+  // ── PHASE 0 : L'ÉVEIL (S1 à S6) ──────────────────────────────────────────
+  // =========================================================================
+
   "A-S1": {
     "title": "Séance A - Lundi S1-S2 (Phase 0)",
     "trackId": "s1a",
@@ -53,7 +54,6 @@ const SD = {
     ]
   },
 
-  // ── SEMAINE 3 & 4 ────────────────────────────────────────────────────────
   "A-S3": {
     "title": "Séance A - Lundi S3-S4 (Phase 0)",
     "trackId": "s3a",
@@ -102,7 +102,6 @@ const SD = {
     ]
   },
 
-  // ── SEMAINE 5 & 6 ────────────────────────────────────────────────────────
   "A-S5": {
     "title": "Séance A - Lundi S5-S6 (Phase 0)",
     "trackId": "s5a",
@@ -152,9 +151,7 @@ const SD = {
       {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "Overhead Reverse Lunge", "p": ["5-10 reps/côté", "KB 8-12 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "KB verrouillé au-dessus de la tête, fente arrière."},
       {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "Max Sit-up", "p": ["Max reps"], "tip": "Finition abdos."}
     ]
-  }
-};
-
+  },
 
   // =========================================================================
   // ── PHASE 1 : LA FORGE (S1 à S8) ─────────────────────────────────────────
@@ -329,7 +326,6 @@ const SD = {
     ]
   },
 
-
   // =========================================================================
   // ── PHASE 2 : BANKAI (HYPERTROPHIE S1 à S8) ──────────────────────────────
   // =========================================================================
@@ -470,7 +466,7 @@ const SD = {
     "trackId": "b4c",
     "exos": [
       {"b": "1️⃣ Mobilité C (3 tours sans repos)", "n": "Cat & Cow + Spiderman Lunge + Inchworm", "p": ["3 tours"], "tip": "Mobilité générale."},
-      {"b": "2️⃣ METCON Single KB (30 à 40 min)", "n": "7+7 Swing + 5+5 Push Press + 7+7 Clean + 5+5 Thruster + 7+7 Snatch", "p": ["Max de tours en 30-40 min"], "img": "assets/exos/snatch.gif", "tip": "1 tour = enchaînement complet. Garder la même charge. Repos 30-60s entre exos, 60-90s entre tours. H: 12-24kg, F: 4-8kg. Partage ton score sur Benchmark !"}
+      {"b": "2️⃣ METCON Single KB (30 à 40 min)", "n": "7+7 Swing + 5+5 Push Press + 7+7 Clean + 5+5 Thruster + 7+7 Snatch", "p": ["Max de tours en 30-40 min"], "img": "assets/exos/snatch.gif", "tip": "1 tour = enchaînement complet. Garder la même charge. Repos 30-60s entre exos, 60-90s entre tours."}
     ]
   }
 };
@@ -996,4 +992,4 @@ const MOBILITY_DATA = [
       }
     ]
   }
-]; // 👈 LE FICHIER DATA.JS SE TERMINE ICI ! (Pas de '}' en dessous)
+];
