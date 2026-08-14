@@ -1,24 +1,22 @@
-// data.js - Base de données centrale Modern Warrior (Phase 0, Phase 1, Bankai & WODs)
+// =========================================================================
+// ── PHASE 0 : L'ÉVEIL (S1 à S6) ──────────────────────────────────────────
+// =========================================================================
 
 const SD = {
-  // =========================================================================
-  // ── PHASE 0 : L'ÉVEIL (S1 à S6) ──────────────────────────────────────────
-  // =========================================================================
-
   // ── SEMAINE 1 & 2 ────────────────────────────────────────────────────────
   "A-S1": {
     "title": "Séance A - Lundi S1-S2 (Phase 0)",
     "trackId": "s1a",
     "exos": [
-      {"b": "🔹 Mobilité - Warm-Up Flow 1 (1/4)", "n": "Neck CARs", "p": ["5 rotations/côté"], "tip": "Cercle complet de la tête. Menton vers le plafond. Arc maximal."},
-      {"b": "🔹 Mobilité - Warm-Up Flow 1 (2/4)", "n": "Cat-Cow", "p": ["10 reps"], "tip": "À 4 pattes. Expire en arrondissant le dos, inspire en creusant."},
-      {"b": "🔹 Mobilité - Warm-Up Flow 1 (3/4)", "n": "Spiderman Lunge + Rotation", "p": ["5 reps/côté"], "tip": "Pied avant à côté de la main. Ouvre le coude vers le plafond."},
-      {"b": "🔹 Mobilité - Warm-Up Flow 1 (4/4)", "n": "Prying Squat", "p": ["5 reps", "5s pause", "KB 12 kg"], "img": "assets/exos/prying-squat.gif", "tip": "KB sous le menton. Coudes ouvrent les genoux. Talons ancrés au sol."},
-      {"b": "🔹 Bloc 1 - TGU", "n": "Turkish Get-Up", "p": ["3-5 séries", "1 rep/bras", "KB 12 kg", "Repos 1 min"], "img": "assets/exos/tgu.gif", "tip": "7 étapes. Regard fixe sur le KB du début à la fin."},
-      {"b": "🔹 Bloc 2 - Deadstop Swing 2H", "n": "Deadstop Swing 2 mains", "p": ["4-6 séries", "10 reps", "KB 16 kg", "Repos 1-2 min"], "img": "assets/exos/swing.gif", "tip": "Repose le KB au sol entre chaque rep. Charnière de hanche pure."},
-      {"b": "🔹 Renforcement (2 à 3 RDS)", "n": "A - Bent Over Row", "p": ["8-12 reps/côté", "KB 12-16 kg"], "img": "assets/exos/row.gif", "tip": "Dos plat 45°. Tire le coude vers la hanche. Contrôle la descente."},
-      {"b": "🔹 Renforcement (2 à 3 RDS)", "n": "B - Push-up", "p": ["5-15 reps", "Poids du corps"], "tip": "Corps gainé comme une planche. Descente lente, poussée explosive."},
-      {"b": "🔹 Renforcement (2 à 3 RDS)", "n": "C - Suitcase Carry", "p": ["30-50s/côté", "KB 16 kg"], "img": "assets/exos/suitcase.gif", "tip": "L'épaule ne s'affaisse pas. Tronc anti-rotation. Marche droite."}
+      {"b": "🔹 Mobilité Warm-Up Flow 1", "n": "Neck CARs", "p": ["5 rotations/côté"], "tip": "Cercle complet de la tête. Menton vers le plafond. Arc maximal."},
+      {"b": "🔹 Mobilité Warm-Up Flow 1", "n": "Cat-Cow", "p": ["10 reps"], "tip": "À 4 pattes. Expire en arrondissant le dos, inspire en creusant."},
+      {"b": "🔹 Mobilité Warm-Up Flow 1", "n": "Spiderman Lunge + Rotation", "p": ["5 reps/côté"], "tip": "Pied avant à côté de la main. Ouvre le coude vers le plafond."},
+      {"b": "🔹 Mobilité Warm-Up Flow 1", "n": "Prying Squat", "p": ["5 reps", "5s pause", "KB 12 kg"], "img": "assets/exos/prying-squat.gif", "tip": "KB sous le menton. Coudes ouvrent les genoux. Talons ancrés au sol."},
+      {"b": "🔹 Bloc 1 - TGU (3-5 RDS - Repos 1 min)", "n": "Turkish Get-Up", "p": ["1 rep/bras", "KB 12 kg"], "img": "assets/exos/tgu.gif", "tip": "7 étapes. Regard fixe sur le KB du début à la fin."},
+      {"b": "🔹 Bloc 2 - Deadstop Swing 2H (4-6 RDS - Repos 1-2 min)", "n": "Deadstop Swing 2 mains", "p": ["10 reps", "KB 16 kg"], "img": "assets/exos/swing.gif", "tip": "Repose le KB au sol entre chaque rep. Charnière de hanche pure."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "A - Bent Over Row", "p": ["8-12 reps/côté", "KB 12-16 kg"], "img": "assets/exos/row.gif", "tip": "Dos plat 45°. Tire le coude vers la hanche. Contrôle la descente."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "B - Push-up", "p": ["5-15 reps", "Poids du corps"], "tip": "Corps gainé comme une planche. Descente lente, poussée explosive."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "C - Suitcase Carry", "p": ["30-50s/côté", "KB 16 kg"], "img": "assets/exos/suitcase.gif", "tip": "L'épaule ne s'affaisse pas. Tronc anti-rotation. Marche droite."}
     ]
   },
 
@@ -26,14 +24,14 @@ const SD = {
     "title": "Séance B - Mercredi S1-S2 (Phase 0)",
     "trackId": "s1b",
     "exos": [
-      {"b": "🔹 Mobilité - Warm-Up Flow 2 (1/4)", "n": "Downward Dog to Cobra", "p": ["10 reps fluides"], "tip": "Flux continu. Hanches hautes puis descends lentement en cobra."},
-      {"b": "🔹 Mobilité - Warm-Up Flow 2 (2/4)", "n": "90/90 Switch", "p": ["10 transitions lentes"], "tip": "Deux jambes à 90°. Bascule lentement sans forcer."},
-      {"b": "🔹 Mobilité - Warm-Up Flow 2 (3/4)", "n": "Scapular Push-ups", "p": ["10 reps"], "tip": "Bras tendus. Serre et ouvre les omoplates uniquement."},
-      {"b": "🔹 Mobilité - Warm-Up Flow 2 (4/4)", "n": "Ankle Rocks", "p": ["10 reps/côté"], "tip": "Genou avant glisse vers l'avant. Talon maintenu au sol."},
-      {"b": "🔹 Bloc principal", "n": "Dead Clean & Push Press", "p": ["5-8 séries", "5 reps/côté", "KB 12 kg", "Repos 1-2 min"], "img": "assets/exos/dead-clean.gif", "tip": "Deadstop au sol. Clean en front rack puis Push Press avec légère poussée des jambes."},
-      {"b": "🔹 Renforcement (2 à 3 RDS)", "n": "A - Goblet Squat", "p": ["8-12 reps", "KB 12 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "KB sous le menton. Talons au sol, genoux suivent les orteils."},
-      {"b": "🔹 Renforcement (2 à 3 RDS)", "n": "B - KB Halo", "p": ["5-10 reps/côté", "KB 8 kg"], "img": "assets/exos/halo.gif", "tip": "Cercle propre autour de la tête. Coudes bas."},
-      {"b": "🔹 Renforcement (2 à 3 RDS)", "n": "C - Roll to Elbow", "p": ["4-6 reps/côté"], "img": "assets/exos/tgu.gif", "tip": "1ère étape du TGU. Roule sur le coude, épaule engagée."}
+      {"b": "🔹 Mobilité Warm-Up Flow 2", "n": "Downward Dog to Cobra", "p": ["10 reps fluides"], "tip": "Flux continu. Hanches hautes puis descends lentement en cobra."},
+      {"b": "🔹 Mobilité Warm-Up Flow 2", "n": "90/90 Switch", "p": ["10 transitions lentes"], "tip": "Deux jambes à 90°. Bascule lentement sans forcer."},
+      {"b": "🔹 Mobilité Warm-Up Flow 2", "n": "Scapular Push-ups", "p": ["10 reps"], "tip": "Bras tendus. Serre et ouvre les omoplates uniquement."},
+      {"b": "🔹 Mobilité Warm-Up Flow 2", "n": "Ankle Rocks", "p": ["10 reps/côté"], "tip": "Genou avant glisse vers l'avant. Talon maintenu au sol."},
+      {"b": "🔹 Bloc principal (5-8 RDS - Repos 1-2 min)", "n": "Dead Clean & Push Press", "p": ["5 reps/côté", "KB 12 kg"], "img": "assets/exos/dead-clean.gif", "tip": "Deadstop au sol. Clean en front rack puis Push Press avec légère poussée des jambes."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "A - Goblet Squat", "p": ["8-12 reps", "KB 12 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "KB sous le menton. Talons au sol, genoux suivent les orteils."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "B - KB Halo", "p": ["5-10 reps/côté", "KB 8 kg"], "img": "assets/exos/halo.gif", "tip": "Cercle propre autour de la tête. Coudes bas."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "C - Roll to Elbow", "p": ["4-6 reps/côté"], "img": "assets/exos/tgu.gif", "tip": "1ère étape du TGU. Roule sur le coude, épaule engagée."}
     ]
   },
 
@@ -41,36 +39,36 @@ const SD = {
     "title": "Séance C - Vendredi S1-S2 (Phase 0)",
     "trackId": "s1c",
     "exos": [
-      {"b": "🔹 Mobilité - Warm-Up Flow 3 (1/4)", "n": "Shoulder CARs", "p": ["5 rotations/bras"], "tip": "Grand cercle bras tendu. Lent et contrôlé."},
-      {"b": "🔹 Mobilité - Warm-Up Flow 3 (2/4)", "n": "Jefferson Curl", "p": ["5 reps", "KB léger"], "img": "assets/exos/jefferson.gif", "tip": "Enroule la colonne vertèbre par vertèbre vers le bas."},
-      {"b": "🔹 Mobilité - Warm-Up Flow 3 (3/4)", "n": "Hip CARs", "p": ["5 rotations/jambe"], "tip": "Genou à 90°, rotation complète de la hanche."},
-      {"b": "🔹 Mobilité - Warm-Up Flow 3 (4/4)", "n": "Ankle CARs", "p": ["5 rotations/pied"], "tip": "Trace le plus grand cercle possible avec ton pied."},
-      {"b": "🔹 Bloc principal - EMOM 20 min", "n": "Minute 1 - Swings 2 mains", "p": ["10 à 20 reps", "KB 16 kg"], "img": "assets/exos/swing.gif", "tip": "Explosion des hanches. Repos sur le reste de la minute."},
-      {"b": "🔹 Bloc principal - EMOM 20 min", "n": "Minute 2 - Turkish Get-Up DROIT", "p": ["1 rep", "KB 12 kg"], "img": "assets/exos/tgu.gif", "tip": "7 étapes. Regard fixe sur le KB."},
-      {"b": "🔹 Bloc principal - EMOM 20 min", "n": "Minute 3 - Swings 2 mains", "p": ["10 à 20 reps", "KB 16 kg"], "img": "assets/exos/swing.gif", "tip": "Explosion des hanches. Repos sur le reste de la minute."},
-      {"b": "🔹 Bloc principal - EMOM 20 min", "n": "Minute 4 - Turkish Get-Up GAUCHE", "p": ["1 rep", "KB 12 kg"], "img": "assets/exos/tgu.gif", "tip": "7 étapes. Recommence ce cycle 5 fois au total (20 min)."},
-      {"b": "🔹 Renforcement (2 à 3 RDS)", "n": "1H Press", "p": ["3 à 6 reps/côté", "KB 12 kg"], "img": "assets/exos/press.gif", "tip": "Press strict sans poussée des jambes."},
-      {"b": "🔹 Renforcement (2 à 3 RDS)", "n": "Goblet Reverse Lunge", "p": ["6 à 12 reps/côté", "KB 12 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Genou arrière proche du sol, tronc droit."},
-      {"b": "🔹 Renforcement (2 à 3 RDS)", "n": "Goblet Carry", "p": ["30 à 50 secondes", "KB 12 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Enchaîne les 3 exercices puis récupère 1 à 2 minutes."}
+      {"b": "🔹 Mobilité Warm-Up Flow 3", "n": "Shoulder CARs", "p": ["5 rotations/bras"], "tip": "Grand cercle bras tendu. Lent et contrôlé."},
+      {"b": "🔹 Mobilité Warm-Up Flow 3", "n": "Jefferson Curl", "p": ["5 reps", "KB léger"], "img": "assets/exos/jefferson.gif", "tip": "Enroule la colonne vertèbre par vertèbre vers le bas."},
+      {"b": "🔹 Mobilité Warm-Up Flow 3", "n": "Hip CARs", "p": ["5 rotations/jambe"], "tip": "Genou à 90°, rotation complète de la hanche."},
+      {"b": "🔹 Mobilité Warm-Up Flow 3", "n": "Ankle CARs", "p": ["5 rotations/pied"], "tip": "Trace le plus grand cercle possible avec ton pied."},
+      {"b": "🔹 Bloc principal - EMOM 20 min (5 cycles)", "n": "Minute 1 - Swings 2 mains", "p": ["10-20 reps", "KB 16 kg"], "img": "assets/exos/swing.gif", "tip": "Explosion des hanches. Repos sur le reste de la minute."},
+      {"b": "🔹 Bloc principal - EMOM 20 min (5 cycles)", "n": "Minute 2 - Turkish Get-Up DROIT", "p": ["1 rep", "KB 12 kg"], "img": "assets/exos/tgu.gif", "tip": "7 étapes. Regard fixe sur le KB."},
+      {"b": "🔹 Bloc principal - EMOM 20 min (5 cycles)", "n": "Minute 3 - Swings 2 mains", "p": ["10-20 reps", "KB 16 kg"], "img": "assets/exos/swing.gif", "tip": "Explosion des hanches. Repos sur le reste de la minute."},
+      {"b": "🔹 Bloc principal - EMOM 20 min (5 cycles)", "n": "Minute 4 - Turkish Get-Up GAUCHE", "p": ["1 rep", "KB 12 kg"], "img": "assets/exos/tgu.gif", "tip": "7 étapes. Recommence ce cycle 5 fois au total (20 min)."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "1H Press", "p": ["3-6 reps/côté", "KB 12 kg"], "img": "assets/exos/press.gif", "tip": "Press strict sans poussée des jambes."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "Goblet Reverse Lunge", "p": ["6-12 reps/côté", "KB 12 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Genou arrière proche du sol, tronc droit."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "Goblet Carry", "p": ["30-50s", "KB 12 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Enchaîne les 3 exercices puis récupère 1 à 2 minutes."}
     ]
   },
 
-  // ── SEMAINE 3 & 4 (PHASE 0) ──────────────────────────────────────────────
+  // ── SEMAINE 3 & 4 ────────────────────────────────────────────────────────
   "A-S3": {
     "title": "Séance A - Lundi S3-S4 (Phase 0)",
     "trackId": "s3a",
     "exos": [
-      {"b": "🔹 Mobilité - Warm-Up Flow 1 (1/4)", "n": "Neck CARs", "p": ["5 rotations/côté"], "tip": "Cercle complet de la tête."},
-      {"b": "🔹 Mobilité - Warm-Up Flow 1 (2/4)", "n": "Cat-Cow", "p": ["10 reps"], "tip": "Mobilisation colonne."},
-      {"b": "🔹 Mobilité - Warm-Up Flow 1 (3/4)", "n": "Spiderman Lunge + Rotation", "p": ["5 reps/côté"], "tip": "Ouverture thoracique."},
-      {"b": "🔹 Mobilité - Warm-Up Flow 1 (4/4)", "n": "Prying Squat", "p": ["5 reps", "KB 12 kg"], "img": "assets/exos/prying-squat.gif", "tip": "Ouverture des hanches."},
-      {"b": "🔹 EMOM 20 min", "n": "Minute 1 - Swing 1H DROIT", "p": ["5-15 reps", "KB 16 kg"], "img": "assets/exos/swing.gif", "tip": "Même mécanique que 2H. Tronc anti-rotation."},
-      {"b": "🔹 EMOM 20 min", "n": "Minute 2 - TGU DROIT", "p": ["1 rep", "KB 12-16 kg"], "img": "assets/exos/tgu.gif", "tip": "Augmenter la charge si maîtrise acquise."},
-      {"b": "🔹 EMOM 20 min", "n": "Minute 3 - Swing 1H GAUCHE", "p": ["5-15 reps", "KB 16 kg"], "img": "assets/exos/swing.gif", "tip": "Gainage solide."},
-      {"b": "🔹 EMOM 20 min", "n": "Minute 4 - TGU GAUCHE", "p": ["1 rep", "KB 12-16 kg"], "img": "assets/exos/tgu.gif", "tip": "Contrôle parfait."},
-      {"b": "🔹 Renforcement", "n": "Bent Over Row", "p": ["8-12 reps/côté", "KB 16 kg"], "img": "assets/exos/row.gif", "tip": "Tire le coude vers la hanche."},
-      {"b": "🔹 Renforcement", "n": "Push-up", "p": ["5-15 reps"], "tip": "Gainage complet."},
-      {"b": "🔹 Renforcement", "n": "Front Rack + Suitcase Carry", "p": ["30-50s/côté", "KB 16 kg"], "img": "assets/exos/suitcase.gif", "tip": "KB en front rack D + suitcase G, puis inverse."}
+      {"b": "🔹 Mobilité Warm-Up Flow 1", "n": "Neck CARs", "p": ["5 rotations/côté"], "tip": "Cercle complet de la tête."},
+      {"b": "🔹 Mobilité Warm-Up Flow 1", "n": "Cat-Cow", "p": ["10 reps"], "tip": "Mobilisation colonne."},
+      {"b": "🔹 Mobilité Warm-Up Flow 1", "n": "Spiderman Lunge + Rotation", "p": ["5 reps/côté"], "tip": "Ouverture thoracique."},
+      {"b": "🔹 Mobilité Warm-Up Flow 1", "n": "Prying Squat", "p": ["5 reps", "KB 12 kg"], "img": "assets/exos/prying-squat.gif", "tip": "Ouverture des hanches."},
+      {"b": "🔹 Bloc principal - EMOM 20 min (5 cycles)", "n": "Minute 1 - Swing 1H DROIT", "p": ["5-15 reps", "KB 16 kg"], "img": "assets/exos/swing.gif", "tip": "Même mécanique que 2H. Tronc anti-rotation."},
+      {"b": "🔹 Bloc principal - EMOM 20 min (5 cycles)", "n": "Minute 2 - TGU DROIT", "p": ["1 rep", "KB 12-16 kg"], "img": "assets/exos/tgu.gif", "tip": "Augmenter la charge si maîtrise acquise."},
+      {"b": "🔹 Bloc principal - EMOM 20 min (5 cycles)", "n": "Minute 3 - Swing 1H GAUCHE", "p": ["5-15 reps", "KB 16 kg"], "img": "assets/exos/swing.gif", "tip": "Gainage solide."},
+      {"b": "🔹 Bloc principal - EMOM 20 min (5 cycles)", "n": "Minute 4 - TGU GAUCHE", "p": ["1 rep", "KB 12-16 kg"], "img": "assets/exos/tgu.gif", "tip": "Contrôle parfait."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "Bent Over Row", "p": ["8-12 reps/côté", "KB 16 kg"], "img": "assets/exos/row.gif", "tip": "Tire le coude vers la hanche."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "Push-up", "p": ["5-15 reps"], "tip": "Gainage complet."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "Front Rack + Suitcase Carry", "p": ["30-50s/côté", "KB 16 kg"], "img": "assets/exos/suitcase.gif", "tip": "KB en front rack D + suitcase G, puis inverse."}
     ]
   },
 
@@ -78,14 +76,14 @@ const SD = {
     "title": "Séance B - Mercredi S3-S4 (Phase 0)",
     "trackId": "s3b",
     "exos": [
-      {"b": "🔹 Mobilité - Warm-Up Flow 2 (1/4)", "n": "Downward Dog to Cobra", "p": ["10 reps"], "tip": "Mobilisation générale."},
-      {"b": "🔹 Mobilité - Warm-Up Flow 2 (2/4)", "n": "90/90 Switch", "p": ["10 reps"], "tip": "Mobilité hanches."},
-      {"b": "🔹 Mobilité - Warm-Up Flow 2 (3/4)", "n": "Scapular Push-ups", "p": ["10 reps"], "tip": "Activation omoplates."},
-      {"b": "🔹 Mobilité - Warm-Up Flow 2 (4/4)", "n": "Ankle Rocks", "p": ["10 reps/côté"], "tip": "Dorsiflexion cheville."},
-      {"b": "🔹 Bloc principal", "n": "Clean & Push Press enchaîné", "p": ["5-8 séries", "5 reps/côté", "KB 12-16 kg"], "img": "assets/exos/dead-clean.gif", "tip": "Plus de deadstop. Enchaînement fluide ground-to-overhead."},
-      {"b": "🔹 Renforcement", "n": "Goblet Squat", "p": ["8-12 reps", "KB 16 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Profondeur contrôlée."},
-      {"b": "🔹 Renforcement", "n": "KB Halo", "p": ["5-10 reps/côté", "KB 8 kg"], "img": "assets/exos/halo.gif", "tip": "Stabilité épaules."},
-      {"b": "🔹 Renforcement", "n": "Roll to Elbow", "p": ["4-6 reps/côté"], "img": "assets/exos/tgu.gif", "tip": "Verrouillage abdominal."}
+      {"b": "🔹 Mobilité Warm-Up Flow 2", "n": "Downward Dog to Cobra", "p": ["10 reps"], "tip": "Mobilisation générale."},
+      {"b": "🔹 Mobilité Warm-Up Flow 2", "n": "90/90 Switch", "p": ["10 reps"], "tip": "Mobilité hanches."},
+      {"b": "🔹 Mobilité Warm-Up Flow 2", "n": "Scapular Push-ups", "p": ["10 reps"], "tip": "Activation omoplates."},
+      {"b": "🔹 Mobilité Warm-Up Flow 2", "n": "Ankle Rocks", "p": ["10 reps/côté"], "tip": "Dorsiflexion cheville."},
+      {"b": "🔹 Bloc principal (5-8 RDS - Repos 1-2 min)", "n": "Clean & Push Press enchaîné", "p": ["5 reps/côté", "KB 12-16 kg"], "img": "assets/exos/dead-clean.gif", "tip": "Plus de deadstop. Enchaînement fluide ground-to-overhead."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "Goblet Squat", "p": ["8-12 reps", "KB 16 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Profondeur contrôlée."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "KB Halo", "p": ["5-10 reps/côté", "KB 8 kg"], "img": "assets/exos/halo.gif", "tip": "Stabilité épaules."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "Roll to Elbow", "p": ["4-6 reps/côté"], "img": "assets/exos/tgu.gif", "tip": "Verrouillage abdominal."}
     ]
   },
 
@@ -93,33 +91,33 @@ const SD = {
     "title": "Complexe Ulysse - Vendredi S3-S4 (Phase 0)",
     "trackId": "s3c",
     "exos": [
-      {"b": "🔹 Mobilité - Warm-Up Flow 3 (1/4)", "n": "Shoulder CARs", "p": ["5 rotations/bras"], "tip": "Mobilité épaules."},
-      {"b": "🔹 Mobilité - Warm-Up Flow 3 (2/4)", "n": "Jefferson Curl", "p": ["5 reps", "KB léger"], "img": "assets/exos/jefferson.gif", "tip": "Souplesse chaîne postérieure."},
-      {"b": "🔹 Mobilité - Warm-Up Flow 3 (3/4)", "n": "Hip CARs", "p": ["5 rotations/jambe"], "tip": "Rotation hanche."},
-      {"b": "🔹 Mobilité - Warm-Up Flow 3 (4/4)", "n": "Ankle CARs", "p": ["5 rotations/pied"], "tip": "Rotation cheville."},
-      {"b": "🔹 Complexe Ulysse (1/3)", "n": "5 Deadstop Swing 1H", "p": ["5 reps/côté", "KB 16 kg"], "img": "assets/exos/swing.gif", "tip": "1er mouvement du complexe. Ne pas poser le KB."},
-      {"b": "🔹 Complexe Ulysse (2/3)", "n": "3 Dead Clean & Push Press", "p": ["3 reps/côté", "KB 12-16 kg"], "img": "assets/exos/dead-clean.gif", "tip": "Enchaîne directement après les Swings."},
-      {"b": "🔹 Complexe Ulysse (3/3)", "n": "3 Squat 1H", "p": ["3 reps/côté", "KB 12 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "5 à 8 séries. Repos 30-60s entre côtés, 60-90s entre séries."},
-      {"b": "🔹 Renforcement", "n": "Get-Up + Overhead Carry + Get Down", "p": ["2-3 séries", "1 rep/côté", "KB 12-16 kg"], "img": "assets/exos/tgu.gif", "tip": "Montée TGU, marche 30s overhead, redescente contrôlée."}
+      {"b": "🔹 Mobilité Warm-Up Flow 3", "n": "Shoulder CARs", "p": ["5 rotations/bras"], "tip": "Mobilité épaules."},
+      {"b": "🔹 Mobilité Warm-Up Flow 3", "n": "Jefferson Curl", "p": ["5 reps", "KB léger"], "img": "assets/exos/jefferson.gif", "tip": "Souplesse chaîne postérieure."},
+      {"b": "🔹 Mobilité Warm-Up Flow 3", "n": "Hip CARs", "p": ["5 rotations/jambe"], "tip": "Rotation hanche."},
+      {"b": "🔹 Mobilité Warm-Up Flow 3", "n": "Ankle CARs", "p": ["5 rotations/pied"], "tip": "Rotation cheville."},
+      {"b": "🔹 Complexe Ulysse (5 à 8 RDS - Repos 60-90s)", "n": "1. Deadstop Swing 1H", "p": ["5 reps/côté", "KB 16 kg"], "img": "assets/exos/swing.gif", "tip": "1er mouvement du complexe. Ne pas poser le KB."},
+      {"b": "🔹 Complexe Ulysse (5 à 8 RDS - Repos 60-90s)", "n": "2. Dead Clean & Push Press", "p": ["3 reps/côté", "KB 12-16 kg"], "img": "assets/exos/dead-clean.gif", "tip": "Enchaîne directement après les Swings."},
+      {"b": "🔹 Complexe Ulysse (5 à 8 RDS - Repos 60-90s)", "n": "3. Squat 1H", "p": ["3 reps/côté", "KB 12 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Une série = côté Gauche puis Droit. Repos 30-60s entre côtés, 60-90s entre séries."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "Get-Up + Overhead Carry + Get Down", "p": ["1 rep/côté", "KB 12-16 kg"], "img": "assets/exos/tgu.gif", "tip": "Montée TGU, marche 30s overhead, redescente contrôlée."}
     ]
   },
 
-  // ── SEMAINE 5 & 6 (PHASE 0) ──────────────────────────────────────────────
+  // ── SEMAINE 5 & 6 ────────────────────────────────────────────────────────
   "A-S5": {
     "title": "Séance A - Lundi S5-S6 (Phase 0)",
     "trackId": "s5a",
     "exos": [
-      {"b": "🔹 Mobilité Épaules (1/4)", "n": "Shoulder CARs", "p": ["5 rotations/bras"], "tip": "Activation épaule."},
-      {"b": "🔹 Mobilité Épaules (2/4)", "n": "Shoulder Flexion Passive", "p": ["30s stretch"], "tip": "Ouverture d'épaule."},
-      {"b": "🔹 Mobilité Épaules (3/4)", "n": "External Rotation Passive", "p": ["30s stretch"], "tip": "Stabilité coiffe."},
-      {"b": "🔹 Mobilité Épaules (4/4)", "n": "Scapular Push-ups", "p": ["10 reps"], "tip": "Contrôle omoplates."},
-      {"b": "🔹 EMOM 20 min", "n": "Minute 1 - Deadstop Snatch DROIT", "p": ["5-10 reps", "KB 12 kg"], "img": "assets/exos/snatch.gif", "tip": "Repose le KB au sol entre chaque rep. Punch sec en haut."},
-      {"b": "🔹 EMOM 20 min", "n": "Minute 2 - TGU DROIT", "p": ["1 rep", "KB 16 kg"], "img": "assets/exos/tgu.gif", "tip": "Maîtrise de la charge."},
-      {"b": "🔹 EMOM 20 min", "n": "Minute 3 - Deadstop Snatch GAUCHE", "p": ["5-10 reps", "KB 12 kg"], "img": "assets/exos/snatch.gif", "tip": "Punch sec en haut."},
-      {"b": "🔹 EMOM 20 min", "n": "Minute 4 - TGU GAUCHE", "p": ["1 rep", "KB 16 kg"], "img": "assets/exos/tgu.gif", "tip": "Verrouillage solide."},
-      {"b": "🔹 Renforcement", "n": "Kickstand Row", "p": ["8-12 reps/côté", "KB 16 kg"], "img": "assets/exos/row.gif", "tip": "Tirage lourd guidé."},
-      {"b": "🔹 Renforcement", "n": "Max Push-up", "p": ["Max reps"], "tip": "Poussée jusqu'à fatigue propre."},
-      {"b": "🔹 Renforcement", "n": "Banded Zercher Carry", "p": ["30-50s"], "img": "assets/exos/suitcase.gif", "tip": "KB tenu bras croisés sur la poitrine."}
+      {"b": "🔹 Mobilité Épaules", "n": "Shoulder CARs", "p": ["5 rotations/bras"], "tip": "Activation épaule."},
+      {"b": "🔹 Mobilité Épaules", "n": "Shoulder Flexion Passive", "p": ["30s stretch"], "tip": "Ouverture d'épaule."},
+      {"b": "🔹 Mobilité Épaules", "n": "External Rotation Passive", "p": ["30s stretch"], "tip": "Stabilité coiffe."},
+      {"b": "🔹 Mobilité Épaules", "n": "Scapular Push-ups", "p": ["10 reps"], "tip": "Contrôle omoplates."},
+      {"b": "🔹 Bloc principal - EMOM 20 min (5 cycles)", "n": "Minute 1 - Deadstop Snatch DROIT", "p": ["5-10 reps", "KB 12 kg"], "img": "assets/exos/snatch.gif", "tip": "Repose le KB au sol entre chaque rep. Punch sec en haut."},
+      {"b": "🔹 Bloc principal - EMOM 20 min (5 cycles)", "n": "Minute 2 - TGU DROIT", "p": ["1 rep", "KB 16 kg"], "img": "assets/exos/tgu.gif", "tip": "Maîtrise de la charge."},
+      {"b": "🔹 Bloc principal - EMOM 20 min (5 cycles)", "n": "Minute 3 - Deadstop Snatch GAUCHE", "p": ["5-10 reps", "KB 12 kg"], "img": "assets/exos/snatch.gif", "tip": "Punch sec en haut."},
+      {"b": "🔹 Bloc principal - EMOM 20 min (5 cycles)", "n": "Minute 4 - TGU GAUCHE", "p": ["1 rep", "KB 16 kg"], "img": "assets/exos/tgu.gif", "tip": "Verrouillage solide."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "Kickstand Row", "p": ["8-12 reps/côté", "KB 16 kg"], "img": "assets/exos/row.gif", "tip": "Tirage lourd guidé."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "Max Push-up", "p": ["Max reps"], "tip": "Poussée jusqu'à fatigue propre."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "Banded Zercher Carry", "p": ["30-50s"], "img": "assets/exos/suitcase.gif", "tip": "KB tenu bras croisés sur la poitrine."}
     ]
   },
 
@@ -127,14 +125,14 @@ const SD = {
     "title": "Séance B - Mercredi S5-S6 (Phase 0)",
     "trackId": "s5b",
     "exos": [
-      {"b": "🔹 Mobilité (1/4)", "n": "Downward Dog to Cobra", "p": ["10 reps"], "tip": "Flux spinal."},
-      {"b": "🔹 Mobilité (2/4)", "n": "90/90 Switch", "p": ["10 reps"], "tip": "Hanches fluides."},
-      {"b": "🔹 Mobilité (3/4)", "n": "Scapular Push-ups", "p": ["10 reps"], "tip": "Omoplates."},
-      {"b": "🔹 Mobilité (4/4)", "n": "Ankle Rocks", "p": ["10 reps/côté"], "tip": "Chevilles."},
-      {"b": "🔹 Bloc principal", "n": "Clean & Press strict", "p": ["5-8 séries", "5 reps/côté", "KB 12-16 kg"], "img": "assets/exos/press.gif", "tip": "Press STRICT = aucune poussée des jambes. Force pure."},
-      {"b": "🔹 Renforcement", "n": "Squat 1H", "p": ["8-12 reps/côté", "KB 12 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "KB en rack. Buste vertical."},
-      {"b": "🔹 Renforcement", "n": "Half Kneeling KB Rotation", "p": ["8-12 reps/côté", "KB 8 kg"], "tip": "Genou au sol, rotation thoracique."},
-      {"b": "🔹 Renforcement", "n": "Pull Through", "p": ["8-12 reps/côté", "KB 12 kg"], "tip": "KB sous le ventre en planche, tirage latéral."}
+      {"b": "🔹 Mobilité Warm-Up Flow 2", "n": "Downward Dog to Cobra", "p": ["10 reps"], "tip": "Flux spinal."},
+      {"b": "🔹 Mobilité Warm-Up Flow 2", "n": "90/90 Switch", "p": ["10 reps"], "tip": "Hanches fluides."},
+      {"b": "🔹 Mobilité Warm-Up Flow 2", "n": "Scapular Push-ups", "p": ["10 reps"], "tip": "Omoplates."},
+      {"b": "🔹 Mobilité Warm-Up Flow 2", "n": "Ankle Rocks", "p": ["10 reps/côté"], "tip": "Chevilles."},
+      {"b": "🔹 Bloc principal (5-8 RDS - Repos 1-2 min)", "n": "Clean & Press strict", "p": ["5 reps/côté", "KB 12-16 kg"], "img": "assets/exos/press.gif", "tip": "Press STRICT = aucune poussée des jambes. Force pure."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "Squat 1H", "p": ["8-12 reps/côté", "KB 12 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "KB en rack. Buste vertical."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "Half Kneeling KB Rotation", "p": ["8-12 reps/côté", "KB 8 kg"], "tip": "Genou au sol, rotation thoracique."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "Pull Through", "p": ["8-12 reps/côté", "KB 12 kg"], "tip": "KB sous le ventre en planche, tirage latéral."}
     ]
   },
 
@@ -142,19 +140,20 @@ const SD = {
     "title": "Complexe Atlas - Vendredi S5-S6 (Phase 0)",
     "trackId": "s5c",
     "exos": [
-      {"b": "🔹 Mobilité (1/4)", "n": "Shoulder CARs", "p": ["5 rotations/bras"], "tip": "Épaules."},
-      {"b": "🔹 Mobilité (2/4)", "n": "Jefferson Curl", "p": ["5 reps", "KB léger"], "img": "assets/exos/jefferson.gif", "tip": "Colonne."},
-      {"b": "🔹 Mobilité (3/4)", "n": "Hip CARs", "p": ["5 rotations/jambe"], "tip": "Hanches."},
-      {"b": "🔹 Mobilité (4/4)", "n": "Ankle CARs", "p": ["5 rotations/pied"], "tip": "Chevilles."},
-      {"b": "🔹 Complexe Atlas (1/4)", "n": "3 Swings 1H", "p": ["3 reps/côté", "KB 16 kg"], "img": "assets/exos/swing.gif", "tip": "Mouvement 1. Sans reposer le KB."},
-      {"b": "🔹 Complexe Atlas (2/4)", "n": "3 Cleans", "p": ["3 reps/côté", "KB 16 kg"], "img": "assets/exos/dead-clean.gif", "tip": "Mouvement 2. Front rack propre."},
-      {"b": "🔹 Complexe Atlas (3/4)", "n": "3 Snatches", "p": ["3 reps/côté", "KB 12 kg"], "img": "assets/exos/snatch.gif", "tip": "Mouvement 3. Lockout complet."},
-      {"b": "🔹 Complexe Atlas (4/4)", "n": "3 Squats 1H", "p": ["3 reps/côté", "KB 12 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Mouvement 4. 5 à 8 séries. Repos 30-60s entre côtés, 60-90s entre séries."},
-      {"b": "🔹 Renforcement", "n": "1H Press", "p": ["5-10 reps/côté", "KB 12-16 kg"], "img": "assets/exos/press.gif", "tip": "Press strict."},
-      {"b": "🔹 Renforcement", "n": "Overhead Reverse Lunge", "p": ["5-10 reps/côté", "KB 8-12 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "KB verrouillé au-dessus de la tête, fente arrière."},
-      {"b": "🔹 Renforcement", "n": "Max Sit-up", "p": ["Max reps"], "tip": "Finition abdos."}
+      {"b": "🔹 Mobilité Warm-Up Flow 3", "n": "Shoulder CARs", "p": ["5 rotations/bras"], "tip": "Épaules."},
+      {"b": "🔹 Mobilité Warm-Up Flow 3", "n": "Jefferson Curl", "p": ["5 reps", "KB léger"], "img": "assets/exos/jefferson.gif", "tip": "Colonne."},
+      {"b": "🔹 Mobilité Warm-Up Flow 3", "n": "Hip CARs", "p": ["5 rotations/jambe"], "tip": "Hanches."},
+      {"b": "🔹 Mobilité Warm-Up Flow 3", "n": "Ankle CARs", "p": ["5 rotations/pied"], "tip": "Chevilles."},
+      {"b": "🔹 Complexe Atlas (5 à 8 RDS - Repos 60-90s)", "n": "1. Swings 1H", "p": ["3 reps/côté", "KB 16 kg"], "img": "assets/exos/swing.gif", "tip": "Mouvement 1. Sans reposer le KB."},
+      {"b": "🔹 Complexe Atlas (5 à 8 RDS - Repos 60-90s)", "n": "2. Cleans", "p": ["3 reps/côté", "KB 16 kg"], "img": "assets/exos/dead-clean.gif", "tip": "Mouvement 2. Front rack propre."},
+      {"b": "🔹 Complexe Atlas (5 à 8 RDS - Repos 60-90s)", "n": "3. Snatches", "p": ["3 reps/côté", "KB 12 kg"], "img": "assets/exos/snatch.gif", "tip": "Mouvement 3. Lockout complet."},
+      {"b": "🔹 Complexe Atlas (5 à 8 RDS - Repos 60-90s)", "n": "4. Squats 1H", "p": ["3 reps/côté", "KB 12 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Mouvement 4. Une série = Côté Gauche puis Droit. Repos 30-60s entre côtés, 60-90s entre séries."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "1H Press", "p": ["5-10 reps/côté", "KB 12-16 kg"], "img": "assets/exos/press.gif", "tip": "Press strict."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "Overhead Reverse Lunge", "p": ["5-10 reps/côté", "KB 8-12 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "KB verrouillé au-dessus de la tête, fente arrière."},
+      {"b": "🔹 Renforcement (2 à 3 RDS - Repos 1-2 min)", "n": "Max Sit-up", "p": ["Max reps"], "tip": "Finition abdos."}
     ]
-  },
+  }
+};
 
 
   // =========================================================================
