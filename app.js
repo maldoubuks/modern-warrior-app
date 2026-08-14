@@ -272,15 +272,92 @@ function closePlayer(){
   document.body.style.overflow = '';
 }
 
+// ── PLAYER EN DIRECT (UX STRUCTURÉE AVEC BANDEAU DE STATUT & BADGES) ───────
+
 function renderPlayer(){
   const s = SD[pKey], exos = s.exos, e = exos[pIdx], total = exos.length;
+  
   document.getElementById('p-nav-title').innerHTML = s.title;
   document.getElementById('p-nav-prog').textContent = (pIdx+1) + '/' + total;
   document.getElementById('p-topbar').style.width = (pIdx/total*100) + '%';
-  document.getElementById('p-bloc-name').innerHTML = e.b;
+  
+  // 1. Analyse automatique du bloc pour le bandeau du Player
+  let rawB = e.b || '';
+  let cleanB = rawB.replace(/🔹\s*/g, '').trim();
+  
+  let catBadgeText = '⚡ 2. CORPS DE SÉANCE';
+  let catBadgeBg = 'rgba(216,90,48,0.25)';
+  let catBadgeColor = '#ff9f43';
+  let borderAccent = 'var(--or)';
+
+  if (/mobilité|warm-up|échauffement/i.test(cleanB)) {
+    catBadgeText = '🔥 1. ÉCHAUFFEMENT & ACTIVATION';
+    catBadgeBg = 'rgba(255,159,67,0.25)';
+    catBadgeColor = '#ff9f43';
+    borderAccent = '#e67e22';
+  } else if (/renforcement|finisher/i.test(cleanB)) {
+    catBadgeText = '💪 3. RENFORCEMENT & ACCESSOIRES';
+    catBadgeBg = 'rgba(46,204,113,0.25)';
+    catBadgeColor = '#2ecc71';
+    borderAccent = '#2ecc71';
+  }
+
+  // 2. Extraction des badges métas (Séries, Repos, Format)
+  let rounds = '';
+  let rest = '';
+  let format = '';
+
+  let emomMatch = cleanB.match(/EMOM\s*(\d+[\s\-\–aà]*\d*\s*(min|'|mn)?(\s*\([^)]+\))?)/i);
+  if (emomMatch) { format = 'EMOM'; if (emomMatch[1]) rounds = emomMatch[1].trim(); }
+
+  let amrapMatch = cleanB.match(/AMRAP\s*(\d+[\s\-\–aà]*\d*\s*(min|'|mn)?(\s*\([^)]+\))?)/i);
+  if (amrapMatch) { format = 'AMRAP'; if (amrapMatch[1]) rounds = amrapMatch[1].trim(); }
+
+  let matchRounds = cleanB.match(/\(?(\d+[\s\-\–aà]*\d*\s*(RDS|rounds|tours|séries|cycles))\)?/i);
+  if (matchRounds && !rounds) rounds = matchRounds[1];
+
+  let matchRest = cleanB.match(/repos\s*([\d\-\–\s]+min|[\d\-\–\s]+s)/i);
+  if (matchRest) rest = 'Repos ' + matchRest[1];
+
+  if (!format) {
+    if (/EMOM/i.test(cleanB)) format = 'EMOM';
+    else if (/AMRAP/i.test(cleanB)) format = 'AMRAP';
+    else if (/complexe/i.test(cleanB)) format = 'Complex';
+    else if (/superset/i.test(cleanB)) format = 'Superset';
+    else if (/circuit/i.test(cleanB)) format = 'Circuit';
+  }
+
+  let cleanName = cleanB
+    .replace(/\(\d+[\s\-\–aà]*\d*\s*(RDS|rounds|tours|séries|cycles)[^\)]*\)/gi, '')
+    .replace(/-\s*EMOM.*/gi, '')
+    .replace(/-\s*AMRAP.*/gi, '')
+    .replace(/- Repos[^\)]*/gi, '')
+    .trim();
+
+  if (!cleanName) cleanName = cleanB;
+
+  // 3. Injection du bandeau haut contraste
+  const blocHdrEl = document.querySelector('.p-bloc-hdr');
+  if (blocHdrEl) {
+    blocHdrEl.innerHTML = `
+      <div style="background:#1e1e1e; border:1px solid #333; border-radius:10px; padding:10px 12px; margin-bottom:12px; border-left:4px solid ${borderAccent}; width:100%; box-sizing:border-box;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:4px;">
+          <span style="font-size:10px; font-weight:800; text-transform:uppercase; background:${catBadgeBg}; color:${catBadgeColor}; padding:3px 8px; border-radius:4px;">${catBadgeText}</span>
+          <div style="display:flex; gap:4px; font-size:10.5px; font-weight:700; color:#ddd;">
+            ${rounds ? `<span style="background:#2a2a2a; padding:2px 6px; border-radius:4px; border:1px solid #444;">🔁 ${rounds}</span>` : ''}
+            ${rest ? `<span style="background:#2a2a2a; color:#54a0ff; padding:2px 6px; border-radius:4px; border:1px solid #444;">⏱️ ${rest}</span>` : ''}
+            ${format ? `<span style="background:#2a2a2a; color:#ff9f43; padding:2px 6px; border-radius:4px; border:1px solid #444;">🎯 ${format}</span>` : ''}
+          </div>
+        </div>
+        <div style="font-size:13px; font-weight:800; color:#ffffff; margin-top:4px;">${cleanName}</div>
+      </div>
+    `;
+  }
+
+  // 4. Chargement des détails de l'exercice
   document.getElementById('p-exo-num').textContent = 'Exercice ' + (pIdx+1) + ' sur ' + total;
   
-  let imgHTML = e.img ? `<div style="text-align:center; margin:12px 0;"><img src="${e.img}" style="max-height:180px; max-width:100%; object-fit:contain; border-radius:10px; background:#181818; border:1px solid #333; padding:6px;"></div>` : '';
+  let imgHTML = e.img ? `<div style="text-align:center; margin:12px 0;"><img src="${e.img}" style="max-height:180px; max-width:100%; object-fit:contain; border-radius:10px; background:#ffffff; border:1px solid #ddd; padding:6px;"></div>` : '';
   document.getElementById('p-exo-name').innerHTML = e.n + imgHTML;
 
   const pp = document.getElementById('p-pills');
@@ -291,15 +368,26 @@ function renderPlayer(){
     else if(p.includes('Repos')||p.includes('min')) c = 'pp-rest';
     return `<span class="pp ${c}">${p}</span>`;
   }).join('');
+
   document.getElementById('p-tip').innerHTML = e.tip || '';
+  
   const next = exos[pIdx+1];
   const pn = document.getElementById('p-next');
   pn.style.display = next ? 'flex' : 'none';
   if(next) document.getElementById('p-next-name').innerHTML = next.n;
+  
   const isLast = pIdx === total - 1;
   const btn = document.getElementById('p-action-btn');
-  if(isLast){ btn.textContent = 'Terminer la séance ✓'; btn.className = 'pa-done'; btn.onclick = showFinish; }
-  else{ btn.textContent = 'Exercice suivant →'; btn.className = 'pa-next'; btn.onclick = nextExo; }
+  if(isLast){ 
+    btn.textContent = 'Terminer la séance ✓'; 
+    btn.className = 'pa-done'; 
+    btn.onclick = showFinish; 
+  } else { 
+    btn.textContent = 'Exercice suivant →'; 
+    btn.className = 'pa-next'; 
+    btn.onclick = nextExo; 
+  }
+  
   resetTimer();
 }
 
