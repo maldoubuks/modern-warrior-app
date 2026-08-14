@@ -559,3 +559,442 @@ const PHASES_DATA = {
   '1': { title: "Phase 1 : La Forge", data: TRACK_IDS_P1, total: 18 },
   '2': { title: "Bankai : Hypertrophie", data: TRACK_IDS_BK, total: 24 }
 };
+
+// ── MOBILITÉ & ROUTINES DU GUERRIER (DÉTAILLÉES) ───────────────────────────
+
+const MOBILITY_DATA = [
+  {
+    category: "Fullbody Warm-Up Flows — Avant Séance",
+    items: [
+      {
+        id: "flow-fb-1",
+        badge: "1",
+        badgeClass: "ci-o",
+        titleClass: "ct-o",
+        title: "Fullbody Warm-Up Flow 1️⃣ · 5-10 min",
+        desc: "Flow orienté mobilité générale + ouverture des hanches. Lance un chrono de 5 à 10 min et enchaîne les exercices :",
+        exos: [
+          {
+            n: "Neck CARs (Controlled Articular Rotations)",
+            p: ["5 rotations/côté"],
+            pos: "Debout ou assis bien droit, épaules basses et bassin neutre.",
+            steps: "1. Rentrer le menton vers la poitrine.<br>2. Glisser le menton le long de la clavicule vers l'épaule droite.<br>3. Incliner la tête vers l'arrière en traçant un grand arc.<br>4. Revenir par l'épaule gauche et ramener au centre.",
+            tip: "Seul le cou bouge. Le reste du corps demeure totalement immobile et sous tension."
+          },
+          {
+            n: "Cat-Cow lent et contrôlé",
+            p: ["10 reps"],
+            pos: "À 4 pattes, mains sous les épaules et genoux sous les hanches.",
+            steps: "1. Inspirer : creuser lentement le bas du dos, ouvrir la poitrine et regarder le ciel (Cow).<br>2. Expirer : arrondir la colonne vertébrale, pousser le sol avec les mains et rentrez la tête (Cat).",
+            tip: "Chercher à articuler la colonne vertèbre par vertèbre, sans vous précipiter."
+          },
+          {
+            n: "Spiderman Lunge avec Rotation",
+            p: ["5 reps/côté"],
+            pos: "Position de pompe haute, amener le pied droit à l'extérieur de la main droite.",
+            steps: "1. Poser le genou arrière au sol si besoin.<br>2. Amener le coude droit vers le sol à l'intérieur du pied avant.<br>3. Pivoter le buste et tendre le bras droit vers le plafond en suivant la main du regard.",
+            tip: "Garder la jambe arrière tendue et engagée pour maximiser l'étirement du psoas."
+          },
+          {
+            n: "Prying Squat",
+            p: ["5 reps", "5s pause"],
+            pos: "Pieds largeur d'épaules, légères ouvertures de pointes, KB léger (12kg) tenu contre la poitrine.",
+            steps: "1. Descendre en squat profond en gardant les talons collés au sol.<br>2. Caler les coudes à l'intérieur des genoux.<br>3. Effectuer de légères bascules de poids d'une cheville à l'autre tout en ouvrant les genoux.",
+            tip: "Garder la poitrine haute et fière. Ne pas laisser le bas du dos s'arrondir."
+          }
+        ]
+      },
+      {
+        id: "flow-fb-2",
+        badge: "2",
+        badgeClass: "ci-b",
+        titleClass: "ct-b",
+        title: "Fullbody Warm-Up Flow 2️⃣ · 5-10 min",
+        desc: "Flow axé sur la fluidité des mouvements et la chaîne postérieure :",
+        exos: [
+          {
+            n: "Downward Dog to Cobra",
+            p: ["10 reps fluides"],
+            pos: "Départ en position V inversé (Chien tête en bas), fesses vers le ciel.",
+            steps: "1. Pousser les talons vers le sol et ouvrir les épaules.<br>2. Plonger vers l'avant en frôlant le sol avec la poitrine.<br>3. Dérouler la colonne pour arriver en Cobra (poitrine ouverte, bassin proche du sol).<br>4. Repousser fort dans les mains pour revenir en V inversé.",
+            tip: "Maintenir un mouvement fluide et continu comme une vague."
+          },
+          {
+            n: "90/90 Switch",
+            p: ["10 transitions lentes"],
+            pos: "Assis au sol, jambe avant pliée à 90° devant, jambe arrière pliée à 90° sur le côté.",
+            steps: "1. Se grandir, buste droit.<br>2. Sans toucher le sol avec les mains (si possible), faire pivoter les deux genoux vers l'autre côté.<br>3. Marquer une pause de 2 secondes dans la nouvelle position 90/90.",
+            tip: "Garder les fesses ancrées le plus longtemps possible lors de la transition."
+          },
+          {
+            n: "Scapular Push-ups",
+            p: ["10 reps"],
+            pos: "Position de planche parfaite (mains sous les épaules, corps gainé) ou sur les genoux.",
+            steps: "1. Sans plier les coudes, laisser descendre la cage thoracique en resserrant les omoplates.<br>2. Repousser activement le sol pour écarter les omoplates au maximum.",
+            tip: "Les bras restent verrouillés. Tout le mouvement se fait uniquement au niveau des omoplates."
+          },
+          {
+            n: "Ankle Rocks",
+            p: ["10 reps/côté"],
+            pos: "Position fente à genou au sol (Half Kneeling), pied avant bien à plat.",
+            steps: "1. Placer les mains sur le genou avant.<br>2. Avancer le genou le plus loin possible au-dessus et dépasser les orteils.<br>3. Maintenir la pression 2 secondes puis revenir.",
+            tip: "Le talon avant ne doit JAMAIS décoller du sol."
+          }
+        ]
+      },
+      {
+        id: "flow-fb-3",
+        badge: "3",
+        badgeClass: "ci-g",
+        titleClass: "ct-g",
+        title: "Fullbody Warm-Up Flow 3️⃣ · 5-10 min",
+        desc: "Flow plus segmenté et contrôlé, idéal pour un travail plus ciblé :",
+        exos: [
+          {
+            n: "Shoulder CARs",
+            p: ["5 rotations lentes/bras"],
+            pos: "Debout, corps totalement gainé, poing opposé serré pour créer de la tension.",
+            steps: "1. Lever le bras tendu vers l'avant puis au-dessus de la tête.<br>2. En haut, initier une rotation interne du bras (la paume tourne vers l'extérieur).<br>3. Aller chercher loin vers l'arrière sans tourner le buste.<br>4. Revenir en sens inverse.",
+            tip: "Zéro compensation avec le bas du dos. Seule l'articulation de l'épaule travaille."
+          },
+          {
+            n: "Jefferson Curl léger",
+            p: ["5 reps avec contrôle"],
+            pos: "Debout sur une box ou au sol, pieds joints, KB très léger (8-12kg) en mains.",
+            steps: "1. Rentrer le menton contre la poitrine.<br>2. Enrouler les épaules puis chaque vertèbre une à une vers le bas.<br>3. Laisser descendre la charge le plus bas possible jambes tendues.<br>4. Remonter en déroulant la colonne du bas vers le haut.",
+            tip: "Mouvement de décompression. Charger très progressivement."
+          },
+          {
+            n: "Hip CARs",
+            p: ["5 rotations lentes/jambe"],
+            pos: "À 4 pattes au sol ou debout en appui contre un mur.",
+            steps: "1. Monter le genou vers la poitrine.<br>2. Ouvrir le genou sur le côté à 90°.<br>3. Effectuer une rotation interne de la hanche vers l'arrière (pied vers le ciel).<br>4. Ramener le genou au centre et inverser le trajet.",
+            tip: "Garder le bassin verrouillé parallèle au sol tout au long de la rotation."
+          },
+          {
+            n: "Ankle CARs",
+            p: ["5 rotations lentes/pied"],
+            pos: "Assis au sol, une jambe repliée sur la cuisse opposée.",
+            steps: "1. Maintenir le bas de la jambe avec la main pour bloquer le tibia.<br>2. Tracer le plus grand cercle possible avec la pointe du pied.",
+            tip: "Chercher à explorer les limites maximales de chaque angle d'amplitude."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    category: "TGU Warm-Up Flows — Dédiés Turkish Get-Up",
+    items: [
+      {
+        id: "flow-tgu-1",
+        badge: "T1",
+        badgeClass: "ci-o",
+        titleClass: "ct-o",
+        title: "TGU Warm-up Flow 1️⃣ · 5-10 min",
+        desc: "Lance un chrono de 5 à 10' et enchaîne le TGU flow suivant avec un KB léger :",
+        exos: [
+          {
+            n: "Flow Séquencé T1",
+            p: ["KB léger (8-12kg)"],
+            pos: "Allongé sur le dos, KB verrouillé au bras droit.",
+            steps: "1. 3 Roll to Elbow (rouler sur le coude gauche).<br>2. Mener jusqu'en fente et effectuer 3 Half Kneeling Windmills.<br>3. Effectuer 3 avancées du bassin (Hip Flexor Forward).<br>4. Finir le Get-up debout, puis redescendre en Get-down contrôlé.",
+            tip: "Garder les yeux fixés sur la charge du début à la fin de la séquence."
+          }
+        ]
+      },
+      {
+        id: "flow-tgu-2",
+        badge: "T2",
+        badgeClass: "ci-b",
+        titleClass: "ct-b",
+        title: "TGU Warm-up Flow 2️⃣ · 5-10 min",
+        desc: "Lance un chrono de 5 à 10' et enchaîne le TGU flow suivant avec un KB léger :",
+        exos: [
+          {
+            n: "Press à chaque étape (TGU Isometric Hold)",
+            p: ["KB léger"],
+            pos: "Position de départ du TGU au sol.",
+            steps: "1. Effectuer 1 Press strict à chaque position d'arrêt du TGU : Sol, Coude, Main, Pont de hanche, Genou au sol et Fente debout.<br>2. Niveau simple : Press uniquement à la montée.<br>3. Niveau difficile : Press à la montée ET à la redescente.",
+            tip: "Renforce la stabilité de l'épaule dans tous les angles du TGU."
+          }
+        ]
+      },
+      {
+        id: "flow-tgu-3",
+        badge: "T3",
+        badgeClass: "ci-g",
+        titleClass: "ct-g",
+        title: "TGU Warm-up Flow 3️⃣ · 5-10 min",
+        desc: "Lance un chrono de 5 à 10' et enchaîne le TGU flow suivant avec un KB léger :",
+        exos: [
+          {
+            n: "Glute Bridge & Thruster Flow",
+            p: ["KB léger"],
+            pos: "Allongé sur le dos avec le Kettlebell.",
+            steps: "1. 3 Glute Bridge Floor Press (pont fessier + développer couché).<br>2. Monter jusqu'en fente fendu et enchaîner 3 Swipes de jambe.<br>3. Une fois debout, effectuer 2 Thrusters stricts.<br>4. Revenir au sol en Get-Down.",
+            tip: "Parfait pour déverrouiller la triple extension hanche/genou/cheville."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    category: "Isolations Articulaires — Jours Off / Activation",
+    items: [
+      {
+        id: "iso-chevilles",
+        badge: "C",
+        badgeClass: "ci-b",
+        titleClass: "ct-b",
+        title: "Chevilles Flow 1️⃣ · 2-3 tours",
+        desc: "Travailler l’amplitude et le contrôle des chevilles de manière active et passive. Idéal pour la profondeur de squat.",
+        exos: [
+          {
+            n: "Ankle CARs",
+            p: ["5 rotations lentes/côté"],
+            pos: "Assis, tibia immobilisé avec la main.",
+            steps: "1. Effectuer de grands cercles très lents avec le pied.<br>2. Chercher à contracter les muscles de la cheville à chaque angle.",
+            tip: "Ne pas bouger le genou."
+          },
+          {
+            n: "Kneeling Ankle Stretch + 10 Ankle Rocks",
+            p: ["60s maintien + 10 rocks/côté"],
+            pos: "En fente, genou arrière au sol.",
+            steps: "1. Maintenir 60 secondes le genou avant avancé au maximum sans décoller le talon.<br>2. Enchaîner avec 10 petits mouvements de pompage (rocks) vers l'avant.",
+            tip: "Appuyer la poitrine sur la cuisse avant pour ajouter une charge passive douce."
+          },
+          {
+            n: "Calf Stretch + Toe Stretch (half kneeling)",
+            p: ["60s/posture/côté"],
+            pos: "Position fente, orteils du pied arrière retournés sous le pied.",
+            steps: "1. Étirer le mollet jambe tendue.<br>2. S'asseoir sur le talon arrière pour étirer la voûte plantaire et les orteils pendant 60s.",
+            tip: "Essentiel pour libérer la mobilité du pied et l'amorti."
+          },
+          {
+            n: "Deep Squat Hold",
+            p: ["120s"],
+            pos: "Squat complet au sol à vide ou en se tenant à un poteau/cadre.",
+            steps: "1. Descendre au plus bas.<br>2. Relâcher le bassin entre les chevilles tout en maintenant le buste droit.",
+            tip: "Respirer calmement par le ventre pour relâcher les tensions musculaires."
+          }
+        ]
+      },
+      {
+        id: "iso-hanches",
+        badge: "H",
+        badgeClass: "ci-o",
+        titleClass: "ct-o",
+        title: "Hanches Flow 1️⃣ · 2-3 tours",
+        desc: "Cible l’amplitude active et le contrôle des hanches dans tous les plans.",
+        exos: [
+          {
+            n: "Standing Hip CARs",
+            p: ["5 rotations lentes/côté"],
+            pos: "Debout à côté d'un mur pour maintenir l'équilibre.",
+            steps: "1. Lever le genou -> Ouvrir latéralement -> Pivot arrière -> Ramener au centre.",
+            tip: "Maintenir les abdominaux contractés pour éviter de creuser les lombaires."
+          },
+          {
+            n: "Slow 90/90 Hip Switch",
+            p: ["10 reps lentes"],
+            pos: "Assis au sol en position 90/90.",
+            steps: "1. Pivoter lentement d'un côté à l'autre sans toucher le sol avec les mains.",
+            tip: "Marquer 2s d'arrêt dans chaque position."
+          },
+          {
+            n: "Hip Internal Rotation Lift & Hold",
+            p: ["5 reps/côté"],
+            pos: "En position 90/90, se concentrer sur la jambe arrière.",
+            steps: "1. Maintenir le genou au sol.<br>2. Essayer de décoller uniquement la cheville/pied arrière du sol.<br>3. Maintenir 3 secondes en haut.",
+            tip: "Sensation intense de contraction sur le côté de la hanche."
+          },
+          {
+            n: "Hip Rocks Side to Side (ou Cossack Squat)",
+            p: ["10 reps/côté"],
+            pos: "Pieds très écartés (ouverture large).",
+            steps: "1. Descendre le poids du corps sur la jambe droite en fléchissant le genou.<br>2. La jambe gauche reste tendue, pointe de pied tournée vers le ciel.<br>3. Basculer de l'autre côté.",
+            tip: "Garder le talon de la jambe fléchie ancré au sol."
+          }
+        ]
+      },
+      {
+        id: "iso-colonne",
+        badge: "K",
+        badgeClass: "ci-k",
+        titleClass: "ct-k",
+        title: "Colonnes Flow 1️⃣ · 2-3 tours",
+        desc: "Restaure la mobilité segmentaire de la colonne vertébrale des cervicales aux lombaires.",
+        exos: [
+          {
+            n: "Prone Scorpion",
+            p: ["10 reps/côté"],
+            pos: "Allongé à plat ventre sur le sol, bras écartés en croix.",
+            steps: "1. Lever la jambe droite.<br>2. Amener le pied droit vers la main gauche en faisant pivoter le bassin.<br>3. Maintenir les deux épaules collées au sol.",
+            tip: "Ouvre les fléchisseurs de hanche et la colonne en rotation."
+          },
+          {
+            n: "Cat Cow Cobra",
+            p: ["5 reps/posture"],
+            pos: "Départ à 4 pattes.",
+            steps: "1. 5 reps de Chat (dos rond).<br>2. 5 reps de Vache (dos creux).<br>3. Glisser le bassin au sol pour 5 répétitions en Cobra.",
+            tip: "Prendre le temps d'expirer lors des phases d'extension."
+          },
+          {
+            n: "Quadruped Thoracic Rotation",
+            p: ["10 rotations/côté"],
+            pos: "À 4 pattes, une main placée derrière la tête.",
+            steps: "1. Amener le coude plié vers le poignet opposé.<br>2. Ouvrir le coude vers le ciel en tournant uniquement la cage thoracique.",
+            tip: "Le bassin ne doit pas bouger."
+          },
+          {
+            n: "Jefferson Curl",
+            p: ["10 reps lentes"],
+            pos: "Debout, pieds largeur de hanches.",
+            steps: "1. Enrouler lentement le corps vers le sol vertèbre par vertèbre.<br>2. Chercher le contact avec le sol puis remonter contrôlé.",
+            tip: "Garder les jambes tendues."
+          }
+        ]
+      },
+      {
+        id: "iso-epaules",
+        badge: "É",
+        badgeClass: "ci-g",
+        titleClass: "ct-g",
+        title: "Épaules Flow 1️⃣ · 2-3 tours",
+        desc: "Mobilité active et passive des épaules. Améliore la stabilité overhead.",
+        exos: [
+          {
+            n: "Shoulder CARs",
+            p: ["5 rotations lentes/bras"],
+            pos: "Debout, corps gainé.",
+            steps: "1. Exécuter de grand cercles contrôlés dans toute l'amplitude.",
+            tip: "Se focaliser sur la qualité de la rotation interne et externe."
+          },
+          {
+            n: "Shoulder Flexion Passive Stretch + Lift Off",
+            p: ["30s stretch", "10 reps (maintien 3s)"],
+            pos: "À genoux devant une chaise ou un bloc, avant-bras posés sur le support.",
+            steps: "1. Laisser couler la poitrine vers le sol pendant 30s.<br>2. Contracter les dorsaux et essayer de décoller les poignets du bloc pendant 3s (10 reps).",
+            tip: "Développe une vraie force en fin d'amplitude overhead."
+          },
+          {
+            n: "External Rotation Passive Stretch + Lift Off",
+            p: ["30s stretch", "5 reps (maintien 3s)"],
+            pos: "Allongé au sol, coude calé à 90° dans l'axe de l'épaule.",
+            steps: "1. Étirer en rotation externe (30s).<br>2. Décoller la main du sol contre la gravité (5 reps de 3s).",
+            tip: "Renforce les rotateurs externes de l'épaule."
+          },
+          {
+            n: "Crab Extension + Blackburn",
+            p: ["10 reps chaque"],
+            pos: "Assis pieds à plat, mains posées derrière les fesses au sol.",
+            steps: "1. Pousser les hanches vers le ciel en ouvrant les épaules (Crab Extension).<br>2. Passer à plat ventre pour lever les bras et resserrer les omoplates (Blackburn).",
+            tip: "Corrige l'enroulement des épaules vers l'avant."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    category: "Flexibilité Passive — Jours Off ou Fin de Séance",
+    items: [
+      {
+        id: "flex-routine-a",
+        badge: "A",
+        badgeClass: "ci-n",
+        titleClass: "ct-n",
+        title: "Routine A — Chaîne postérieure & hanches · 1-3 tours",
+        desc: "Axée sur mollets, ischios, fessiers, lombaires et dos. Tiens chaque posture 60-120s.",
+        exos: [
+          {
+            n: "Calf Stretch",
+            p: ["90s/côté"],
+            pos: "Face à un mur, une jambe tendue derrière, talon au sol.",
+            steps: "1. Avancer le bassin vers le mur en gardant la jambe arrière bien tendue et le talon ancré.",
+            tip: "Étirement profond du mollet."
+          },
+          {
+            n: "Sitting on Toes",
+            p: ["60s"],
+            pos: "À genoux, orteils retournés sous les fesses.",
+            steps: "1. S'asseoir doucement sur les talons pour mettre sous tension la plante des pieds.",
+            tip: "Travail passif de la voûte plantaire et des chevilles."
+          },
+          {
+            n: "Half Kneeling Hip Flexor + Toe Grab",
+            p: ["90s/côté"],
+            pos: "En fente, genou arrière au sol.",
+            steps: "1. Basculer le bassin en rétroversion (serrer la fesse arrière).<br>2. Attraper le pied arrière avec la main pour ramener le talon à la fesse.",
+            tip: "Étirement combiné intense du psoas et du quadriceps."
+          },
+          {
+            n: "Kneeling Hamstring Stretch",
+            p: ["90s/jambe"],
+            pos: "Un genou au sol, l'autre jambe tendue devant sur le talon.",
+            steps: "1. Basculer le buste vers l'avant dos plat en poussant les fesses vers l'arrière.",
+            tip: "Étire les ischios sans arrondir le bas du dos."
+          },
+          {
+            n: "Lying Side Glute Stretch",
+            p: ["90s/côté"],
+            pos: "Allongé sur le dos.",
+            steps: "1. Croiser la cheville droite sur le genou gauche.<br>2. Attraper l'arrière de la cuisse gauche et tirer vers soi.",
+            tip: "Étirement ciblé du fessier et du piriforme."
+          },
+          {
+            n: "Stick Rounded Back Stretch",
+            p: ["90s"],
+            pos: "Assis ou debout, un bâton tenu à deux mains devant soi.",
+            steps: "1. Pousser le bâton vers l'avant en arrondissant le haut du dos.",
+            tip: "Ouvre l'espace entre les deux omoplates."
+          }
+        ]
+      },
+      {
+        id: "flex-routine-b",
+        badge: "B",
+        badgeClass: "ci-n",
+        titleClass: "ct-n",
+        title: "Routine B — Chaînes croisées & antérieures · 1-3 tours",
+        desc: "Ouvre la chaîne antérieure et les hanches. Idéal après de longues heures assis.",
+        exos: [
+          {
+            n: "Child Pose",
+            p: ["90s"],
+            pos: "À genoux au sol, fesses posées sur les talons.",
+            steps: "1. Allonger les bras loin devant et poser le front au sol.<br>2. Relâcher le poids de la cage thoracique.",
+            tip: "Relâche la colonne, les dorsaux et les épaules."
+          },
+          {
+            n: "Bretzel Stretch",
+            p: ["90s/côté"],
+            pos: "Allongé sur le côté droit.",
+            steps: "1. Plier la jambe du haut à 90° devant et la maintenir avec la main gauche.<br>2. Attraper le pied du bas avec la main droite derrière.<br>3. Pivoter l'épaule du haut vers le sol.",
+            tip: "Étirement complet en torsion du psoas, quadriceps et thorax."
+          },
+          {
+            n: "Couch Stretch",
+            p: ["90s/jambe"],
+            pos: "Genou arrière calé contre un mur ou un canapé, pied avant en fente.",
+            steps: "1. Redresser le buste le plus verticalement possible en serrant la fesse arrière.",
+            tip: "L'un des étirements les plus puissants pour les quadriceps et le psoas."
+          },
+          {
+            n: "Seated Abductor Stretch",
+            p: ["90s"],
+            pos: "Assis au sol, plantes de pieds collées l'une contre l'autre (Papillon).",
+            steps: "1. Laisser tomber les genoux sur les côtés.<br>2. Se pencher légèrement vers l'avant dos plat.",
+            tip: "Étirement doux des adducteurs."
+          },
+          {
+            n: "Forward Fold with Toes Elevated",
+            p: ["90s"],
+            pos: "Debout, pointes de pieds posées sur une cale ou un livre.",
+            steps: "1. Laisser pendre le haut du corps vers le sol bras et tête relâchés.",
+            tip: "Étire toute la chaîne postérieure de la plante des pieds jusqu'en bas du dos."
+          }
+        ]
+      }
+    ]
+  }
+];
