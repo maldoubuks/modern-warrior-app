@@ -76,7 +76,7 @@ function calculateLevel(points) {
   return { current, next };
 }
 
-// ── FICHE HTML DÉTAILLÉE (REGEX CORRIGÉE) ───────────────────────────────────
+// ── FICHE HTML DÉTAILLÉE (RENDU CLEAN LIGHT ET SANS REDONDANCES) ───────────
 
 function ficheHTML(key) {
   const s = SD[key];
@@ -111,9 +111,13 @@ function ficheHTML(key) {
     let rest = '';
     let format = '';
 
-    // Regex sécurisée avec tirets échappés
+    // Extraction des rounds depuis le nom du bloc
     let matchRoundsB = b.name.match(/\(?(\d+[\s\-\–aà]*\d*\s*(RDS|rounds|tours|séries))\)?/i);
     if (matchRoundsB) rounds = matchRoundsB[1];
+
+    // Extraction des repos depuis le nom du bloc
+    let matchRestB = b.name.match(/repos\s*([\d\-\–\s]+min|[\d\-\–\s]+s)/i);
+    if (matchRestB) rest = 'Repos ' + matchRestB[1];
 
     b.exos.forEach(e => {
       if (e.p) {
@@ -128,6 +132,7 @@ function ficheHTML(key) {
           if (!format) {
             if (/EMOM/i.test(p) || /EMOM/i.test(b.name)) format = 'EMOM';
             else if (/AMRAP/i.test(p) || /AMRAP/i.test(b.name)) format = 'AMRAP';
+            else if (/complexe/i.test(p) || /complexe/i.test(b.name)) format = 'Complex';
             else if (/superset/i.test(p) || /superset/i.test(b.name)) format = 'Superset';
             else if (/circuit/i.test(p) || /circuit/i.test(b.name)) format = 'Circuit';
             else if (/deadstop/i.test(p) || /deadstop/i.test(b.name)) format = 'Deadstop';
@@ -153,10 +158,17 @@ function ficheHTML(key) {
       catBadgeBg = 'rgba(46,204,113,0.15)';
       catBadgeColor = '#2ecc71';
       borderAccent = '#2ecc71';
+      if (!rounds) rounds = '2 à 3 RDS';
+      if (!rest) rest = 'Repos 1-2 min';
       if (!format) format = 'Circuit Accessoires';
     }
 
-    let cleanName = b.name.replace(/\(\d+[\s\-\–aà]*\d*\s*(RDS|rounds|tours|séries)\)/gi, '').trim();
+    // Nettoyage du nom de bloc affiché sous la catégorie
+    let cleanName = b.name
+      .replace(/\(\d+[\s\-\–aà]*\d*\s*(RDS|rounds|tours|séries)[^\)]*\)/gi, '')
+      .replace(/- Repos[^\)]*/gi, '')
+      .replace(/-\s*EMOM.*/gi, '')
+      .trim();
 
     h += `
       <div style="background:#ffffff; border:1px solid #e0e0e0; border-radius:12px; padding:14px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.02);">
@@ -175,15 +187,17 @@ function ficheHTML(key) {
     `;
 
     b.exos.forEach(e => {
+      // Filtrer les pilules redondantes déjà présentes dans les badges
+      let filteredPills = (e.p || []).filter(p => !/séries|RDS|rounds|repos/i.test(p));
+
       h += `
         <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px; background:#fafafa; border:1px solid #e8e8e8; border-radius:10px;">
           <div style="flex:1;">
             <div style="font-size:13.5px; font-weight:800; color:#1e1e1e; margin-bottom:6px;">${e.n}</div>
             <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:6px;">
-              ${e.p.map(p => {
+              ${filteredPills.map(p => {
                 let bg = '#e9ecef', clr = '#212529';
                 if(p.includes('KB') || p.includes('kg')) { bg = 'rgba(216,90,48,0.15)'; clr = '#d85a30'; }
-                else if(p.includes('Repos') || p.includes('min')) { bg = '#e3fafc'; clr = '#0c8599'; }
                 return `<span style="font-size:10.5px; font-weight:700; background:${bg}; color:${clr}; padding:3px 8px; border-radius:4px;">${p}</span>`;
               }).join('')}
             </div>
