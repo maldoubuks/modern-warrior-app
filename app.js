@@ -658,7 +658,7 @@ function tog(h){
   }
 }
 
-// ── RENDU DYNAMIQUE DE LA PAGE SÉANCES ──────────────────────────────────────
+// ── RENDU DYNAMIQUE DE LA PAGE SÉANCES (DA HARMONISÉE CLEAN LIGHT) ─────────
 function renderSeances() {
   const container = document.getElementById('seances-list-container');
   const selectEl = document.getElementById('seances-phase-select');
@@ -696,25 +696,25 @@ function renderSeances() {
       if (!s) return;
       
       let letter = k.charAt(0);
-      let c_bg = letter === 'A' ? 'rgba(216,90,48,0.15)' : (letter === 'B' ? 'rgba(55,140,221,0.15)' : 'rgba(46,204,113,0.15)');
-      let c_icn = letter === 'A' ? 'var(--or)' : (letter === 'B' ? '#378ADD' : '#2ecc71');
-      let c_txt = letter === 'A' ? '#ff9f43' : (letter === 'B' ? '#54a0ff' : '#2ed573');
+      let c_bg = letter === 'A' ? 'var(--orl)' : (letter === 'B' ? 'var(--bll)' : 'var(--grl)');
+      let c_icn = letter === 'A' ? 'var(--or)' : (letter === 'B' ? 'var(--bl)' : 'var(--gr)');
+      let c_txt = letter === 'A' ? 'var(--ord)' : (letter === 'B' ? 'var(--bld)' : 'var(--grd)');
 
       h += `
-        <div class="slc" style="margin-bottom:14px; border:1px solid #333; border-radius:12px; overflow:hidden; background:#1e1e1e; box-shadow:0 4px 10px rgba(0,0,0,0.3);">
+        <div class="slc" style="margin-bottom:14px; border:1px solid #e0e0e0; border-radius:12px; overflow:hidden; background:#ffffff; box-shadow:0 2px 6px rgba(0,0,0,0.03);">
           <div class="slc-h" style="background:${c_bg}; padding:14px; display:flex; align-items:center; flex-wrap:wrap; gap:10px;">
-            <div class="slc-icon" style="background:${c_icn};color:#fff; font-weight:800; border-radius:8px; width:38px; height:38px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">${letter}</div>
+            <div class="slc-icon" style="background:${c_icn}; color:#fff; font-weight:800; border-radius:8px; width:38px; height:38px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">${letter}</div>
             <div class="slc-info" style="flex:1; min-width:150px;">
               <div class="slc-title" style="color:${c_txt}; font-size:14px; font-weight:800;">${s.title}</div>
-              <div class="slc-sub" style="font-size:11px; color:#aaa; margin-top:2px;">${s.exos ? s.exos.length + ' exercices' : ''}</div>
+              <div class="slc-sub" style="font-size:11px; color:#666666; margin-top:2px;">${s.exos ? s.exos.length + ' exercices' : ''}</div>
             </div>
             <div style="display:flex; gap:6px;">
               <button class="slc-play" style="background:${c_icn}; color:#fff; border:none; border-radius:8px; padding:8px 14px; font-size:12px; font-weight:700; cursor:pointer;" onclick="startPlayer('${k}')">▶ Live</button>
-              <button style="background:#2a2a2a; border:1px solid #555; border-radius:8px; padding:8px 12px; font-size:12px; font-weight:700; color:#fff; cursor:pointer;" onclick="openRetroModal('${k}')">📝 Saisir</button>
+              <button style="background:#f0f0f0; border:1px solid #d0d0d0; border-radius:8px; padding:8px 12px; font-size:12px; font-weight:700; color:#333; cursor:pointer;" onclick="openRetroModal('${k}')">📝 Saisir</button>
             </div>
           </div>
-          <div style="padding:12px 14px; cursor:pointer; background:#252525; border-top:1px solid rgba(255,255,255,0.05);" onclick="tog(this)">
-            <div style="font-size:12px; font-weight:700; color:#aaa; display:flex; align-items:center; justify-content:space-between;">
+          <div style="padding:12px 14px; cursor:pointer; background:#ffffff; border-top:1px solid rgba(0,0,0,0.05);" onclick="tog(this)">
+            <div style="font-size:12px; font-weight:700; color:#666666; display:flex; align-items:center; justify-content:space-between;">
               <span>Voir la fiche détaillée</span>
               <span class="chv" style="transition:transform 0.2s; font-size:14px;">›</span>
             </div>
