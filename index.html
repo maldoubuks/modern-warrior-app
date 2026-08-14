@@ -21,18 +21,20 @@
     display: block !important;
   }
 
-  /* 🟢 MODALES & OVERLAYS RESPONSIVE */
-  #retro-modal, #player, #finish, .modal-overlay {
+  /* 🟢 MODALES & OVERLAYS RESPONSIVE (Fermeture garantie) */
+  #retro-modal, #finish, .modal-overlay {
     display: none;
     pointer-events: none;
   }
-  #retro-modal.active, #player.active, #finish.active, .modal-overlay.active {
+  #retro-modal.active, #finish.active, .modal-overlay.active {
     display: flex !important;
     pointer-events: auto !important;
   }
 
-  /* 📱 CORRECTIF ABSOLU PLAYER LIVE (1 COLONNE VERTICALE & ACTION BAR FIXE) */
+  /* 📱 PLAYER LIVE (Masqué par défaut, Flex uniquement quand .active) */
   #player {
+    display: none !important;
+    pointer-events: none !important;
     position: fixed !important;
     inset: 0 !important;
     width: 100vw !important;
@@ -40,7 +42,6 @@
     height: 100dvh !important;
     background: #121212 !important;
     z-index: 99999 !important;
-    display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: space-between !important;
@@ -48,6 +49,11 @@
     padding: 0 !important;
     margin: 0 !important;
     overflow: hidden !important;
+  }
+
+  #player.active {
+    display: flex !important;
+    pointer-events: auto !important;
   }
 
   #player .p-nav {
@@ -63,13 +69,13 @@
   }
 
   #player .p-close {
-    background: rgba(255,255,255,0.1) !important;
+    background: rgba(255,255,255,0.15) !important;
     color: #ffffff !important;
     border: none !important;
-    width: 32px !important;
-    height: 32px !important;
+    width: 34px !important;
+    height: 34px !important;
     border-radius: 50% !important;
-    font-size: 16px !important;
+    font-size: 18px !important;
     cursor: pointer !important;
     display: flex !important;
     align-items: center !important;
