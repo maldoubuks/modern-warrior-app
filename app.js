@@ -1599,4 +1599,4 @@ function checkNotificationStatus() {
   if ('Notification' in window && Notification.permission === 'granted') {
     btn.style.display = 'none';
   }
-}
+} // 👈 LE FICHIER APP.JS SE TERMINE ICI ! (Pas de '}' en dessous)
