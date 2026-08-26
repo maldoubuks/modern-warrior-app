@@ -1174,3 +1174,120 @@ const BODYWEIGHT_DATA = {
     }
   ]
 };
+
+// =========================================================================
+// ── MODULE MENTAL & DISCIPLINE : L'ESPRIT DU GUERRIER 🧠 ────────────────
+// =========================================================================
+
+const ESPRIT_GUERRIER_DATA = {
+  title: "L'Esprit du Guerrier",
+  subtitle: "Mindset, Routines Matinales, Mental & Challenge 30 Jours",
+  intro: "Tout démarre le matin. C'est le seul moment où tu es seul, sans distractions ni obligations. Si tu maîtrises ton matin, tu contrôles ta journée. Si tu le subis, tu vis dans le chaos.",
+  
+  routines: {
+    v1: {
+      title: "🌅 Le Matin du Guerrier — Routine V1 (30 min)",
+      rule: "Règle d'or : Aucun téléphone ni écran avant la fin de la routine.",
+      steps: [
+        {
+          step: "1",
+          name: "Réveil + Brossage + Verre d'eau",
+          time: "2 min",
+          desc: "Levé dès la première sonnerie (zéro snooze). Brossage de dents immédiat pour couper l'état de sommeil, suivi de 500 ml d'eau pour réhydrater l'organisme après le jeûne nocturne."
+        },
+        {
+          step: "2",
+          name: "Lecture Stimulante",
+          time: "10 min",
+          desc: "Lecture de 5 à 10 pages d'un livre élevant (développement personnel, philosophie, histoire). Absorber une idée concrète à appliquer dans sa journée."
+        },
+        {
+          step: "3",
+          name: "Méditation & Ancrage",
+          time: "10 min",
+          desc: "Assis dos droit, respiration nasale (4s inspiration / 4s expiration). Observer ses pensées sans les suivre et ramener constamment l'attention au souffle."
+        },
+        {
+          step: "4",
+          name: "Réveil Musculaire V1",
+          time: "10 min",
+          desc: "Activation du système nerveux et drajnage lymphatique. Séquence de 7 exercices enchaînés au format 60s d'effort / 15s de repos."
+        },
+        {
+          step: "5",
+          name: "Douche Froide",
+          time: "1 à 3 min",
+          desc: "1 à 3 min d'eau glacée (ou 30-60s à la fin d'une douche chaude). Victoire psychologique quotidienne sur l'inconfort volontaire."
+        }
+      ],
+      bonus: "Boucle de récompense (Atomic Habits) : Assigne une récompense directe à la validation de ta routine (ex : ne pas boire une goutte de café avant d'avoir terminé la routine)."
+    },
+    v2: {
+      title: "🥷 Le Matin du Guerrier — Routine V2 (Focus Souplesse & Abdos)",
+      rule: "Format réorganisé pour cibler la chaîne postérieure (ischios/lombaires) et le grand droit (abdos).",
+      steps: [
+        { step: "1", name: "Réveil + Brossage + Verre d'eau", time: "2 min", desc: "Hydratation et réveil physique immédiat." },
+        { step: "2", name: "Méditation Approfondie", time: "15 min", desc: "15 min de silence total pour calmer le cortisol et réguler la dopamine." },
+        { step: "3", name: "Réveil Musculaire V2 + Core", time: "10 min", desc: "Mobilisations + 100 Elephant Walks + 5x10 Ab Wheel (ou Plank Walk Out)." },
+        { step: "4", name: "Douche Chaude + Choc Thermique", time: "2 min", desc: "Douche normale puis 30 à 60s d'eau froide à la fin." },
+        { step: "5", name: "Café + Lecture", time: "10 min", desc: "Déguster son café comme récompense tout en lisant ses 5 à 10 pages quotidiennes." }
+      ]
+    }
+  },
+
+  reveilExos: {
+    v1: [
+      { name: "1. Body Waves", format: "60s WORK / 15s REST", tip: "Ondulations de la colonne vertébrale. Partir des hanches pour dérouler jusqu'aux cervicales." },
+      { name: "2. Arms Swings", format: "60s WORK / 15s REST", tip: "Balancements croisés des bras devant la poitrine pour ouvrir la cage thoracique et les épaules." },
+      { name: "3. Trunk Rotations", format: "60s WORK / 15s REST", tip: "Rotations debout du buste, bras souples. Déverrouille les lombaires et le bassin." },
+      { name: "4. Dead Arms Swings", format: "60s WORK / 15s REST", tip: "Buste légèrement penché, bras complètement relâchés oscillant par l'impulsion du corps." },
+      { name: "5. March Tap", format: "60s WORK / 15s REST", tip: "Marche sur place dynamique en touchant le genou opposé avec la main." },
+      { name: "6. Forward Fold", format: "60s WORK / 15s REST", tip: "Flexion avant du buste, jambes quasi tendues, laisser pendre le haut du corps." },
+      { name: "7. Bunny Hops", format: "60s WORK / 15s REST", tip: "Petits sautillements légers sur les pointes de pieds pour stimuler la circulation." }
+    ],
+    v2: [
+      { name: "1. Mobilisation Cervicale + Thoracique", format: "20 reps", tip: "Cercle lent de la tête puis enroulement/déroulement du haut du dos." },
+      { name: "2. Body Waves", format: "20 reps", tip: "Ondulations fluides de la colonne pour délier les vertèbres." },
+      { name: "3. Dead Arms Swings", format: "40 reps", tip: "Balancements relâchés des bras pour libérer les tensions des épaules." },
+      { name: "4. Trunk Twist", format: "15/15 reps", tip: "Torsions du buste de chaque côté en gardant le bassin ancré." },
+      { name: "5. Elephant Walks", format: "100 reps", tip: "Mains au sol (ou sur support), plier un genou puis l'autre en alternance pour étirer profondément les ischios." },
+      { name: "6. Ab Wheel (ou Plank Walk Out)", format: "5 x 10 reps (30-60s repos)", tip: "Viser 25 à 50 répétitions au total pour développer le six-pack." }
+    ]
+  },
+
+  books: [
+    { title: "La Guerre de l'Art", author: "Steven Pressfield", desc: "Vaincre la « Résistance », cet ennemi invisible qui pousse à la procrastination et à l'auto-sabotage." },
+    { title: "Psycho-Cybernétique", author: "Maxwell Maltz", desc: "Reprogrammer son image de soi. Tes résultats extérieurs reflètent directement ta perception intérieure." },
+    { title: "Un rien peut tout changer", author: "James Clear", desc: "La méthode des habitudes atomiques : ajustements de 1% et création de boucles de récompense." },
+    { title: "Plus rien ne pourra me blesser", author: "David Goggins", desc: "Autobiographie brute sur la résilience extrême et la transformation de la souffrance en force." },
+    { title: "Pensées pour moi-même", author: "Marc Aurèle", desc: "Manuel de stoïcisme : maîtriser ses réactions, rester calme dans la tempête et discipliné." },
+    { title: "Miracle Morning", author: "Hal Elrod", desc: "Structure de routine matinale (silence, écriture, exercice, lecture) pour prendre l'avantage mental." },
+    { title: "Influence et Manipulation", author: "Robert Cialdini", desc: "Comprendre les 6 leviers de la psychologie humaine pour mieux communiquer et se protéger." },
+    { title: "Réfléchissez et devenez riche", author: "Napoleon Hill", desc: "Les principes mentaux fondamentaux pour transformer une idée en réussite concrète." }
+  ],
+
+  combat: {
+    title: "🥊 Sports de Contact & Modern Warrior",
+    rules: [
+      "**Compatibilité** : 3 séances KB + 1 à 2 séances de Boxe, MMA ou JJB par semaine.",
+      "**Profil Débutant / Surpoids** : Valider d'abord les 3 phases KB (Éveil, Forge, Ascension) pour bâtir la caisse physique avant de monter sur le ring.",
+      "**Profil Avancé** : Combinaison directe possible.",
+      "**Hack Biquotidien** : Si entraînement KB et combat le même jour, supprimer le bloc de renforcement à la fin de la séance KB pour garder de la fraîcheur."
+    ]
+  },
+
+  challenge: {
+    title: "🏆 Challenge Modern Warrior — 30 Jours",
+    subtitle: "Règles non négociables pour forger la discipline.",
+    rules: [
+      "Matin du Guerrier validé chaque jour (lecture, méditation, réveil musculaire, douche froide).",
+      "Minimum 3 séances de sport par semaine (Kettlebells, Clubbells ou sport de combat).",
+      "2 séances de stretching/mobilité par semaine.",
+      "60 minutes de marche consciente par jour (sans téléphone, sans musique, sans podcast).",
+      "Zéro porno, zéro jeux vidéo, zéro alcool pendant 30 jours.",
+      "Jeûne matinal de 3 heures post-réveil (aucun apport calorique).",
+      "Diète intuitive basée sur des aliments bruts et l'écoute de la satiété.",
+      "Aucun téléphone avant la routine du matin + arrêt des écrans 2h avant le coucher (0 écran 30 min avant de dormir)."
+    ]
+  }
+};
