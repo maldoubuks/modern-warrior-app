@@ -326,150 +326,293 @@ const SD = {
     ]
   },
 
-  // =========================================================================
-  // ── PHASE 2 : BANKAI (HYPERTROPHIE S1 à S8) ──────────────────────────────
+// =========================================================================
+  // ── PHASE 2 : BANKAI (HYPERTROPHIE S1 À S8 DÉTAILLÉ) ─────────────────────
   // =========================================================================
 
+  // ── SEMAINE 1 ────────────────────────────────────────────────────────────
   "A-BK1": {
-    "title": "Bankai A1 - Upper/Lower Supersets (S1-S2)",
+    "title": "Bankai A1 - Upper/Lower Supersets (S1)",
     "trackId": "b1a",
     "exos": [
-      {"b": "🔹 Mobilité A (1/3)", "n": "Prying Squat", "p": ["5 reps", "5s pause"], "img": "assets/exos/prying-squat.gif", "tip": "Ouverture des hanches."},
-      {"b": "🔹 Mobilité A (2/3)", "n": "Piriformis Push-up", "p": ["5 reps/côté"], "tip": "Mobilité fessiers & bassin."},
-      {"b": "🔹 Mobilité A (3/3)", "n": "Blackburn", "p": ["10 reps"], "tip": "Activation haut du dos."},
-      {"b": "🔹 Superset Upper (4-6 RDS)", "n": "Double KB Press", "p": ["5-8 reps"], "img": "assets/exos/press.gif", "tip": "Contrôle excentrique 2-3s."},
-      {"b": "🔹 Superset Upper (4-6 RDS)", "n": "KB Row à 1 bras", "p": ["8-12 reps/côté"], "img": "assets/exos/row.gif", "tip": "Tirage lourd. Repos 60-120s après le duo."},
-      {"b": "🔹 Superset Lower (4-6 RDS)", "n": "1H Swing", "p": ["6-10 reps/côté"], "img": "assets/exos/swing.gif", "tip": "Explosion de hanche."},
-      {"b": "🔹 Superset Lower (4-6 RDS)", "n": "Goblet Squat (Tempo 31X1)", "p": ["8-12 reps"], "img": "assets/exos/goblet-squat.webp", "tip": "3s de descente contrôlée. Repos 60-120s après le duo."},
-      {"b": "🔹 Finisher Core (2-4 RDS)", "n": "Hollow Hold + Kneeling Halo + Flutter Kicks", "p": ["30s ON / 30s OFF"], "img": "assets/exos/halo.gif", "tip": "Gainage continu."}
+      {"b": "🔹 Mobilité A (3 tours sans repos)", "n": "Prying Squat", "p": ["45s", "KB 12-16 kg"], "img": "assets/exos/prying-squat.gif", "tip": "KB sous le menton. Squat profond, coudes ouvrent les genoux. Petites bascules de poids pour ouvrir les hanches."},
+      {"b": "🔹 Mobilité A (3 tours sans repos)", "n": "Piriformis Push-up", "p": ["10 reps/côté", "Poids du corps"], "tip": "Position de pompe. Amène le genou fléchi en travers sous la poitrine pour étirer le fessier en descente."},
+      {"b": "🔹 Mobilité A (3 tours sans repos)", "n": "Blackburn", "p": ["10 reps", "Poids du corps"], "tip": "Allongé plat ventre, front au sol. Élève les bras en Y puis T en serrant les omoplates. Dos immobile."},
+      {"b": "🔹 Superset Upper (4-6 RDS - Repos 60-120s)", "n": "Double Press", "p": ["5-8 reps", "2x12-16 kg"], "img": "assets/exos/press.gif", "tip": "Coudes rentrés à 45°. Verrouille les fessiers et les abdos, presse les 2 KB au-dessus de la tête sans archer le dos."},
+      {"b": "🔹 Superset Upper (4-6 RDS - Repos 60-120s)", "n": "KB Row (ou Pull-Up)", "p": ["8-12 reps/côté", "KB 16-20 kg"], "img": "assets/exos/row.gif", "tip": "Dos plat à 45°. Tire le coude lourdement vers la hanche sans pivoter le buste. Contrôle la descente."},
+      {"b": "🔹 Superset Lower (4-6 RDS - Repos 60-120s)", "n": "1H Swing", "p": ["6-10 reps/côté", "KB 16-20 kg"], "img": "assets/exos/swing.gif", "tip": "Charnière de hanche pure. Laisse descendre le KB haut sous le pubis avant de fléchir. Explosion des fessiers."},
+      {"b": "🔹 Superset Lower (4-6 RDS - Repos 60-120s)", "n": "Goblet Squat TEMPO (31X1)", "p": ["8-12 reps", "KB 16-20 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Descente contrôlée sur 3s, pause 1s en bas sans te relâcher, remontée explosive, 1s au sommet."},
+      {"b": "🔹 Circuit Core (2-4 RDS - Format 30s ON / 30s OFF)", "n": "Hollow Hold + Kneeling Halo + Flutter Kicks", "p": ["30s ON / 30s OFF"], "img": "assets/exos/halo.gif", "tip": "Enchaîne les 3 exercices. Bas du dos plaqué au sol sur le Hollow et les Flutter. Coudes bas sur le Halo."}
     ]
   },
-
   "B-BK1": {
-    "title": "Bankai B1 - Push/Pull & Double Squat (S1-S2)",
+    "title": "Bankai B1 - Push/Pull & Double Squat (S1)",
     "trackId": "b1b",
     "exos": [
-      {"b": "🔹 Mobilité B (1/3)", "n": "Cobra to Down Dog", "p": ["10 reps"], "tip": "Chaîne antérieure & postérieure."},
-      {"b": "🔹 Mobilité B (2/3)", "n": "Hip 90-90", "p": ["10 reps"], "tip": "Mobilité hanches."},
-      {"b": "🔹 Mobilité B (3/3)", "n": "Prone Scorpion", "p": ["10 reps"], "tip": "Ouverture thoracique & psoas."},
-      {"b": "🔹 Superset 1 (4-6 RDS)", "n": "KB Push-up", "p": ["5-15 reps"], "tip": "Mains sur le poignée du KB."},
-      {"b": "🔹 Superset 1 (4-6 RDS)", "n": "Goblet Reverse Lunge", "p": ["5-8 reps/côté"], "img": "assets/exos/goblet-squat.webp", "tip": "Fente arrière. Repos 60-120s."},
-      {"b": "🔹 Superset 2 (4-6 RDS)", "n": "Double Dead Row & Clean", "p": ["5-8 reps"], "img": "assets/exos/dead-clean.gif", "tip": "Tirage & rack lourd."},
-      {"b": "🔹 Superset 2 (4-6 RDS)", "n": "Double Squat (Tempo 31X1)", "p": ["5-8 reps"], "img": "assets/exos/goblet-squat.webp", "tip": "3s de descente. Repos 60-120s."},
-      {"b": "🔹 AMRAP 8 min (Pompage)", "n": "High Pull + Prone Curl + Uppercuts", "p": ["8-12 High Pulls", "10-15 Curls", "8-12 Uppercuts"], "img": "assets/exos/snatch.gif", "tip": "Volume continu."}
+      {"b": "🔹 Mobilité B (3 tours sans repos)", "n": "Cobra to Down Dog", "p": ["10 reps", "Poids du corps"], "tip": "Flux continu. Hanches hautes en chien tête en bas, puis déroule la colonne en cobra contrôlé."},
+      {"b": "🔹 Mobilité B (3 tours sans repos)", "n": "Hip 90/90 Switch", "p": ["10 reps/côté", "Poids du corps"], "tip": "Assis au sol, jambes à 90°. Bascule les deux genoux de l'autre côté en gardant les fesses proches du sol."},
+      {"b": "🔹 Mobilité B (3 tours sans repos)", "n": "Prone Scorpion", "p": ["5 reps/côté", "Poids du corps"], "tip": "Allongé plat ventre, bras en croix. Pivote la pointe du pied droit vers la main gauche en tournant le bassin."},
+      {"b": "🔹 Superset 1 (4-6 RDS - Repos 60-120s)", "n": "KB Push-up ou Dips TEMPO (2121)", "p": ["5-15 reps"], "tip": "Mains sur les poignées de KB. Descente 2s, pause 1s en bas, remontée 2s, pause 1s bras tendus."},
+      {"b": "🔹 Superset 1 (4-6 RDS - Repos 60-120s)", "n": "Goblet Curtsy Lunge", "p": ["5-8 reps/côté", "KB 12-16 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "KB contre la poitrine. Croise la jambe arrière derrière la jambe avant en fente. Garde le buste droit."},
+      {"b": "🔹 Superset 2 (4-6 RDS - Repos 60-120s)", "n": "Double Dead Row & Clean", "p": ["5-8 reps", "2x12-16 kg"], "img": "assets/exos/dead-clean.gif", "tip": "KB au sol. Effectue un tirage lourd dos plat, repose au sol, puis enchaîne avec un Clean explosif en rack."},
+      {"b": "🔹 Superset 2 (4-6 RDS - Repos 60-120s)", "n": "Double Squat TEMPO (31X1)", "p": ["5-8 reps", "2x12-16 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Deux KB en front rack. Descente 3s, 1s de pause en bas, remontée dynamique sans verrouiller brutalement."},
+      {"b": "🔹 AMRAP 8 min (Moins de repos possible)", "n": "High Pull + Prone Curl + Uppercut", "p": ["8-12 HP", "10-15 Curls", "8-12 Uppercut/côté"], "img": "assets/exos/snatch.gif", "tip": "8 à 12 High Pulls + 10 à 15 Curls au KB + 8 à 12 Uppercuts par côté. Maintiens une technique propre."}
     ]
   },
-
   "C-BK1": {
-    "title": "Bankai C1 - AMRAP Ichigo & Renji (S1-S2)",
+    "title": "Bankai C1 - AMRAP Complexes Ichigo & Renji (S1)",
     "trackId": "b1c",
     "exos": [
-      {"b": "🔹 Mobilité C (1/3)", "n": "Shoulder CARs", "p": ["5 rotations/bras"], "img": "assets/exos/halo.gif", "tip": "Épaules."},
-      {"b": "🔹 Mobilité C (2/3)", "n": "Jefferson Curl", "p": ["5 reps"], "img": "assets/exos/jefferson.gif", "tip": "Colonne."},
-      {"b": "🔹 Mobilité C (3/3)", "n": "Hip CARs", "p": ["5 rotations/jambe"], "tip": "Hanches."},
-      {"b": "🔹 AMRAP 15 min - Complexe Ichigo", "n": "7 Push-ups + 7 Double Row + 5 Clean & Push Press", "p": ["Max de tours", "Repos 45-120s"], "img": "assets/exos/press.gif", "tip": "Densité maximale haut du corps."},
-      {"b": "🔹 AMRAP 15 min - Complexe Renji", "n": "4 Deadstop Swing + 3 High Pull + 4 Snatch 1H", "p": ["Max de tours", "Repos 60-120s"], "img": "assets/exos/snatch.gif", "tip": "Explosivité & cardio (Côté D puis côté G)."},
-      {"b": "🔹 Finisher For Time (3 RDS)", "n": "Sit-ups + Burpees + Commando Plank", "p": ["10 à 20 reps selon niveau"], "tip": "Test ultime de conditionnement."}
+      {"b": "🔹 Mobilité C (3 tours sans repos)", "n": "Cat & Cow + Spiderman Lunge + Inchworm", "p": ["10 Cat-Cow", "10 Spiderman", "5 Inchworm"], "tip": "Enchaîne les 3 mouvements. Sur l'Inchworm, avance les mains en planche puis ramène les pieds jambes tendues."},
+      {"b": "🔹 AMRAP 15 min - Complex Ichigo", "n": "Complex Ichigo", "p": ["Max de tours en 15 min", "2x12-16 kg"], "img": "assets/exos/press.gif", "tip": "7 KB Push-up + 7 Double Row + 5 Clean & Push Press. Enchaîne les 3 mouvements. Repos 45-120s entre les tours."},
+      {"b": "🔹 AMRAP 15 min - Complex Renji", "n": "Complex Renji", "p": ["Max de tours en 15 min", "KB 12-16 kg"], "img": "assets/exos/snatch.gif", "tip": "4 Deadstop Swings + 3 High Pulls + 4 Snatches. Fais tout le côté droit puis le côté gauche pour valider un tour."},
+      {"b": "🔹 Finisher For Time (3 tours)", "n": "Sit-up + Burpee + Commando Plank", "p": ["3 tours", "Interm: 10 reps | Avancé: 15 reps | Élite: 20 reps"], "tip": "3 tours le plus vite possible sans sacrifier le gainage sur le Commando Plank."}
     ]
   },
 
+  // ── SEMAINE 2 ────────────────────────────────────────────────────────────
+  "A-BK2": {
+    "title": "Bankai A2 - Upper/Lower Supersets (S2)",
+    "trackId": "b2a",
+    "exos": [
+      {"b": "🔹 Mobilité A (3 tours sans repos)", "n": "Prying Squat + Piriformis Push-up + Blackburn", "p": ["45s Squat", "10+10 Push-up", "10 Blackburn"], "img": "assets/exos/prying-squat.gif", "tip": "Mobilité active. Cherche la plus grande amplitude possible sur chaque mouvement sans brusquer."},
+      {"b": "🔹 Superset Upper (4-6 RDS - Repos 60-120s)", "n": "Double Press", "p": ["5-8 reps", "2x12-16 kg"], "img": "assets/exos/press.gif", "tip": "Mêmes charges qu'en S1. Cherche un verrouillage parfait au sommet sans compenser avec le bas du dos."},
+      {"b": "🔹 Superset Upper (4-6 RDS - Repos 60-120s)", "n": "KB Row (ou Pull-Up)", "p": ["8-12 reps/côté", "KB 16-20 kg"], "img": "assets/exos/row.gif", "tip": "Tire le coude vers la hanche en marquant un court temps d'arrêt en haut de la répétition."},
+      {"b": "🔹 Superset Lower (4-6 RDS - Repos 60-120s)", "n": "1H Swing", "p": ["6-10 reps/côté", "KB 16-20 kg"], "img": "assets/exos/swing.gif", "tip": "Extension de hanche explosive. Changement de main fluide au sommet de la trajectoire si besoin."},
+      {"b": "🔹 Superset Lower (4-6 RDS - Repos 60-120s)", "n": "Goblet Squat TEMPO (31X1)", "p": ["8-12 reps", "KB 16-20 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Maintiens le tempo 31X1 : 3s de descente contrôlée et 1s de pause fixe en bas de chaque rep."},
+      {"b": "🔹 Circuit Core (2-4 RDS - Format 30s ON / 30s OFF)", "n": "Hollow Hold + Kneeling Halo + Flutter Kicks", "p": ["30s ON / 30s OFF"], "img": "assets/exos/halo.gif", "tip": "30s d'effort / 30s de repos sur chaque exercice. Repos 60s entre les séries du circuit."}
+    ]
+  },
+  "B-BK2": {
+    "title": "Bankai B2 - Push/Pull & Double Squat (S2)",
+    "trackId": "b2b",
+    "exos": [
+      {"b": "🔹 Mobilité B (3 tours sans repos)", "n": "Cobra to Down Dog + Hip 90/90 + Prone Scorpion", "p": ["10 Cobra", "10+10 Hip 90/90", "5+5 Scorpion"], "tip": "Exécution fluide sans saccade. Respiration nasale profonde."},
+      {"b": "🔹 Superset 1 (4-6 RDS - Repos 60-120s)", "n": "KB Push-up ou Dips TEMPO (2121)", "p": ["5-15 reps"], "tip": "Garde les coudes sous contrôle. Tempo 2121 strict : 2s descente, 1s pause, 2s remontée."},
+      {"b": "🔹 Superset 1 (4-6 RDS - Repos 60-120s)", "n": "Goblet Reverse Lunge", "p": ["5-8 reps/côté", "KB 12-16 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Pas arrière long, genou arrière frôle le sol. Pousse sur le talon avant pour remonter."},
+      {"b": "🔹 Superset 2 (4-6 RDS - Repos 60-120s)", "n": "Double Dead Row & Clean", "p": ["5-8 reps", "2x12-16 kg"], "img": "assets/exos/dead-clean.gif", "tip": "Marque le deadstop au sol entre le tirage et le Clean. Buste gainé, dos plat."},
+      {"b": "🔹 Superset 2 (4-6 RDS - Repos 60-120s)", "n": "Double Squat TEMPO (31X1)", "p": ["5-8 reps", "2x12-16 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Coudes hauts sous les KB. Ne laisse pas la charge te tirer vers l'avant pendant la descente de 3s."},
+      {"b": "🔹 AMRAP 8 min", "n": "High Pull + Prone Curl + Uppercut", "p": ["8-12 HP", "10-15 Curls", "8-12 Uppercut/côté"], "img": "assets/exos/snatch.gif", "tip": "Enchaîne les exercices avec le moins de pauses possible pendant 8 min."}
+    ]
+  },
   "C-BK2": {
-    "title": "Bankai C2 - METCON Benchmark 30-40 min (S2)",
+    "title": "Bankai C2 - METCON Benchmark 40s (S2)",
     "trackId": "b2c",
     "exos": [
-      {"b": "🔹 METCON 30-40 min (1/6)", "n": "40 Swings 2 mains", "p": ["40 reps", "KB 16-24 kg"], "img": "assets/exos/swing.gif", "tip": "Valider les 40 reps (séries de 10-20 autorisées) avant de passer au suivant."},
-      {"b": "🔹 METCON 30-40 min (2/6)", "n": "40 Press / Push Press", "p": ["40 reps", "Même KB"], "img": "assets/exos/press.gif", "tip": "Même KB."},
-      {"b": "🔹 METCON 30-40 min (3/6)", "n": "40 Goblet Squats", "p": ["40 reps", "Même KB"], "img": "assets/exos/goblet-squat.webp", "tip": "Même KB."},
-      {"b": "🔹 METCON 30-40 min (4/6)", "n": "40 Push-ups", "p": ["40 reps", "Poids du corps"], "tip": "Forme stricte."},
-      {"b": "🔹 METCON 30-40 min (5/6)", "n": "40 Tirages Alternés", "p": ["40 reps", "Même KB"], "img": "assets/exos/row.gif", "tip": "Dos plat."},
-      {"b": "🔹 METCON 30-40 min (6/6)", "n": "40 Jumping Jacks", "p": ["40 reps"], "tip": "Finisseur cardio."}
+      {"b": "🔹 Mobilité C (3 tours sans repos)", "n": "Cat & Cow + Spiderman Lunge + Inchworm", "p": ["10 Cat-Cow", "10 Spiderman", "5 Inchworm"], "tip": "Préparation articulaire complète avant le grand test METCON."},
+      {"b": "🔹 METCON Benchmark (30 à 40 min)", "n": "METCON 40 reps", "p": ["Max de tours en 30-40 min", "KB 16-24 kg"], "img": "assets/exos/swing.gif", "tip": "40 Swings 2H + 40 Press/Push Press + 40 Goblet Squat + 40 Push-up + 40 Tirages alternés + 40 Jumping Jacks. Valide les 40 reps par exercice (séries de 10-20 autorisées) avant de passer au suivant."}
     ]
   },
 
+  // ── SEMAINE 3 ────────────────────────────────────────────────────────────
   "A-BK3": {
     "title": "Bankai A3 - Upper/Lower Supersets (S3)",
     "trackId": "b3a",
     "exos": [
-      {"b": "1️⃣ Mobilité A (3 tours sans repos)", "n": "Prying Squat", "p": ["45s"], "img": "assets/exos/prying-squat.gif", "tip": "Plus grande amplitude possible."},
-      {"b": "1️⃣ Mobilité A (3 tours sans repos)", "n": "Piriformis Push-up", "p": ["10+10 reps"], "tip": "Mobilité hanches & fessiers."},
-      {"b": "1️⃣ Mobilité A (3 tours sans repos)", "n": "Blackburn", "p": ["10 reps"], "tip": "Activation haut du dos."},
-      {"b": "2️⃣ Superset Upper (4 à 6 RDS)", "n": "Double Press", "p": ["8 à 12 reps"], "img": "assets/exos/press.gif", "tip": "1 à 2 séries légères d'échauffement possibles."},
-      {"b": "2️⃣ Superset Upper (4 à 6 RDS)", "n": "KB Row / côté (ou Pull-Up)", "p": ["10 à 15 reps (ou 8-12 Pull-Ups)"], "img": "assets/exos/row.gif", "tip": "Repos 60 à 120s après les deux exercices."},
-      {"b": "3️⃣ Superset Lower (4 à 6 RDS)", "n": "1H Swing", "p": ["9 à 12 reps/côté"], "img": "assets/exos/swing.gif", "tip": "Charnière de hanche explosive."},
-      {"b": "3️⃣ Superset Lower (4 à 6 RDS)", "n": "Goblet Squat TEMPO (31X1)", "p": ["10 à 15 reps"], "img": "assets/exos/goblet-squat.webp", "tip": "3s descente, 1s pause en bas. Repos 60 à 120s."},
-      {"b": "4️⃣ Circuit (2 à 4 RDS - 40s ON / 20s OFF)", "n": "Hollow Hold", "p": ["40s ON / 20s OFF"], "tip": "Gainage bas du dos plaqué."},
-      {"b": "4️⃣ Circuit (2 à 4 RDS - 40s ON / 20s OFF)", "n": "Kneeling Halo", "p": ["40s ON / 20s OFF"], "img": "assets/exos/halo.gif", "tip": "Cercle propre à genoux."},
-      {"b": "4️⃣ Circuit (2 à 4 RDS - 40s ON / 20s OFF)", "n": "Flutter Kicks", "p": ["40s ON / 20s OFF"], "tip": "60s de repos entre les séries."}
+      {"b": "🔹 Mobilité A (3 tours sans repos)", "n": "Prying Squat + Piriformis Push-up + Blackburn", "p": ["45s Squat", "10+10 Push-up", "10 Blackburn"], "img": "assets/exos/prying-squat.gif", "tip": "Activation des hanches et du haut du dos avant la montée en volume."},
+      {"b": "🔹 Superset Upper (4-6 RDS - Repos 60-120s)", "n": "Double Press", "p": ["8-12 reps", "2x12-16 kg"], "img": "assets/exos/press.gif", "tip": "Nombre de répétitions en hausse. Garde une trajectoire verticale nette."},
+      {"b": "🔹 Superset Upper (4-6 RDS - Repos 60-120s)", "n": "KB Row (ou Pull-Up)", "p": ["10-15 reps/côté", "KB 16-20 kg"], "img": "assets/exos/row.gif", "tip": "Tirage lourd. Si tu fais des tractions, vise 8 à 12 reps strictes."},
+      {"b": "🔹 Superset Lower (4-6 RDS - Repos 60-120s)", "n": "1H Swing", "p": ["9-12 reps/côté", "KB 16-20 kg"], "img": "assets/exos/swing.gif", "tip": "Charnière dynamique. Pas de tension inutile dans les bras : les fessiers font tout le travail."},
+      {"b": "🔹 Superset Lower (4-6 RDS - Repos 60-120s)", "n": "Goblet Squat TEMPO (31X1)", "p": ["10-15 reps", "KB 16-20 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "10 à 15 reps avec la même contrainte de tempo (31X1). Brûlure musculaire garantie."},
+      {"b": "🔹 Circuit Core (2-4 RDS - Format 40s ON / 20s OFF)", "n": "Hollow Hold + Kneeling Halo + Flutter Kicks", "p": ["40s ON / 20s OFF"], "img": "assets/exos/halo.gif", "tip": "Le temps de travail passe à 40s. Maintiens un gainage en béton armé."}
     ]
   },
-
   "B-BK3": {
     "title": "Bankai B3 - Push/Pull & Double Squat (S3)",
     "trackId": "b3b",
     "exos": [
-      {"b": "1️⃣ Mobilité B (3 tours sans repos)", "n": "Cobra to Down Dog", "p": ["10 reps"], "tip": "Grande amplitude."},
-      {"b": "1️⃣ Mobilité B (3 tours sans repos)", "n": "Hip 90-90", "p": ["10+10 reps"], "tip": "Mobilité hanches."},
-      {"b": "1️⃣ Mobilité B (3 tours sans repos)", "n": "Prone Scorpion", "p": ["5+5 reps"], "tip": "Ouverture thoracique."},
-      {"b": "2️⃣ Superset Upper/Lower (4 à 6 RDS)", "n": "KB Push-up ou Dips TEMPO (2121)", "p": ["10 à 20 reps"], "tip": "Tempo 2121. Repos 60 à 120s."},
-      {"b": "2️⃣ Superset Upper/Lower (4 à 6 RDS)", "n": "Goblet Reverse Lunge", "p": ["8 à 12 reps/côté"], "img": "assets/exos/goblet-squat.webp", "tip": "Fente arrière chargée."},
-      {"b": "3️⃣ Superset Upper/Lower (4 à 6 RDS)", "n": "Double Dead Row & Clean*", "p": ["8 à 12 reps"], "img": "assets/exos/dead-clean.gif", "tip": "Si KB unilatéral, enchaîne les deux côtés."},
-      {"b": "3️⃣ Superset Upper/Lower (4 à 6 RDS)", "n": "Double Squat TEMPO (31X1)*", "p": ["8 à 12 reps"], "img": "assets/exos/goblet-squat.webp", "tip": "Tempo 31X1. Repos 60 à 120s."},
-      {"b": "4️⃣ AMRAP 8 min (Moins de repos possible)", "n": "10-15 High Pull + 12-20 Prone Curl + 10-15 Uppercut/côté", "p": ["AMRAP 8 min"], "img": "assets/exos/snatch.gif", "tip": "Enchaîne avec le minimum de repos."}
+      {"b": "🔹 Mobilité B (3 tours sans repos)", "n": "Cobra to Down Dog + Hip 90/90 + Prone Scorpion", "p": ["10 Cobra", "10+10 Hip 90/90", "5+5 Scorpion"], "tip": "Fluidité et amplitude maximale sur chaque posture."},
+      {"b": "🔹 Superset 1 (4-6 RDS - Repos 60-120s)", "n": "KB Push-up ou Dips TEMPO (2121)", "p": ["10-20 reps"], "tip": "Volume plus élevé. Maintiens la pause de 1s en bas de chaque rep."},
+      {"b": "🔹 Superset 1 (4-6 RDS - Repos 60-120s)", "n": "Goblet Reverse Lunge", "p": ["8-12 reps/côté", "KB 12-16 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "8 à 12 reps par jambe. Buste droit, genou stable."},
+      {"b": "🔹 Superset 2 (4-6 RDS - Repos 60-120s)", "n": "Double Dead Row & Clean", "p": ["8-12 reps", "2x12-16 kg"], "img": "assets/exos/dead-clean.gif", "tip": "Tirage lourd au sol immédiatement suivi d'un Clean explosif."},
+      {"b": "🔹 Superset 2 (4-6 RDS - Repos 60-120s)", "n": "Double Squat TEMPO (31X1)", "p": ["8-12 reps", "2x12-16 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Descente 3s sur 8 à 12 reps. Expire fort en remontant."},
+      {"b": "🔹 AMRAP 8 min", "n": "High Pull + Prone Curl + Uppercut", "p": ["10-15 HP", "12-20 Curls", "10-15 Uppercut/côté"], "img": "assets/exos/snatch.gif", "tip": "Objectif : battre ton nombre de tours validés en Semaine 1."}
     ]
   },
-
   "C-BK3": {
-    "title": "Bankai C3 - AMRAP Complexes Aizen & GrimmJow (S3)",
+    "title": "Bankai C3 - AMRAP Complexes Aizen & Grimmjow (S3)",
     "trackId": "b3c",
     "exos": [
-      {"b": "1️⃣ Mobilité C (3 tours sans repos)", "n": "Cat & Cow", "p": ["10 reps"], "tip": "Grande amplitude."},
-      {"b": "1️⃣ Mobilité C (3 tours sans repos)", "n": "Spiderman Lunge w Rotation", "p": ["10+10 reps"], "tip": "Hanches & buste."},
-      {"b": "1️⃣ Mobilité C (3 tours sans repos)", "n": "Inchworm", "p": ["5 reps"], "tip": "Chenille."},
-      {"b": "2️⃣ AMRAP 15' - Complex Aizen", "n": "(Double Snatch + Double Push Press + Double Thruster) x3", "p": ["Max de tours en 15'"], "img": "assets/exos/snatch.gif", "tip": "3 répétitions de la boucle = 1 tour. Repos 45-120s entre tours. (Si KB unique, enchaîne tout à D puis à G)."},
-      {"b": "3️⃣ AMRAP 15' - Complex GrimmJow", "n": "5 US Burpee + 6 Squat Clean", "p": ["Max de tours en 15'"], "img": "assets/exos/dead-clean.gif", "tip": "Option: Burpee classique + Swing US. Repos 45-120s entre tours. 3 à 5 min repos entre AMRAPs."},
-      {"b": "4️⃣ Finisher - For Time (3 tours)", "n": "V-Tuck + Leg Raise + KB Plank Tap", "p": ["3 tours - Reps selon niveau"], "tip": "Intermédiaire: 10/10/12 | Avancé: 15/15/16 | Élite: 20/20/20."}
+      {"b": "🔹 Mobilité C (3 tours sans repos)", "n": "Cat & Cow + Spiderman Lunge + Inchworm", "p": ["10 Cat-Cow", "10 Spiderman", "5 Inchworm"], "tip": "Mobilisation articulaire fluide."},
+      {"b": "🔹 AMRAP 15 min - Complex Aizen", "n": "Complex Aizen", "p": ["Max de tours en 15 min", "2x12-16 kg"], "img": "assets/exos/snatch.gif", "tip": "(Double Snatch + Double Push Press + Double Thruster) x3 = 1 tour. Repos 45-120s entre les tours."},
+      {"b": "🔹 AMRAP 15 min - Complex Grimmjow", "n": "Complex Grimmjow", "p": ["Max de tours en 15 min", "2x12-16 kg"], "img": "assets/exos/dead-clean.gif", "tip": "5 US Burpee (ou Burpee + Swing US) + 6 Squat Clean. Repos 45-120s entre les tours."},
+      {"b": "🔹 Finisher For Time (3 tours)", "n": "V-Tuck + Leg Raise + KB Plank Tap", "p": ["3 tours", "Interm: 10+10+12 | Avancé: 15+15+16 | Élite: 20+20+20"], "tip": "Exécution rapide avec contrôle du centre du corps."}
     ]
   },
 
+  // ── SEMAINE 4 ────────────────────────────────────────────────────────────
   "A-BK4": {
     "title": "Bankai A4 - Upper/Lower Supersets (S4)",
     "trackId": "b4a",
     "exos": [
-      {"b": "1️⃣ Mobilité A (3 tours sans repos)", "n": "Prying Squat", "p": ["45s"], "img": "assets/exos/prying-squat.gif", "tip": "Grande amplitude."},
-      {"b": "1️⃣ Mobilité A (3 tours sans repos)", "n": "Piriformis Push-up", "p": ["10+10 reps"], "tip": "Hanches & fessiers."},
-      {"b": "1️⃣ Mobilité A (3 tours sans repos)", "n": "Blackburn", "p": ["10 reps"], "tip": "Haut du dos."},
-      {"b": "2️⃣ Superset Upper (4 à 6 RDS)", "n": "Double Press", "p": ["8 à 12 reps"], "img": "assets/exos/press.gif", "tip": "Échauffement léger possible."},
-      {"b": "2️⃣ Superset Upper (4 à 6 RDS)", "n": "KB Row / côté (ou Pull-Up)", "p": ["10 à 15 reps (ou 8-12 Pull-Ups)"], "img": "assets/exos/row.gif", "tip": "Repos 60 à 120s."},
-      {"b": "3️⃣ Superset Lower (4 à 6 RDS)", "n": "1H Swing", "p": ["9 à 12 reps/côté"], "img": "assets/exos/swing.gif", "tip": "Charnière de hanche."},
-      {"b": "3️⃣ Superset Lower (4 à 6 RDS)", "n": "Goblet Squat TEMPO (31X1)", "p": ["10 à 15 reps"], "img": "assets/exos/goblet-squat.webp", "tip": "Tempo 31X1. Repos 60 à 120s."},
-      {"b": "4️⃣ Circuit (2 à 4 RDS - 40s ON / 20s OFF)", "n": "Hollow Hold + Kneeling Halo + Flutter Kicks", "p": ["40s ON / 20s OFF"], "img": "assets/exos/halo.gif", "tip": "60s de repos entre séries."}
+      {"b": "🔹 Mobilité A (3 tours sans repos)", "n": "Prying Squat + Piriformis Push-up + Blackburn", "p": ["45s Squat", "10+10 Push-up", "10 Blackburn"], "img": "assets/exos/prying-squat.gif", "tip": "Ouverture des hanches et ancrage des talons."},
+      {"b": "🔹 Superset Upper (4-6 RDS - Repos 60-120s)", "n": "Double Press", "p": ["8-12 reps", "2x12-16 kg"], "img": "assets/exos/press.gif", "tip": "Dernière semaine du premier bloc. Vise le haut de la fourchette de reps."},
+      {"b": "🔹 Superset Upper (4-6 RDS - Repos 60-120s)", "n": "KB Row (ou Pull-Up)", "p": ["10-15 reps/côté", "KB 16-20 kg"], "img": "assets/exos/row.gif", "tip": "Sensation de tirage profond dans les grands dorsaux."},
+      {"b": "🔹 Superset Lower (4-6 RDS - Repos 60-120s)", "n": "1H Swing", "p": ["9-12 reps/côté", "KB 16-20 kg"], "img": "assets/exos/swing.gif", "tip": "Maintiens une trajectoire rasante au pubis lors de la charnière."},
+      {"b": "🔹 Superset Lower (4-6 RDS - Repos 60-120s)", "n": "Goblet Squat TEMPO (31X1)", "p": ["10-15 reps", "KB 16-20 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Garde les 3s de descente intactes même quand la fatigue monte."},
+      {"b": "🔹 Circuit Core (2-4 RDS - Format 40s ON / 20s OFF)", "n": "Hollow Hold + Kneeling Halo + Flutter Kicks", "p": ["40s ON / 20s OFF"], "img": "assets/exos/halo.gif", "tip": "40s d'effort continu par exercice."}
     ]
   },
-
   "B-BK4": {
     "title": "Bankai B4 - Push/Pull & Double Squat (S4)",
     "trackId": "b4b",
     "exos": [
-      {"b": "1️⃣ Mobilité B (3 tours sans repos)", "n": "Cobra to Down Dog", "p": ["10 reps"], "tip": "Mobilité."},
-      {"b": "1️⃣ Mobilité B (3 tours sans repos)", "n": "Hip 90-90", "p": ["10+10 reps"], "tip": "Hanches."},
-      {"b": "1️⃣ Mobilité B (3 tours sans repos)", "n": "Prone Scorpion", "p": ["5+5 reps"], "tip": "Thoracique."},
-      {"b": "2️⃣ Superset Upper/Lower (4 à 6 RDS)", "n": "KB Push-up ou Dips TEMPO (2121)", "p": ["10 à 20 reps"], "tip": "Tempo 2121. Repos 60-120s."},
-      {"b": "2️⃣ Superset Upper/Lower (4 à 6 RDS)", "n": "Goblet Reverse Lunge", "p": ["8 à 12 reps/côté"], "img": "assets/exos/goblet-squat.webp", "tip": "Fente arrière."},
-      {"b": "3️⃣ Superset Upper/Lower (4 à 6 RDS)", "n": "Double Dead Row & Clean*", "p": ["8 à 12 reps"], "img": "assets/exos/dead-clean.gif", "tip": "Unilatéral si KB unique."},
-      {"b": "3️⃣ Superset Upper/Lower (4 à 6 RDS)", "n": "Double Squat TEMPO (31X1)*", "p": ["8 à 12 reps"], "img": "assets/exos/goblet-squat.webp", "tip": "Tempo 31X1. Repos 60-120s."},
-      {"b": "4️⃣ AMRAP 8 min", "n": "High Pull + Prone Curl + Uppercuts", "p": ["10-15 HP", "12-20 Curls", "10-15 Uppercuts/côté"], "img": "assets/exos/snatch.gif", "tip": "Moins de repos possible."}
+      {"b": "🔹 Mobilité B (3 tours sans repos)", "n": "Cobra to Down Dog + Hip 90/90 + Prone Scorpion", "p": ["10 Cobra", "10+10 Hip 90/90", "5+5 Scorpion"], "tip": "Bassin neutre et étirement actif."},
+      {"b": "🔹 Superset 1 (4-6 RDS - Repos 60-120s)", "n": "KB Push-up ou Dips TEMPO (2121)", "p": ["10-20 reps"], "tip": "Pousse à travers les poignées. Maintiens l'alignement tête-tronc-bassin."},
+      {"b": "🔹 Superset 1 (4-6 RDS - Repos 60-120s)", "n": "Goblet Reverse Lunge", "p": ["8-12 reps/côté", "KB 12-16 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Charge plaquée contre le sternum, coudes serrés."},
+      {"b": "🔹 Superset 2 (4-6 RDS - Repos 60-120s)", "n": "Double Dead Row & Clean", "p": ["8-12 reps", "2x12-16 kg"], "img": "assets/exos/dead-clean.gif", "tip": "Posé net des KB au sol entre chaque combo Row + Clean."},
+      {"b": "🔹 Superset 2 (4-6 RDS - Repos 60-120s)", "n": "Double Squat TEMPO (31X1)", "p": ["8-12 reps", "2x12-16 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "3s descente, remontée sans marquer de temps mort au sommet."},
+      {"b": "🔹 AMRAP 8 min", "n": "High Pull + Prone Curl + Uppercut", "p": ["10-15 HP", "12-20 Curls", "10-15 Uppercut/côté"], "img": "assets/exos/snatch.gif", "tip": "Dernier tour de chauffe avant le Benchmark C4."}
+    ]
+  },
+  "C-BK4": {
+    "title": "Bankai C4 - METCON Single KB Benchmark (S4)",
+    "trackId": "b4c",
+    "exos": [
+      {"b": "🔹 Mobilité C (3 tours sans repos)", "n": "Cat & Cow + Spiderman Lunge + Inchworm", "p": ["10 Cat-Cow", "10 Spiderman", "5 Inchworm"], "tip": "Déverrouillage articulaire complet."},
+      {"b": "🔹 METCON Single KB Benchmark (30 à 40 min)", "n": "METCON Single KB", "p": ["Max de tours en 30-40 min", "KB 12-24 kg"], "img": "assets/exos/snatch.gif", "tip": "7+7 Swings 1H + 5+5 Push Press 1H + 7+7 Cleans 1H + 5+5 Thrusters 1H + 7+7 Snatches 1H. Maintiens la même charge. Repos 30-60s entre les exos. Poste ton score sur le canal Benchmark !"}
     ]
   },
 
-  "C-BK4": {
-    "title": "Bankai C4 - METCON Single KB (S4)",
-    "trackId": "b4c",
+  // ── SEMAINE 5 ────────────────────────────────────────────────────────────
+  "A-BK5": {
+    "title": "Bankai A5 - Upper/Lower Peak Volume (S5)",
+    "trackId": "b5a",
     "exos": [
-      {"b": "1️⃣ Mobilité C (3 tours sans repos)", "n": "Cat & Cow + Spiderman Lunge + Inchworm", "p": ["3 tours"], "tip": "Mobilité générale."},
-      {"b": "2️⃣ METCON Single KB (30 à 40 min)", "n": "7+7 Swing + 5+5 Push Press + 7+7 Clean + 5+5 Thruster + 7+7 Snatch", "p": ["Max de tours en 30-40 min"], "img": "assets/exos/snatch.gif", "tip": "1 tour = enchaînement complet. Garder la même charge. Repos 30-60s entre exos, 60-90s entre tours."}
+      {"b": "🔹 Mobilité A (3 tours sans repos)", "n": "Prying Squat + Piriformis Push-up + Blackburn", "p": ["45s Squat", "10+10 Push-up", "10 Blackburn"], "img": "assets/exos/prying-squat.gif", "tip": "Entrée dans le bloc Peak Volume. Amplitude maximale garantie."},
+      {"b": "🔹 Superset Upper (4-6 RDS - Repos 60-120s)", "n": "See Saw Press", "p": ["6-10 reps/côté", "2x12-16 kg"], "img": "assets/exos/press.gif", "tip": "Poussée alternée en continu : un KB monte pendant que l'autre descend sans temps d'arrêt."},
+      {"b": "🔹 Superset Upper (4-6 RDS - Repos 60-120s)", "n": "KB Gorilla Row (ou Chin-up)", "p": ["8-12 reps Gorilla", "5-10 Chin-up"], "img": "assets/exos/row.gif", "tip": "Buste parallèle au sol. Pousse un KB dans le sol pendant que tu tires l'autre à la hanche."},
+      {"b": "🔹 Superset Lower (4-6 RDS - Repos 60-120s)", "n": "1H Deadstop Snatch", "p": ["4-8 reps/côté", "KB 12-16 kg"], "img": "assets/exos/snatch.gif", "tip": "Arrêt net du KB au sol à chaque rep. Arrachement explosif direct au-dessus de la tête."},
+      {"b": "🔹 Superset Lower (4-6 RDS - Repos 60-120s)", "n": "Single KB Bulgarian Split Squat TEMPO (2020)", "p": ["5-8 reps/côté", "KB 12-16 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Cou de pied arrière posé sur un banc. Descente 2s, remontée 2s. Genou avant aligné avec la pointe du pied."},
+      {"b": "🔹 Circuit Core (2-4 RDS - Format 30s ON / 30s OFF)", "n": "Superman Hold + Curl & Halo + Accordion Crunch", "p": ["30s ON / 30s OFF"], "img": "assets/exos/halo.gif", "tip": "30s effort / 30s repos. Repos 60s entre les tours du circuit."}
+    ]
+  },
+  "B-BK5": {
+    "title": "Bankai B5 - Push/Pull & Double Heavy Squat (S5)",
+    "trackId": "b5b",
+    "exos": [
+      {"b": "🔹 Mobilité B (3 tours sans repos)", "n": "Cobra to Down Dog + Hip 90/90 + Prone Scorpion", "p": ["10 Cobra", "10+10 Hip 90/90", "5+5 Scorpion"], "tip": "Ouverture des hanches et décompression de la colonne."},
+      {"b": "🔹 Superset 1 (4-6 RDS - Repos 60-120s)", "n": "Max CG Push-up ou Dips TEMPO (2121)", "p": ["Max reps"], "tip": "Pompes prise serrée ou Dips. Tempo 2121 : descente 2s, pause 1s en bas, poussée 2s."},
+      {"b": "🔹 Superset 1 (4-6 RDS - Repos 60-120s)", "n": "Goblet Curtsy Lunge", "p": ["6-10 reps/côté", "KB 12-16 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Fente croisée lorde. Contrôle l'équilibre sans tordre le genou avant."},
+      {"b": "🔹 Superset 2 (4-6 RDS - Repos 60-120s)", "n": "Alternating Renegade Row + Max Double Row", "p": ["4-6 reps/côté + Max Double"], "img": "assets/exos/row.gif", "tip": "Gainage planche au sol. 4 à 6 Renegade Row par bras puis enchaîne directement avec le max de Double Row debout."},
+      {"b": "🔹 Superset 2 (4-6 RDS - Repos 60-120s)", "n": "KB Squat Clean", "p": ["5-8 reps/côté", "KB 12-16 kg"], "img": "assets/exos/dead-clean.gif", "tip": "Réception du Clean directement en position basse de Squat profond."},
+      {"b": "🔹 AMRAP 8 min", "n": "Elbowing Row + Windmill + KB Sit-up", "p": ["8-12 Elbowing Row", "5-10 Windmill", "8-10 Sit-up"], "tip": "Moins de repos possible. Buste gainé sur les Windmills."}
+    ]
+  },
+  "C-BK5": {
+    "title": "Bankai C5 - AMRAP Complexes Kenpachi & Ulquiorra (S5)",
+    "trackId": "b5c",
+    "exos": [
+      {"b": "🔹 Mobilité C (3 tours sans repos)", "n": "Cat & Cow + Spiderman Lunge + Inchworm", "p": ["10 Cat-Cow", "10 Spiderman", "5 Inchworm"], "tip": "Préparation articulaire complète."},
+      {"b": "🔹 AMRAP 15 min - Complex Kenpachi", "n": "Complex Kenpachi", "p": ["Max de tours en 15 min", "2x12-16 kg"], "img": "assets/exos/press.gif", "tip": "4 Double Clean + 3 Double Press (ou Push Press) + 5 Double Squat. Repos 45-120s entre les tours."},
+      {"b": "🔹 AMRAP 15 min - Complex Ulquiorra", "n": "Complex Ulquiorra", "p": ["Max de tours en 15 min", "KB 12-16 kg"], "img": "assets/exos/snatch.gif", "tip": "5 boucles de (1 Row + 1 Snatch + 1 Thruster) du côté droit, puis 5 du côté gauche = 1 tour. Repos 30-90s entre les côtés."},
+      {"b": "🔹 Finisher For Time (3 tours)", "n": "Alternating Toe Touch + Side Plank Hip Tap", "p": ["3 tours", "Interm: 10+6/6 | Avancé: 20+10/10 | Élite: 30+15/15"], "tip": "Vitesse d'exécution sur le finisher."}
+    ]
+  },
+
+  // ── SEMAINE 6 ────────────────────────────────────────────────────────────
+  "A-BK6": {
+    "title": "Bankai A6 - Upper/Lower Peak Volume (S6)",
+    "trackId": "b6a",
+    "exos": [
+      {"b": "🔹 Mobilité A (3 tours sans repos)", "n": "Prying Squat + Piriformis Push-up + Blackburn", "p": ["45s Squat", "10+10 Push-up", "10 Blackburn"], "img": "assets/exos/prying-squat.gif", "tip": "Grande amplitude active."},
+      {"b": "🔹 Superset Upper (4-6 RDS - Repos 60-120s)", "n": "See Saw Press", "p": ["6-10 reps/côté", "2x12-16 kg"], "img": "assets/exos/press.gif", "tip": "Conserve un rythme fluide sans pause au verrouillage haut."},
+      {"b": "🔹 Superset Upper (4-6 RDS - Repos 60-120s)", "n": "KB Gorilla Row (ou Chin-up)", "p": ["8-12 reps Gorilla", "5-10 Chin-up"], "img": "assets/exos/row.gif", "tip": "Ancrage solide au sol, tirage explosif vers la hanche."},
+      {"b": "🔹 Superset Lower (4-6 RDS - Repos 60-120s)", "n": "1H Deadstop Snatch", "p": ["4-8 reps/côté", "KB 12-16 kg"], "img": "assets/exos/snatch.gif", "tip": "Garde la trajectoire au plus près du corps lors du tirage vertical."},
+      {"b": "🔹 Superset Lower (4-6 RDS - Repos 60-120s)", "n": "Single KB Bulgarian Split Squat TEMPO (2020)", "p": ["5-8 reps/côté", "KB 12-16 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "2s de descente, 2s de remontée. Tronc droit."},
+      {"b": "🔹 Circuit Core (2-4 RDS - Format 30s ON / 30s OFF)", "n": "Superman Hold + Curl & Halo + Accordion Crunch", "p": ["30s ON / 30s OFF"], "img": "assets/exos/halo.gif", "tip": "Enchaîne les exercices sans relâcher la tension abdominale."}
+    ]
+  },
+  "B-BK6": {
+    "title": "Bankai B6 - Push/Pull & Double Heavy Squat (S6)",
+    "trackId": "b6b",
+    "exos": [
+      {"b": "🔹 Mobilité B (3 tours sans repos)", "n": "Cobra to Down Dog + Hip 90/90 + Prone Scorpion", "p": ["10 Cobra", "10+10 Hip 90/90", "5+5 Scorpion"], "tip": "Détente musculaire et ouverture des hanches."},
+      {"b": "🔹 Superset 1 (4-6 RDS - Repos 60-120s)", "n": "Max CG Push-up ou Dips TEMPO (2121)", "p": ["Max reps"], "tip": "Vise l'échec technique propre."},
+      {"b": "🔹 Superset 1 (4-6 RDS - Repos 60-120s)", "n": "Goblet Curtsy Lunge", "p": ["6-10 reps/côté", "KB 12-16 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Garde la poitrine haute et regarde droit devant toi."},
+      {"b": "🔹 Superset 2 (4-6 RDS - Repos 60-120s)", "n": "Alternating Renegade Row + Max Double Row", "p": ["4-6 reps/côté + Max Double"], "img": "assets/exos/row.gif", "tip": "Planche stricte pendant les Renegade Rows, puis tirage bilatéral lourd."},
+      {"b": "🔹 Superset 2 (4-6 RDS - Repos 60-120s)", "n": "KB Squat Clean", "p": ["5-8 reps/côté", "KB 12-16 kg"], "img": "assets/exos/dead-clean.gif", "tip": "Attrape le KB en bas de squat avec le coude sous la charge."},
+      {"b": "🔹 AMRAP 8 min", "n": "Elbowing Row + Windmill + KB Sit-up", "p": ["8-12 Elbowing Row", "5-10 Windmill", "8-10 Sit-up"], "tip": "Rythme régulier sur les 8 min."}
+    ]
+  },
+  "C-BK6": {
+    "title": "Bankai C6 - METCON S6 (S6)",
+    "trackId": "b6c",
+    "exos": [
+      {"b": "🔹 Mobilité C (3 tours sans repos)", "n": "Cat & Cow + Spiderman Lunge + Inchworm", "p": ["10 Cat-Cow", "10 Spiderman", "5 Inchworm"], "tip": "Préparation au METCON."},
+      {"b": "🔹 METCON S6 (30 à 40 min)", "n": "METCON S6", "p": ["Max de tours en 30-40 min", "KB 16-24 kg"], "img": "assets/exos/snatch.gif", "tip": "20 Swings H2H + 7+7 Tactical Clean & Push Press + 20 Hindu Squat + 7+7 Snatch 1H + 10 Plank Walk Out. Maintiens la même charge tout le long (H: 16-24kg, F: 6-12kg). Repos 30-60s entre les exercices."}
+    ]
+  },
+
+  // ── SEMAINE 7 ────────────────────────────────────────────────────────────
+  "A-BK7": {
+    "title": "Bankai A7 - Upper/Lower Peak Volume (S7)",
+    "trackId": "b7a",
+    "exos": [
+      {"b": "🔹 Mobilité A (3 tours sans repos)", "n": "Prying Squat + Piriformis Push-up + Blackburn", "p": ["45s Squat", "10+10 Push-up", "10 Blackburn"], "img": "assets/exos/prying-squat.gif", "tip": "Grandes amplitudes articulaires."},
+      {"b": "🔹 Superset Upper (4-6 RDS - Repos 60-120s)", "n": "See Saw Press", "p": ["8-12 reps/côté", "2x12-16 kg"], "img": "assets/exos/press.gif", "tip": "Répétitions en hausse. Maintiens la trajectoire verticale nette."},
+      {"b": "🔹 Superset Upper (4-6 RDS - Repos 60-120s)", "n": "KB Gorilla Row (ou Chin-up)", "p": ["10-14 reps Gorilla", "8-12 Chin-up"], "img": "assets/exos/row.gif", "tip": "Tirage lourd et puissant."},
+      {"b": "🔹 Superset Lower (4-6 RDS - Repos 60-120s)", "n": "1H Deadstop Snatch", "p": ["6-10 reps/côté", "KB 12-16 kg"], "img": "assets/exos/snatch.gif", "tip": "Punch sec au sommet du Snatch."},
+      {"b": "🔹 Superset Lower (4-6 RDS - Repos 60-120s)", "n": "Single KB Bulgarian Split Squat TEMPO (2020)", "p": ["8-12 reps/côté", "KB 12-16 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Tempo 2020 maintenu malgré la hausse du nombre de reps."},
+      {"b": "🔹 Circuit Core (2-4 RDS - Format 40s ON / 20s OFF)", "n": "Superman Hold + Curl & Halo + Accordion Crunch", "p": ["40s ON / 20s OFF"], "img": "assets/exos/halo.gif", "tip": "Passage au format 40s/20s."}
+    ]
+  },
+  "B-BK7": {
+    "title": "Bankai B7 - Push/Pull & Double Heavy Squat (S7)",
+    "trackId": "b7b",
+    "exos": [
+      {"b": "🔹 Mobilité B (3 tours sans repos)", "n": "Cobra to Down Dog + Hip 90/90 + Prone Scorpion", "p": ["10 Cobra", "10+10 Hip 90/90", "5+5 Scorpion"], "tip": "Exécution fluide."},
+      {"b": "🔹 Superset 1 (4-6 RDS - Repos 60-120s)", "n": "Max CG Push-up ou Dips TEMPO (2121)", "p": ["Max reps"], "tip": "Maximum de répétitions propres."},
+      {"b": "🔹 Superset 1 (4-6 RDS - Repos 60-120s)", "n": "Goblet Curtsy Lunge", "p": ["8-12 reps/côté", "KB 12-16 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "8 à 12 reps par jambe."},
+      {"b": "🔹 Superset 2 (4-6 RDS - Repos 60-120s)", "n": "Alternating Renegade Row + Max Double Row", "p": ["6-10 reps/côté + Max Double"], "img": "assets/exos/row.gif", "tip": "Augmentation du nombre de Renegade Rows avant le passage au Double Row."},
+      {"b": "🔹 Superset 2 (4-6 RDS - Repos 60-120s)", "n": "KB Squat Clean", "p": ["8-12 reps/côté", "KB 12-16 kg"], "img": "assets/exos/dead-clean.gif", "tip": "8 à 12 reps par côté."},
+      {"b": "🔹 AMRAP 8 min", "n": "Elbowing Row + Windmill + KB Sit-up", "p": ["10-15 Elbowing Row", "8-12 Windmill", "12-15 Sit-up"], "tip": "Volume maximal sur les 8 minutes."}
+    ]
+  },
+  "C-BK7": {
+    "title": "Bankai C7 - AMRAP Complexes Yamamoto & Gin (S7)",
+    "trackId": "b7c",
+    "exos": [
+      {"b": "🔹 Mobilité C (3 tours sans repos)", "n": "Cat & Cow + Spiderman Lunge + Inchworm", "p": ["10 Cat-Cow", "10 Spiderman", "5 Inchworm"], "tip": "Préparation articulaire."},
+      {"b": "🔹 AMRAP 15 min - Complex Yamamoto", "n": "Complex Yamamoto", "p": ["Max de tours en 15 min", "2x12-16 kg"], "img": "assets/exos/press.gif", "tip": "8 KB Push-up + 5 Double Cluster. Repos 45-120s entre les tours."},
+      {"b": "🔹 AMRAP 15 min - Complex Gin", "n": "Complex Gin", "p": ["Max de tours en 15 min", "KB 12-16 kg"], "img": "assets/exos/snatch.gif", "tip": "8 Rows 1H + 6 Swings 1H + 4 Snatches 1H. Fais le côté droit puis le côté gauche. Repos 60-120s entre les tours."},
+      {"b": "🔹 Finisher For Time (3 tours)", "n": "Air Squat + Mountain Climbers + Sprawl", "p": ["3 tours", "Interm: 10+10+10 | Avancé: 15+16+15 | Élite: 20+20+20"], "tip": "Haute intensité finale."}
+    ]
+  },
+
+  // ── SEMAINE 8 ────────────────────────────────────────────────────────────
+  "A-BK8": {
+    "title": "Bankai A8 - Upper/Lower Peak Volume (S8)",
+    "trackId": "b8a",
+    "exos": [
+      {"b": "🔹 Mobilité A (3 tours sans repos)", "n": "Prying Squat + Piriformis Push-up + Blackburn", "p": ["45s Squat", "10+10 Push-up", "10 Blackburn"], "img": "assets/exos/prying-squat.gif", "tip": "Dernière semaine. Mobilité complète."},
+      {"b": "🔹 Superset Upper (4-6 RDS - Repos 60-120s)", "n": "See Saw Press", "p": ["8-12 reps/côté", "2x12-16 kg"], "img": "assets/exos/press.gif", "tip": "Donne tout sur la dernière session Upper du programme."},
+      {"b": "🔹 Superset Upper (4-6 RDS - Repos 60-120s)", "n": "KB Gorilla Row (ou Chin-up)", "p": ["10-14 reps Gorilla", "8-12 Chin-up"], "img": "assets/exos/row.gif", "tip": "Tirage puissant, omoplates serrées."},
+      {"b": "🔹 Superset Lower (4-6 RDS - Repos 60-120s)", "n": "1H Deadstop Snatch", "p": ["6-10 reps/côté", "KB 12-16 kg"], "img": "assets/exos/snatch.gif", "tip": "Explosivité pure depuis le sol."},
+      {"b": "🔹 Superset Lower (4-6 RDS - Repos 60-120s)", "n": "Single KB Bulgarian Split Squat TEMPO (2020)", "p": ["8-12 reps/côté", "KB 12-16 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Maintiens le tempo 2020 jusqu'à la dernière rep."},
+      {"b": "🔹 Circuit Core (2-4 RDS - Format 40s ON / 20s OFF)", "n": "Superman Hold + Curl & Halo + Accordion Crunch", "p": ["40s ON / 20s OFF"], "img": "assets/exos/halo.gif", "tip": "40s d'effort continu."}
+    ]
+  },
+  "B-BK8": {
+    "title": "Bankai B8 - Push/Pull & Double Heavy Squat (S8)",
+    "trackId": "b8b",
+    "exos": [
+      {"b": "🔹 Mobilité B (3 tours sans repos)", "n": "Cobra to Down Dog + Hip 90/90 + Prone Scorpion", "p": ["10 Cobra", "10+10 Hip 90/90", "5+5 Scorpion"], "tip": "Décompression articulaire."},
+      {"b": "🔹 Superset 1 (4-6 RDS - Repos 60-120s)", "n": "Max CG Push-up ou Dips TEMPO (2121)", "p": ["Max reps"], "tip": "Dernier test d'effort sur la poussée."},
+      {"b": "🔹 Superset 1 (4-6 RDS - Repos 60-120s)", "n": "Goblet Curtsy Lunge", "p": ["8-12 reps/côté", "KB 12-16 kg"], "img": "assets/exos/goblet-squat.webp", "tip": "Fente croisée contrôlée."},
+      {"b": "🔹 Superset 2 (4-6 RDS - Repos 60-120s)", "n": "Alternating Renegade Row + Max Double Row", "p": ["6-10 reps/côté + Max Double"], "img": "assets/exos/row.gif", "tip": "Maximum de reps propres sur le Double Row."},
+      {"b": "🔹 Superset 2 (4-6 RDS - Repos 60-120s)", "n": "KB Squat Clean", "p": ["8-12 reps/côté", "KB 12-16 kg"], "img": "assets/exos/dead-clean.gif", "tip": "Réception squat fluide."},
+      {"b": "🔹 AMRAP 8 min", "n": "Elbowing Row + Windmill + KB Sit-up", "p": ["10-15 Elbowing Row", "8-12 Windmill", "12-15 Sit-up"], "tip": "Volume max sur l'AMRAP 8 min."}
+    ]
+  },
+  "C-BK8": {
+    "title": "Bankai C8 - METCON Final Boss (S8)",
+    "trackId": "b8c",
+    "exos": [
+      {"b": "🔹 Mobilité C (3 tours sans repos)", "n": "Cat & Cow + Spiderman Lunge + Inchworm", "p": ["10 Cat-Cow", "10 Spiderman", "5 Inchworm"], "tip": "Échauffement ultime."},
+      {"b": "🔹 METCON Final Boss (30 à 40 min)", "n": "METCON Final Boss", "p": ["Max de tours en 30-40 min", "KB 16-24 kg"], "img": "assets/exos/snatch.gif", "tip": "10+10 Swings 1H B-Stance + Max KB Push-up + 7+7 Fentes arrière Overhead 1H + 20 Ballistic Rows + 12 Thrusters 2H. Test ultime du programme Bankai ! Poste ton score final sur le canal Benchmark."}
     ]
   }
-};
 
 // =========================================================================
 // ── BIBLIOTHÈQUE DES 31 WODS SKOOL ─────────────────────────────────────────
