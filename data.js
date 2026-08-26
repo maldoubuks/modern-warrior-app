@@ -1291,3 +1291,175 @@ const ESPRIT_GUERRIER_DATA = {
     ]
   }
 };
+
+// =========================================================================
+// ── MODULE NUTRITION & HOMÉOSTASIE : L'ÉQUILIBRE DU GUERRIER 🧬 ──────────
+// =========================================================================
+
+const EQUILIBRE_GUERRIER_DATA = {
+  title: "L'Équilibre du Guerrier",
+  subtitle: "Diète Intuitive, Homéostasie, Sommeil, Hormones & Compléments",
+  intro: "La vraie puissance se construit hors de l'entraînement : dans ton assiette, ton sommeil et la gestion de ton système nerveux. Sans cet équilibre, les efforts physiques sont gaspillés.",
+
+  diete: {
+    pillars: [
+      { title: "⏱️ Le Timing", desc: "Manger au bon moment pour maximiser l'énergie à l'effort et accélérer la récupération." },
+      { title: "🥩 La Qualité", desc: "Privilégier des aliments simples, complets, bruts et non transformés." },
+      { title: "📊 L'Adaptation", desc: "Ajuster les quantités selon ton objectif (Shredded vs Lean Bulk) et ton ressenti." },
+      { title: "⚔️ La Discipline", desc: "Décider du moment où tu manges au lieu de subir les pulsions de faim." }
+    ],
+    fasting: {
+      title: "Jeûne Intermittent (16:8)",
+      benefits: [
+        "**Santé** : Contrôle calorique naturel, glycémie stable, clarté mentale et focus accrus.",
+        "**Discipline** : Reprendre le contrôle sur la faim matinale réflexe. Activation du corps par le Réveil Musculaire avant le premier repas.",
+        "**Simplicité** : Pas d'apport alimentaire dans les 1 à 2h post-réveil. Entraînement à jeun sans contrainte de digestion."
+      ],
+      structure: "Journée articulée autour de 2 repas principaux + 1 collation (placée selon l'heure d'entraînement)."
+    },
+    carbsTiming: "Concentrer l'essentiel des glucides sur le repas post-entraînement pour recharger le glycogène musculaire et éviter les coups de barre en journée.",
+    modes: {
+      shredded: "Mode Shredded (Sèche) : Réduction des glucides, maintien d'un fort apport protéique pour brûler le gras tout en protégeant la masse maigre.",
+      leanBulk: "Mode Lean Bulk (Prise de muscle sec) : Augmentation modérée des glucides pour soutenir l'hypertrophie sans prise de gras inutile."
+    },
+    macros: {
+      ratios: "1g Protéines = 4 kcal · 1g Glucides = 4 kcal · 1g Lipides = 9 kcal",
+      proteines: "1,6 à 2g de protéines par kg de MASSE MAIGRE par jour.",
+      lipides: "0,8 à 1,5g de lipides par kg de poids de corps par jour (soutien de la testostérone).",
+      usNavy: {
+        title: "Méthode US Navy (Masse Maigre)",
+        desc: "Mesurer tour de cou, tour de taille (+ hanches pour les femmes) et taille. Marge d'erreur ~3-4% vs DEXA.",
+        formula: "Masse Grasse (kg) = Poids x (%MG / 100)  |  Masse Maigre (kg) = Poids Total − Masse Grasse.",
+        example: "80 kg à 20% MG → 16 kg de gras → 64 kg de masse maigre → 102g à 128g de protéines/jour."
+      }
+    },
+    portionsHommes: [
+      {
+        weight: "Homme 60-70 kg",
+        shredded: "Shredded (~1800 kcal) : Repas normal (P:40g, G:75g, L:30g) · Post-Training (P:40g, G:100g, L:30g) · Collation (P:20g + 1 fruit).",
+        leanBulk: "Lean Bulk (~2400 kcal) : Repas normal (P:40g, G:125g, L:35g) · Post-Training (P:40g, G:175g, L:35g) · Collation (P:20g + 1 fruit)."
+      },
+      {
+        weight: "Homme 70-80 kg",
+        shredded: "Shredded (~2105 kcal) : Repas normal (P:50g, G:100g, L:35g) · Post-Training (P:50g, G:125g, L:35g) · Collation (P:30g + 1 fruit).",
+        leanBulk: "Lean Bulk (~2600 kcal) : Repas normal (P:50g, G:125g, L:40g) · Post-Training (P:50g, G:175g, L:40g) · Collation (P:30g + 1 fruit)."
+      },
+      {
+        weight: "Homme 80-90 kg",
+        shredded: "Shredded (~2200 kcal) : Repas normal (P:50g, G:100g, L:40g) · Post-Training (P:50g, G:125g, L:40g) · Collation (P:40g + 1 fruit).",
+        leanBulk: "Lean Bulk (~2900 kcal) : Repas normal (P:50g, G:150g, L:45g) · Post-Training (P:50g, G:200g, L:45g) · Collation (P:40g + 1 fruit)."
+      }
+    ],
+    equivalences: {
+      prot20g: ["100g filet de poulet/dinde cru", "95g steak haché 5%", "110g cabillaud/colin", "100g saumon sauvage", "3 œufs entiers", "25g de Whey", "200g Skyr nature", "200g Tofu", "220g lentilles cuites"],
+      glu25g: ["90g riz blanc cuit", "85g pâtes cuites", "55g pain au levain", "50g wrap", "135g quinoa cuit", "145g patate douce cuite", "165g pomme de terre cuite"],
+      lip10g: ["1 c. à soupe d'huile d'olive / coco", "12g de beurre / 10g de ghee", "20g d'amandes (~15 amandes)", "70g d'avocat (~1/3 moyen)"]
+    },
+    foodList: {
+      proteines: "Bœuf nourri à l'herbe, Poulet/Dinde fermiers, Poissons sauvages, Œufs plein air, Abats, Agneau, Fruits de mer, Tofu, Tempeh, Seitan.",
+      glucides: "Patates douces, Pommes de terre, Riz (noir, blanc, sauvage), Quinoa, Wraps de maïs, Pâtes complètes, Pain au levain.",
+      graisses: "Ghee, Beurre, Huile de coco, Huile d'olive, Avocats, Fruits à coque.",
+      legumes: "Asperges, Oignons, Ail, Champignons, Courgettes, Poivrons, Carottes, Concombres, Brocolis, Kimchi, Épinards.",
+      fruits: "Baies (fraises, myrtilles), Oranges, Pommes, Poires, Peches, Kiwis, Pastèque, Dattes, Figues."
+    },
+    neat: {
+      title: "🔥 NEAT — Le Cheat Code de la Perte de Gras",
+      definition: "Non-Exercise Activity Thermogenesis : énergie dépensée en dehors du sommeil, de la digestion et du sport (marche, escaliers, micro-mouvements).",
+      science: "Étude Levine (Science, 1999) : la variation spontanée du NEAT explique les écarts de prise de gras sous un même surplus calorique (jusqu'à 2000 kcal/jour d'écart).",
+      target: "Viser 7 000 à 8 000 pas par jour, découpés en 2 à 3 blocs de marche de 15-20 min."
+    },
+    cheatsAndAdjustments: {
+      restaurant: "Jour OFF : Viande/poisson + légumes (zéro féculent). Jour ON post-training : Ajouter une portion de féculents.",
+      compensation: "Après un écart : au repas suivant, supprimer les glucides (protéines + légumes verts). Le lendemain : journée OFF stricte.",
+      adjustments: "Si stagnation : réduire légèrement les glucides post-training et vérifier le week-end. Si fatigue extrême : ajouter une collation glucidique."
+    },
+    bonuses: {
+      salads: [
+        "1. Saumon fumé, œufs mollets & oignons croustillants (Lipides élevés, Glucides bas)",
+        "2. Maquereaux, pommes de terre, tomates cerises & mâche",
+        "3. Maquereaux, lentilles, avocat & moutarde à l'ancienne",
+        "4. Poulet grillé, quinoa & tomates cerises",
+        "5. Pâtes, feta, jambon cru & tomates",
+        "6. Œufs mollets, feta & tomates (Zéro glucide, Lipides élevés)"
+      ],
+      mindfulEating: "Manger sans écran, mastiquer 15-20 min par repas, écouter la satiété et respirer 3 fois avant la première bouchée.",
+      spices: "Curcuma (anti-inflammatoire), Paprika fumé (goût BBQ), Cumin, Cannelle, Gingembre, Ail/Oignon en poudre, Herbes fraîches.",
+      promptChatGPT: `Tu es un coach en nutrition. Calcule mon apport calorique et mes macronutriments quotidiens en suivant exactement cette méthode.
+Mes informations :
+- Sexe : [Homme/Femme]
+- Poids : [X] kg
+- Taille : [X] cm
+- Âge : [X] ans
+- Niveau d'activité : [Sédentaire / Actif léger / Actif modéré / Très actif]
+- Objectif : [Shredded / Lean Bulk]
+- % de masse grasse : [X]% (si connu)
+Suis ces étapes :
+1. Calcule le TDEE avec Mifflin-St Jeor x Coefficient d'activité.
+2. Applique l'objectif : Shredded (-20%) ou Lean Bulk (+5%). (Minimum 1500 kcal pour femme).
+3. Protéines : 1,8g/kg de masse maigre (ou poids total).
+4. Lipides : 1g/kg (Shredded) ou 1,2g/kg (Lean Bulk).
+5. Glucides restants répartis : Repas Normal = Total/2,3 ; Repas Post-Training = Repas Normal x 1,3.
+6. Donne uniquement le résultat synthétique.`
+    }
+  },
+
+  homeostasis: {
+    sleep: {
+      title: "😴 Sommeil & Optimisation Hormonale",
+      types: [
+        "**Sommeil Profond (NREM)** : Pic de sécrétion de l'Hormone de Croissance (GH), réparation musculaire et nettoyage glymphatique cérébral.",
+        "**Sommeil Paradoxal (REM)** : Consolidation de la mémoire, apprentissage moteur et régulation émotionnelle."
+      ],
+      hormones: [
+        "**Testostérone** : Chute de 10 à 15% en une semaine de manque de sommeil.",
+        "**Cortisol** : Reste élevé en cas de mauvais sommeil, favorisant le stockage de gras abdominal et l'inflammation.",
+        "**GH (Croissance)** : Sécrétée principalement lors du sommeil profond."
+      ],
+      routine: [
+        "Horaire de coucher/lever fixe (marge de 30-90 min le week-end).",
+        "Exposition au soleil 15-30 min dans l'heure suivant le réveil.",
+        "Chambre fraîche (18-20°C) et obscurité totale.",
+        "Coupure des écrans 60 min avant de dormir.",
+        "Dernière prise de caféine avant 14h.",
+        "Respiration 4s/8s pendant 2 à 5 min au lit."
+      ],
+      nasalStrips: "Astuce respiration nocturne : Utilisation du strap nasal Histrip (-10% avec le code LLINARES10 sur histrips.com) pour ouvrir les voies nasales et éviter les micro-réveils."
+    },
+    breathwork: {
+      title: "🫁 Le Pouvoir du Breathwork",
+      techniques: [
+        { name: "1. Respiration Eau (Équilibre)", format: "Inspiration 4s / Expiration 4s", desc: "Stabilise le cœur et le système nerveux en journée ou avant une prise de parole." },
+        { name: "2. Respiration Whisky (Relaxation)", format: "Inspiration 4s / Expiration 8s", desc: "Active le système parasympathique. Idéal le soir avant de dormir ou après l'entraînement." },
+        { name: "3. Respiration Café (Énergie)", format: "Inspirations rapides nez / Expirations bouche (20-30s)", desc: "Boost immédiat de vigilance sans caféine. À faire le matin ou avant la séance." }
+      ]
+    },
+    caffeine: {
+      title: "☕ Stratégie Caféine & Adénosine",
+      principles: [
+        "**Adénosine** : Molécule de fatigue bloquée temporairement par la caféine. Son accumulation provoque le crash énergétique quand la caféine se dissipe.",
+        "**Cortisol matinal** : Le pic naturel de cortisol réveille le corps. Attendre 60 à 90 minutes après le réveil avant le premier café.",
+        "**Demi-vie (6h à 10h)** : La caféine reste active longtemps. Arrêt total de la caféine 10 heures avant le coucher (max 12h-14h).",
+        "**Jours OFF** : Réduire la consommation certains jours pour conserver la sensibilité des récepteurs."
+      ],
+      mathisFeedback: "Dose idéale : 2 cafés entre 10h et 12h + 1 décaféiné à 14h pour préserver l'endormissement."
+    },
+    coldShowers: {
+      title: "🧊 Physiologie de la Douche Froide",
+      impacts: [
+        "**Noradrénaline & Adrénaline** : Pic immédiat de vigilance et de concentration.",
+        "**Dopamine (+200 à +250%)** : Augmentation durable pendant plusieurs heures (motivation et clarté mentale).",
+        "**Thermogenèse** : Activation de la graisse brune pour produire de la chaleur.",
+        "**Progression** : Débutant (30s eau froide en fin de douche) → Intermédiaire (1-2 min froide) → Avancé (3-5 min 100% froide)."
+      ]
+    },
+    supplements: [
+      { name: "1. Whey Protéine", usage: "Atteindre son quota protéique", when: "Post-workout ou collation" },
+      { name: "2. Magnésium Bisglycinate", usage: "Sommeil, relaxation musculaire & système nerveux", when: "Le soir au coucher" },
+      { name: "3. Vitamine D3 + K2", usage: "Santé osseuse, immunité & testostérone", when: "Le midi avec des lipides" },
+      { name: "4. Zinc", usage: "Immunité & récupération hormonale", when: "Le soir (à distance des laages)" },
+      { name: "5. Créatine Monohydrate", usage: "3 à 5g/jour pour la force, la puissance et le volume", when: "Tous les jours, timing libre" },
+      { name: "6. Électrolytes", usage: "Hydratation minérale lors des séances intenses", when: "Pendant l'effort" }
+    ],
+    esnPartner: "Remise spéciale ESN (-10% avec le code promo partenaire) : http://fr.esn.com/instagram/KB/"
+  }
+};
