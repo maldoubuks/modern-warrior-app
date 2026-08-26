@@ -1707,3 +1707,62 @@ function checkNotificationStatus() {
     btn.style.display = 'none';
   }
 }
+
+// ── CALCULATEUR DENSE STRENGTH ─────────────────────────────────────────────
+
+function calculateDenseStrength() {
+  const reps = parseInt(document.getElementById('ds-input-reps').value) || 0;
+  const mode = document.getElementById('ds-select-exo').value;
+  const resEl = document.getElementById('ds-result');
+
+  if (reps <= 0) {
+    resEl.style.display = 'none';
+    return;
+  }
+
+  resEl.style.display = 'block';
+
+  if (mode === 'Volume') {
+    const startReps = Math.max(1, Math.floor(reps / 3));
+    const totalReps = startReps * 10;
+    resEl.innerHTML = `
+      <div style="font-size:11px; color:var(--or); font-weight:800; text-transform:uppercase;">Format de départ recommandé (Volume)</div>
+      <div style="font-size:30px; font-weight:900; color:#ffffff; margin:2px 0;">10D${startReps}</div>
+      <div style="font-size:12px; color:#dddddd;">10 minutes &middot; <strong>${startReps} rep${startReps > 1 ? 's' : ''}</strong> au début de chaque minute (Total : <strong>${totalReps} reps</strong>).</div>
+    `;
+  } else {
+    resEl.innerHTML = `
+      <div style="font-size:11px; color:#54a0ff; font-weight:800; text-transform:uppercase;">Format de départ recommandé (Force)</div>
+      <div style="font-size:30px; font-weight:900; color:#ffffff; margin:2px 0;">10D1</div>
+      <div style="font-size:12px; color:#dddddd;">Commence avec la charge du test (2-4RM) : <strong>1 rep par minute</strong> pendant 10 min. Valide 10D3 avant de monter le lest.</div>
+    `;
+  }
+}
+
+// ── RENDU DE LA PAGE POIDS DU CORPS ────────────────────────────────────────
+
+function renderPoidsDuCorps() {
+  const container = document.getElementById('bw-modules-container');
+  if (!container || typeof BODYWEIGHT_DATA === 'undefined') return;
+
+  let html = `
+    <div class="tb tb-g" style="margin-bottom:16px;">
+      <strong>Règle d'or Dense Strength :</strong> 10 minutes, 1 série au début de chaque minute. Si les 10 séries sont propres → +1 rep la séance suivante. Pas d'échec musculaire !
+    </div>
+  `;
+
+  BODYWEIGHT_DATA.exos.forEach(item => {
+    html += `
+      <div class="card" style="padding:14px; margin-bottom:12px; background:#1a1a1a; border:1px solid #333; border-radius:12px;">
+        <div style="font-size:15px; font-weight:800; color:#fff; margin-bottom:4px;">${item.title}</div>
+        <div style="font-size:11px; color:var(--or); font-weight:700; margin-bottom:10px;">${item.tag}</div>
+        
+        <div style="font-size:12px; color:#ccc; margin-bottom:6px; line-height:1.4;">💪 <strong>Force :</strong> ${item.force}</div>
+        <div style="font-size:12px; color:#ccc; margin-bottom:6px; line-height:1.4;">🔥 <strong>Volume :</strong> ${item.volume}</div>
+        ${item.regress ? `<div style="font-size:11px; color:#888; background:#222; padding:6px 10px; border-radius:6px; margin-top:8px;">💡 <em>${item.regress}</em></div>` : ''}
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
