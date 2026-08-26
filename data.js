@@ -993,3 +993,41 @@ const MOBILITY_DATA = [
     ]
   }
 ];
+
+// =========================================================================
+// ── PROGRAMME POIDS DU CORPS : DENSE STRENGTH (10D) ──────────────────────
+// =========================================================================
+
+const BODYWEIGHT_DATA = {
+  title: "Programme Poids du Corps",
+  subtitle: "Méthode Dense Strength · 10 min · Force & Volume auto-régulés",
+  intro: "Format 10D : 10 minutes, 1 série au début de chaque minute (EMOM 10'). Réussite = 10 séries valides sans aller à l'échec. Validation = +1 rep la séance suivante.",
+  calcTitle: "🧮 Calculateur de Format de Départ",
+  calcDesc: "Entre ton score maximum sur une série stricte pour obtenir ton format 10D immédiat :",
+  exos: [
+    {
+      id: "pullups",
+      title: "1️⃣ Tractions (Pull-up / Chin-up)",
+      tag: "Pronation, Supination, Australiennes",
+      force: "Cycle Force : 10D1 → 10D2 → 10D3 (Validé = + de lest / élastique plus fin → retour en 10D1)",
+      volume: "Cycle Volume : Max ÷ 3 → Objectif 10D5 à 10D10",
+      regress: "Débutant : Tractions Australiennes (10D5 à 10D8) ou Élastique (10D1 à 10D3)."
+    },
+    {
+      id: "dips",
+      title: "2️⃣ Dips (Barres / Anneaux)",
+      tag: "Barres parallèles, Anneaux, Bancs",
+      force: "Cycle Force : 10D1 → 10D2 → 10D3 (Validé = + de lest / passage sur anneaux → retour en 10D1)",
+      volume: "Cycle Volume : Max ÷ 3 → Objectif 10D8 à 10D15",
+      regress: "Débutant : Dips entre 2 bancs ou assistance élastique."
+    },
+    {
+      id: "pushups",
+      title: "3️⃣ Pompes (Variantes & Tempo)",
+      tag: "Classiques, Sur KB, Pieds surélevés",
+      force: "Cycle Force : 10D1 → 10D2 → 10D3 avec gilet lesté ou tempo lent (3010)",
+      volume: "Cycle Volume : Max ÷ 3 → Objectif 10D10 à 10D15",
+      regress: "Ajuster la hauteur des mains pour moduler la difficulté."
+    }
+  ]
+};
