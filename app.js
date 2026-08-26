@@ -843,6 +843,8 @@ function goPage(id){
     if (typeof renderCalendarGrid === 'function') renderCalendarGrid();
   } else if (id === 'mobilite') {
     if (typeof renderMobilite === 'function') renderMobilite();
+  } else if (id === 'poids-du-corps') {
+    if (typeof renderPoidsDuCorps === 'function') renderPoidsDuCorps();
   }
 
   window.scrollTo(0, 0);
