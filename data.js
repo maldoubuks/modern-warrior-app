@@ -605,7 +605,7 @@ const SD = {
       {"b": "🔹 AMRAP 8 min", "n": "Elbowing Row + Windmill + KB Sit-up", "p": ["10-15 Elbowing Row", "8-12 Windmill", "12-15 Sit-up"], "tip": "Volume max sur l'AMRAP 8 min."}
     ]
   },
-  "C-BK8": {
+"C-BK8": {
     "title": "Bankai C8 - METCON Final Boss (S8)",
     "trackId": "b8c",
     "exos": [
@@ -613,6 +613,7 @@ const SD = {
       {"b": "🔹 METCON Final Boss (30 à 40 min)", "n": "METCON Final Boss", "p": ["Max de tours en 30-40 min", "KB 16-24 kg"], "img": "assets/exos/snatch.gif", "tip": "10+10 Swings 1H B-Stance + Max KB Push-up + 7+7 Fentes arrière Overhead 1H + 20 Ballistic Rows + 12 Thrusters 2H. Test ultime du programme Bankai ! Poste ton score final sur le canal Benchmark."}
     ]
   }
+}; // <--- IL MANQUAIT CETTE FERMETURE ICI !
 
 // =========================================================================
 // ── BIBLIOTHÈQUE DES 31 WODS SKOOL ─────────────────────────────────────────
