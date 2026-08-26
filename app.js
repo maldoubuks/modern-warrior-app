@@ -846,6 +846,9 @@ function goPage(id){
   } else if (id === 'poids-du-corps') {
     if (typeof renderPoidsDuCorps === 'function') renderPoidsDuCorps();
   }
+  } else if (id === 'esprit-du-guerrier') {
+  if (typeof renderEspritGuerrier === 'function') renderEspritGuerrier();
+  }
 
   window.scrollTo(0, 0);
 }
@@ -1766,6 +1769,120 @@ function renderPoidsDuCorps() {
       </div>
     `;
   });
+
+  container.innerHTML = html;
+}
+
+// ── RENDU DE LA PAGE ESPRIT DU GUERRIER ────────────────────────────────────
+
+function renderEspritGuerrier() {
+  const container = document.getElementById('esprit-guerrier-container');
+  if (!container || typeof ESPRIT_GUERRIER_DATA === 'undefined') return;
+
+  const data = ESPRIT_GUERRIER_DATA;
+
+  let html = `
+    <!-- INTRO -->
+    <div class="card" style="padding:16px; margin-bottom:16px; background:#1e1e1e; border:1px solid var(--or);">
+      <div style="font-size:14px; font-weight:800; color:var(--or); margin-bottom:6px;">🔥 Reprendre le contrôle de ton esprit</div>
+      <div style="font-size:12px; color:#ccc; line-height:1.5;">${data.intro}</div>
+    </div>
+
+    <!-- ROUTINE V1 -->
+    <div class="card" style="padding:16px; margin-bottom:16px; background:#1a1a1a; border:1px solid #333;">
+      <div style="font-size:16px; font-weight:800; color:#fff; margin-bottom:4px;">${data.routines.v1.title}</div>
+      <div style="font-size:11px; color:#e74c3c; font-weight:700; margin-bottom:12px;">${data.routines.v1.rule}</div>
+      
+      ${data.routines.v1.steps.map(s => `
+        <div style="margin-bottom:10px; padding:10px; background:#222; border-radius:8px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <span style="font-size:13px; font-weight:800; color:var(--or);">${s.step}. ${s.name}</span>
+            <span style="font-size:11px; background:#333; color:#fff; padding:2px 8px; border-radius:4px; font-weight:700;">${s.time}</span>
+          </div>
+          <div style="font-size:12px; color:#bbb; line-height:1.4;">${s.desc}</div>
+        </div>
+      `).join('')}
+
+      <div style="font-size:11px; color:#888; font-style:italic; margin-top:8px; padding:8px; background:#222; border-radius:6px;">
+        💡 <strong>Bonus :</strong> ${data.routines.v1.bonus}
+      </div>
+    </div>
+
+    <!-- RÉVEIL MUSCULAIRE V1 (DÉTAILLÉ) -->
+    <div class="card" style="padding:16px; margin-bottom:16px; background:#1a1a1a; border:1px solid #333;">
+      <div style="font-size:15px; font-weight:800; color:#fff; margin-bottom:12px;">🤸‍♂️ Réveil Musculaire V1 — Exercices Détaillés</div>
+      ${data.reveilExos.v1.map(e => `
+        <div style="margin-bottom:8px; padding:8px 10px; background:#222; border-left:3px solid var(--or); border-radius:4px;">
+          <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:800; color:#fff;">
+            <span>${e.name}</span>
+            <span style="color:var(--or);">${e.format}</span>
+          </div>
+          <div style="font-size:11px; color:#aaa; margin-top:3px;">${e.tip}</div>
+        </div>
+      `).join('')}
+    </div>
+
+    <!-- ROUTINE V2 -->
+    <div class="card" style="padding:16px; margin-bottom:16px; background:#1a1a1a; border:1px solid #333;">
+      <div style="font-size:16px; font-weight:800; color:#fff; margin-bottom:4px;">${data.routines.v2.title}</div>
+      <div style="font-size:11px; color:#54a0ff; font-weight:700; margin-bottom:12px;">${data.routines.v2.rule}</div>
+
+      ${data.routines.v2.steps.map(s => `
+        <div style="margin-bottom:10px; padding:10px; background:#222; border-radius:8px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <span style="font-size:13px; font-weight:800; color:#54a0ff;">${s.step}. ${s.name}</span>
+            <span style="font-size:11px; background:#333; color:#fff; padding:2px 8px; border-radius:4px; font-weight:700;">${s.time}</span>
+          </div>
+          <div style="font-size:12px; color:#bbb; line-height:1.4;">${s.desc}</div>
+        </div>
+      `).join('')}
+    </div>
+
+    <!-- RÉVEIL MUSCULAIRE V2 (DÉTAILLÉ) -->
+    <div class="card" style="padding:16px; margin-bottom:16px; background:#1a1a1a; border:1px solid #333;">
+      <div style="font-size:15px; font-weight:800; color:#fff; margin-bottom:12px;">🐘 Réveil Musculaire V2 — Exercices Détaillés</div>
+      ${data.reveilExos.v2.map(e => `
+        <div style="margin-bottom:8px; padding:8px 10px; background:#222; border-left:3px solid #54a0ff; border-radius:4px;">
+          <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:800; color:#fff;">
+            <span>${e.name}</span>
+            <span style="color:#54a0ff;">${e.format}</span>
+          </div>
+          <div style="font-size:11px; color:#aaa; margin-top:3px;">${e.tip}</div>
+        </div>
+      `).join('')}
+    </div>
+
+    <!-- BIBLIOTHÈQUE DES 8 LIVRES -->
+    <div class="card" style="padding:16px; margin-bottom:16px; background:#1a1a1a; border:1px solid #333;">
+      <div style="font-size:16px; font-weight:800; color:#fff; margin-bottom:12px;">📚 Bibliothèque recommandée par le Modern Warrior</div>
+      ${data.books.map(b => `
+        <div style="margin-bottom:10px; padding:10px; background:#222; border-radius:8px;">
+          <div style="font-size:13px; font-weight:800; color:#fff;">${b.title}</div>
+          <div style="font-size:11px; color:var(--or); font-weight:700; margin-bottom:4px;">par ${b.author}</div>
+          <div style="font-size:12px; color:#bbb; line-height:1.4;">${b.desc}</div>
+        </div>
+      `).join('')}
+    </div>
+
+    <!-- SPORTS DE COMBAT -->
+    <div class="card" style="padding:16px; margin-bottom:16px; background:#1a1a1a; border:1px solid #333;">
+      <div style="font-size:16px; font-weight:800; color:#fff; margin-bottom:8px;">${data.combat.title}</div>
+      ${data.combat.rules.map(r => `
+        <div style="font-size:12px; color:#ccc; margin-bottom:6px; line-height:1.4;">• ${r}</div>
+      `).join('')}
+    </div>
+
+    <!-- CHALLENGE 30 JOURS -->
+    <div class="card" style="padding:16px; margin-bottom:16px; background:#1e1e1e; border:1px solid #e74c3c;">
+      <div style="font-size:16px; font-weight:800; color:#e74c3c; margin-bottom:2px;">${data.challenge.title}</div>
+      <div style="font-size:11px; color:#aaa; margin-bottom:12px;">${data.challenge.subtitle}</div>
+      ${data.challenge.rules.map(r => `
+        <div style="font-size:12px; color:#fff; margin-bottom:8px; padding:6px 8px; background:#2a2a2a; border-radius:6px; line-height:1.4;">
+          ✔️ ${r}
+        </div>
+      `).join('')}
+    </div>
+  `;
 
   container.innerHTML = html;
 }
