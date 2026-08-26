@@ -849,6 +849,9 @@ function goPage(id){
   } else if (id === 'esprit-du-guerrier') {
   if (typeof renderEspritGuerrier === 'function') renderEspritGuerrier();
   }
+  } else if (id === 'equilibre-du-guerrier') {
+  if (typeof renderEquilibreGuerrier === 'function') renderEquilibreGuerrier();
+  }
 
   window.scrollTo(0, 0);
 }
@@ -1881,6 +1884,148 @@ function renderEspritGuerrier() {
           ✔️ ${r}
         </div>
       `).join('')}
+    </div>
+  `;
+
+  container.innerHTML = html;
+}
+
+// ── RENDU DE LA PAGE ÉQUILIBRE DU GUERRIER ─────────────────────────────────
+
+function renderEquilibreGuerrier() {
+  const container = document.getElementById('equilibre-guerrier-container');
+  if (!container || typeof EQUILIBRE_GUERRIER_DATA === 'undefined') return;
+
+  const data = EQUILIBRE_GUERRIER_DATA;
+
+  let html = `
+    <!-- INTRO -->
+    <div class="card" style="padding:16px; margin-bottom:16px; background:#1e1e1e; border:1px solid var(--or);">
+      <div style="font-size:14px; font-weight:800; color:var(--or); margin-bottom:6px;">🧬 Les Fondations Invisibles</div>
+      <div style="font-size:12px; color:#ccc; line-height:1.5;">${data.intro}</div>
+    </div>
+
+    <!-- 1. LA DIÈTE INTUITIVE -->
+    <div class="card" style="padding:16px; margin-bottom:16px; background:#1a1a1a; border:1px solid #333;">
+      <div style="font-size:16px; font-weight:800; color:#fff; margin-bottom:10px;">🍽️ La Diète Intuitive — 4 Piliers</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
+        ${data.diete.pillars.map(p => `
+          <div style="padding:10px; background:#222; border-radius:8px;">
+            <div style="font-size:12px; font-weight:800; color:var(--or); margin-bottom:4px;">${p.title}</div>
+            <div style="font-size:11px; color:#aaa; line-height:1.3;">${p.desc}</div>
+          </div>
+        `).join('')}
+      </div>
+
+      <div style="font-size:13px; font-weight:800; color:#fff; margin-bottom:6px;">⏳ Jeûne Intermittent 16:8</div>
+      ${data.diete.fasting.benefits.map(b => `
+        <div style="font-size:12px; color:#ccc; margin-bottom:6px; line-height:1.4;">• ${b}</div>
+      `).join('')}
+    </div>
+
+    <!-- CALCULATEUR MASSE MAIGRE & MACROS HOMMES -->
+    <div class="card" style="padding:16px; margin-bottom:16px; background:#1a1a1a; border:1px solid #333;">
+      <div style="font-size:15px; font-weight:800; color:#fff; margin-bottom:6px;">🧮 Méthode US Navy &amp; Repères Hommes</div>
+      <div style="font-size:11px; color:#aaa; margin-bottom:12px; line-height:1.4;">
+        ${data.diete.macros.usNavy.desc}<br>
+        <strong>Formule :</strong> <em>${data.diete.macros.usNavy.formula}</em>
+      </div>
+
+      <div style="font-size:13px; font-weight:800; color:var(--or); margin-bottom:8px;">Tableau des Menus Types par Gabarit :</div>
+      ${data.diete.portionsHommes.map(m => `
+        <div style="margin-bottom:10px; padding:10px; background:#222; border-radius:8px;">
+          <div style="font-size:13px; font-weight:800; color:#fff; margin-bottom:4px;">${m.weight}</div>
+          <div style="font-size:11px; color:#e74c3c; margin-bottom:3px;">🔥 <strong>${m.shredded}</strong></div>
+          <div style="font-size:11px; color:#54a0ff;">💪 <strong>${m.leanBulk}</strong></div>
+        </div>
+      `).join('')}
+    </div>
+
+    <!-- EQUIVALENCES & LISTE DES ALIMENTS -->
+    <div class="card" style="padding:16px; margin-bottom:16px; background:#1a1a1a; border:1px solid #333;">
+      <div style="font-size:15px; font-weight:800; color:#fff; margin-bottom:10px;">📋 Équivalences &amp; Liste d'Aliments Bruts</div>
+      
+      <div style="margin-bottom:10px; padding:10px; background:#222; border-radius:8px;">
+        <div style="font-size:12px; font-weight:800; color:#e74c3c; margin-bottom:4px;">🍗 Où trouver 20g de Protéines ?</div>
+        <div style="font-size:11px; color:#ccc; line-height:1.4;">${data.diete.equivalences.prot20g.join(' · ')}</div>
+      </div>
+
+      <div style="margin-bottom:10px; padding:10px; background:#222; border-radius:8px;">
+        <div style="font-size:12px; font-weight:800; color:#54a0ff; margin-bottom:4px;">🍚 Où trouver 25g de Glucides ?</div>
+        <div style="font-size:11px; color:#ccc; line-height:1.4;">${data.diete.equivalences.glu25g.join(' · ')}</div>
+      </div>
+
+      <div style="margin-bottom:10px; padding:10px; background:#222; border-radius:8px;">
+        <div style="font-size:12px; font-weight:800; color:#f1c40f; margin-bottom:4px;">🥑 Où trouver 10g de Lipides ?</div>
+        <div style="font-size:11px; color:#ccc; line-height:1.4;">${data.diete.equivalences.lip10g.join(' · ')}</div>
+      </div>
+    </div>
+
+    <!-- NEAT & STEP STRATEGY -->
+    <div class="card" style="padding:16px; margin-bottom:16px; background:#1a1a1a; border:1px solid var(--or);">
+      <div style="font-size:15px; font-weight:800; color:var(--or); margin-bottom:4px;">${data.diete.neat.title}</div>
+      <div style="font-size:12px; color:#ccc; margin-bottom:6px; line-height:1.4;">${data.diete.neat.definition}</div>
+      <div style="font-size:11px; color:#888; margin-bottom:8px; font-style:italic;">${data.diete.neat.science}</div>
+      <div style="font-size:12px; font-weight:800; color:#fff; background:#222; padding:8px; border-radius:6px;">
+        🎯 Objectif : ${data.diete.neat.target}
+      </div>
+    </div>
+
+    <!-- PROMPT CHATGPT CALORIES -->
+    <div class="card" style="padding:16px; margin-bottom:16px; background:#1a1a1a; border:1px solid #333;">
+      <div style="font-size:14px; font-weight:800; color:#fff; margin-bottom:6px;">🤖 Prompt ChatGPT / Claude (Calcul Personnalisé)</div>
+      <div style="font-size:11px; color:#aaa; margin-bottom:8px;">Copie-colle ce prompt pour obtenir ton plan calorique exact sur mesure :</div>
+      <textarea readonly style="width:100%; height:120px; background:#222; color:#54a0ff; font-family:monospace; font-size:10px; padding:10px; border:1px solid #444; border-radius:6px; outline:none; resize:none;">${data.diete.bonuses.promptChatGPT}</textarea>
+    </div>
+
+    <!-- 2. HOMÉOSTASIE & SOMMEIL -->
+    <div class="card" style="padding:16px; margin-bottom:16px; background:#1a1a1a; border:1px solid #333;">
+      <div style="font-size:16px; font-weight:800; color:#fff; margin-bottom:8px;">${data.homeostasis.sleep.title}</div>
+      ${data.homeostasis.sleep.types.map(t => `<div style="font-size:12px; color:#ccc; margin-bottom:4px;">• ${t}</div>`).join('')}
+      <div style="margin-top:10px; font-size:12px; font-weight:800; color:var(--or);">Routine Sommeil du Guerrier :</div>
+      <div style="font-size:11px; color:#bbb; margin-top:4px; line-height:1.4;">
+        ${data.homeostasis.sleep.routine.join(' · ')}
+      </div>
+      <div style="font-size:11px; color:#54a0ff; background:#222; padding:8px; border-radius:6px; margin-top:8px;">
+        💡 <strong>${data.homeostasis.sleep.nasalStrips}</strong>
+      </div>
+    </div>
+
+    <!-- BREATHWORK & CAFÉINE -->
+    <div class="card" style="padding:16px; margin-bottom:16px; background:#1a1a1a; border:1px solid #333;">
+      <div style="font-size:15px; font-weight:800; color:#fff; margin-bottom:10px;">🫁 Breathwork &amp; ☕ Gestion de la Caféine</div>
+      
+      ${data.homeostasis.breathwork.techniques.map(t => `
+        <div style="margin-bottom:8px; padding:8px; background:#222; border-radius:6px;">
+          <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:800; color:#fff;">
+            <span>${t.name}</span>
+            <span style="color:var(--or);">${t.format}</span>
+          </div>
+          <div style="font-size:11px; color:#aaa; margin-top:2px;">${t.desc}</div>
+        </div>
+      `).join('')}
+
+      <div style="margin-top:12px; font-size:12px; color:#ccc; line-height:1.4;">
+        <strong>Règles Caféine :</strong> Premier café 90 min post-réveil (laisser agir le cortisol). Dernier café 10h avant le coucher.
+      </div>
+    </div>
+
+    <!-- COMPLÉMENTS ESSENTIELS & ESN -->
+    <div class="card" style="padding:16px; margin-bottom:16px; background:#1a1a1a; border:1px solid #333;">
+      <div style="font-size:16px; font-weight:800; color:#fff; margin-bottom:10px;">💊 Compléments Essentiels &amp; ESN</div>
+      ${data.homeostasis.supplements.map(s => `
+        <div style="margin-bottom:8px; padding:8px 10px; background:#222; border-left:3px solid var(--or); border-radius:4px;">
+          <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:800; color:#fff;">
+            <span>${s.name}</span>
+            <span style="color:#aaa; font-size:11px;">${s.when}</span>
+          </div>
+          <div style="font-size:11px; color:#bbb; margin-top:2px;">${s.usage}</div>
+        </div>
+      `).join('')}
+
+      <div style="font-size:11px; color:var(--or); margin-top:10px; text-align:center; font-weight:800;">
+        🎁 <strong>${data.homeostasis.esnPartner}</strong>
+      </div>
     </div>
   `;
 
