@@ -851,5 +851,34 @@
 
 <script src="data.js"></script>
 <script src="app.js"></script>
+
+  <!-- 🦍 PAGE POIDS DU CORPS -->
+<div id="page-poids-du-corps" class="page">
+  <div class="hero">
+    <div class="hl">Poids du Corps &middot; Level 2</div>
+    <div class="ht">Dense<br>Strength.</div>
+    <div class="hs">10 minutes &middot; 1 série/min &middot; Tractions, Dips &amp; Pompes</div>
+  </div>
+
+  <!-- CALCULATEUR INTERACTIF -->
+  <div class="card" style="padding:16px; margin-bottom:16px; background:#1e1e1e; border:1px solid var(--or);">
+    <div style="font-size:13px; font-weight:800; color:var(--or); text-transform:uppercase; margin-bottom:6px;">🧮 Calculateur de Départ 10D</div>
+    <div style="font-size:12px; color:#aaa; margin-bottom:12px;">Entre ton nombre maximum de répétitions strictes sur un mouvement :</div>
+    
+    <div style="display:flex; gap:10px; align-items:center;">
+      <input type="number" id="ds-input-reps" placeholder="Ex: 18" oninput="calculateDenseStrength()" style="flex:1; background:#2a2a2a; border:1px solid #444; border-radius:8px; padding:10px 12px; color:#fff; font-size:16px; font-weight:800; outline:none;">
+      <select id="ds-select-exo" onchange="calculateDenseStrength()" style="background:#2a2a2a; border:1px solid #444; border-radius:8px; padding:10px; color:#fff; font-size:13px; font-weight:700; outline:none;">
+        <option value="Volume">Cycle Volume</option>
+        <option value="Force">Cycle Force</option>
+      </select>
+    </div>
+
+    <div id="ds-result" style="display:none; margin-top:14px; padding:12px; background:rgba(216,90,48,0.15); border-radius:8px; border-left:4px solid var(--or); text-align:center;">
+    </div>
+  </div>
+
+  <!-- CONTENEUR DYNAMIQUE DES MODULES -->
+  <div id="bw-modules-container"></div>
+</div>
 </body>
 </html>
