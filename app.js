@@ -895,9 +895,10 @@ function renderSeances() {
     ];
   } else if (currentPhase === '2') {
     sessionSections = [
-      { section: "SEMAINES 1 & 2", keys: ["A-BK1", "B-BK1", "C-BK1"] },
-      { section: "SEMAINES 3 & 4", keys: ["A-BK3", "B-BK3", "C-BK3"] },
-      { section: "SEMAINE 4 (METCON)", keys: ["A-BK4", "B-BK4", "C-BK4"] }
+      { section: "SEMAINES 1 & 2", keys: ["A-BK1", "B-BK1", "C-BK1", "A-BK2", "B-BK2", "C-BK2"] },
+      { section: "SEMAINES 3 & 4", keys: ["A-BK3", "B-BK3", "C-BK3", "A-BK4", "B-BK4", "C-BK4"] },
+      { section: "SEMAINES 5 & 6", keys: ["A-BK5", "B-BK5", "C-BK5", "A-BK6", "B-BK6", "C-BK6"] },
+      { section: "SEMAINES 7 & 8 (FINAL BOSS)", keys: ["A-BK7", "B-BK7", "C-BK7", "A-BK8", "B-BK8", "C-BK8"] }
     ];
   }
 
