@@ -845,12 +845,10 @@ function goPage(id){
     if (typeof renderMobilite === 'function') renderMobilite();
   } else if (id === 'poids-du-corps') {
     if (typeof renderPoidsDuCorps === 'function') renderPoidsDuCorps();
-  }
   } else if (id === 'esprit-du-guerrier') {
-  if (typeof renderEspritGuerrier === 'function') renderEspritGuerrier();
-  }
+    if (typeof renderEspritGuerrier === 'function') renderEspritGuerrier();
   } else if (id === 'equilibre-du-guerrier') {
-  if (typeof renderEquilibreGuerrier === 'function') renderEquilibreGuerrier();
+    if (typeof renderEquilibreGuerrier === 'function') renderEquilibreGuerrier();
   }
 
   window.scrollTo(0, 0);
